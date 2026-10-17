@@ -1,6 +1,6 @@
 # Autonomous AI Task Worker that learns your company's way of working
 
-Give it a request in plain English: *"Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done."* It plans, drives a real browser through the company's systems, reads the document of record, asks a manager before anything risky, refuses to do damage, **proves** the outcome through a channel it cannot fake, and then **remembers** what it learned so the next similar task is faster, cheaper and needs fewer questions, even in a system it has never seen.
+Give it a request in plain English: *"Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done."* It plans, drives a real browser through the company's systems, reads the document of record, asks a manager before anything risky, refuses to do damage, **proves** the outcome through a channel it cannot fake, and then **remembers** what it learned, as skills, rules and facts with provenance, so the next similar task needs less exploration and fewer questions, even in a system it has never seen.
 
 Submission for the CentrAlign AI **AI Engineering Intern** challenge ("Autonomous AI Task Worker").
 
