@@ -1,0 +1,131 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Replay cold-T3_duplicate-1</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:24px auto;color:#1d2330}
+.step{border:1px solid #e3e6ec;border-radius:8px;padding:12px 16px;margin:14px 0} img{max-width:100%;border:1px solid #ddd;margin-top:8px}
+.muted{color:#777;font-size:12px;font-weight:400} .thought{color:#444} .result{color:#0b5} pre{background:#f6f7f9;padding:8px;overflow:auto}
+.policy{padding:6px 10px;border-radius:4px;font-size:13px} .policy.ok{background:#e6f6ea} .policy.warn{background:#fff6e0}
+.status{padding:10px 14px;border-radius:6px;background:#eef1f6}</style></head><body>
+<h1>Enter Kestrel Logistics&#x27; invoice KL-0915 into Ledger</h1>
+<div class="status"><b>Status: completed</b> · verifier: completed — all 1 assertion(s) hold; no undeclared writes<br>
+KL-0915 is already recorded in ledger (exists: record #2). I did not enter it again.</div>
+<h2>Verification</h2><ul><li>✅ expected 1, found 1</li></ul>
+<h2>Steps</h2><section class="step"><h3>Step 1 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the supplier portal filtered to all open invoices.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/portal/invoices?status=open&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&amp;reason=signed_out (HTTP 200)</p><img src="screens/001.png" loading="lazy"></section><section class="step"><h3>Step 2 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/002.png" loading="lazy"></section><section class="step"><h3>Step 3 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/003.png" loading="lazy"></section><section class="step"><h3>Step 4 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices?status=open</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/004.png" loading="lazy"></section><section class="step"><h3>Step 5 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices?status=open</span></h3>
+        <p class="thought">Target invoice is KL-0915; noting it.</p>
+        <pre>{&quot;key&quot;: &quot;invoice_number&quot;, &quot;value&quot;: &quot;KL-0915&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/portal/invoices?status=open&quot;}</pre>
+        <p class="result">→ noted invoice_number = &#x27;KL-0915&#x27; (source: http://127.0.0.1:8000/portal/invoices?status=open)</p><img src="screens/005.png" loading="lazy"></section><section class="step"><h3>Step 6 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Opening invoice KL-0915.</p>
+        <pre>{&quot;id&quot;: 10}</pre>
+        <p class="result">→ clicked &quot;View&quot;</p><img src="screens/006.png" loading="lazy"></section><section class="step"><h3>Step 7 · <code>read_pdf</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Reading the invoice PDF, the document of record.</p>
+        <pre>{&quot;url&quot;: &quot;/portal/invoices/5/pdf&quot;}</pre>
+        <p class="result">→ PDF text:
+Kestrel Logistics
+GSTIN 27AAACK9012M1Z8  |  finance@kestrel.example
+TAX INVOICE
+Invoice number:
+KL-0915
+Invoice date:
+2026-09-28
+Due date:
+2026-10-28
+Purchase order:
+-
+Bill to:
+Acme Robotics Pvt Ltd, New Delhi
+Item
+Qty
+Unit price
+Amount
+Freight Pune-Delhi, 3 pallets
+1
+Rs 18,750.00
+Rs 18,750.00
+Total due (INR):
+Rs 18,750.00</p><img src="screens/007.png" loading="lazy"></section><section class="step"><h3>Step 8 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Noting pdf_total:KL-0915 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;pdf_total:KL-0915&quot;, &quot;value&quot;: &quot;1875000&quot;, &quot;source&quot;: &quot;/portal/invoices/5/pdf&quot;}</pre>
+        <p class="result">→ noted pdf_total:KL-0915 = &#x27;1875000&#x27; (source: /portal/invoices/5/pdf)</p><img src="screens/008.png" loading="lazy"></section><section class="step"><h3>Step 9 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Noting due_date:KL-0915 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;due_date:KL-0915&quot;, &quot;value&quot;: &quot;2026-10-28&quot;, &quot;source&quot;: &quot;/portal/invoices/5/pdf&quot;}</pre>
+        <p class="result">→ noted due_date:KL-0915 = &#x27;2026-10-28&#x27; (source: /portal/invoices/5/pdf)</p><img src="screens/009.png" loading="lazy"></section><section class="step"><h3>Step 10 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Noting po:KL-0915 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;po:KL-0915&quot;, &quot;value&quot;: &quot;&quot;, &quot;source&quot;: &quot;/portal/invoices/5/pdf&quot;}</pre>
+        <p class="result">→ noted po:KL-0915 = &#x27;&#x27; (source: /portal/invoices/5/pdf)</p><img src="screens/010.png" loading="lazy"></section><section class="step"><h3>Step 11 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/5</span></h3>
+        <p class="thought">Noting vendor_gstin:KL-0915 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_gstin:KL-0915&quot;, &quot;value&quot;: &quot;27AAACK9012M1Z8&quot;, &quot;source&quot;: &quot;/portal/invoices/5/pdf&quot;}</pre>
+        <p class="result">→ noted vendor_gstin:KL-0915 = &#x27;27AAACK9012M1Z8&#x27; (source: /portal/invoices/5/pdf)</p><img src="screens/011.png" loading="lazy"></section><section class="step"><h3>Step 12 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&amp;reason=signed_out</span></h3>
+        <p class="thought">PDF facts noted; checking the mailbox for revisions.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/mail/inbox?q=KL-0915&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&amp;reason=signed_out (HTTP 200)</p><img src="screens/012.png" loading="lazy"></section><section class="step"><h3>Step 13 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/013.png" loading="lazy"></section><section class="step"><h3>Step 14 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/014.png" loading="lazy"></section><section class="step"><h3>Step 15 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox?q=KL-0915</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/015.png" loading="lazy"></section><section class="step"><h3>Step 16 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox?q=KL-0915</span></h3>
+        <p class="thought">No relevant mail; moving to the ERP.</p>
+        <pre>{&quot;key&quot;: &quot;mail_check:KL-0915&quot;, &quot;value&quot;: &quot;no relevant mail&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/mail/inbox?q=KL-0915&quot;}</pre>
+        <p class="result">→ noted mail_check:KL-0915 = &#x27;no relevant mail&#x27; (source: http://127.0.0.1:8000/mail/inbox?q=KL-0915)</p><img src="screens/016.png" loading="lazy"></section><section class="step"><h3>Step 17 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the vendor master to match by GSTIN.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/vendors&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out (HTTP 200)</p><img src="screens/017.png" loading="lazy"></section><section class="step"><h3>Step 18 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/018.png" loading="lazy"></section><section class="step"><h3>Step 19 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/019.png" loading="lazy"></section><section class="step"><h3>Step 20 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/020.png" loading="lazy"></section><section class="step"><h3>Step 21 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">GSTIN 27AAACK9012M1Z8 belongs to Kestrel Logistics.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_name:KL-0915&quot;, &quot;value&quot;: &quot;Kestrel Logistics&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/ledger/vendors&quot;}</pre>
+        <p class="result">→ noted vendor_name:KL-0915 = &#x27;Kestrel Logistics&#x27; (source: http://127.0.0.1:8000/ledger/vendors)</p><img src="screens/021.png" loading="lazy"></section><section class="step"><h3>Step 22 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=KL-0915</span></h3>
+        <p class="thought">Searching the ERP for this invoice number.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/bills?q=KL-0915&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/bills?q=KL-0915 (HTTP 200)</p><img src="screens/022.png" loading="lazy"></section><section class="step"><h3>Step 23 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=KL-0915</span></h3>
+        <p class="thought">Already recorded; noting the duplicate.</p>
+        <pre>{&quot;key&quot;: &quot;duplicate_check:KL-0915&quot;, &quot;value&quot;: &quot;exists: record #2&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/ledger/bills?q=KL-0915&quot;}</pre>
+        <p class="result">→ noted duplicate_check:KL-0915 = &#x27;exists: record #2&#x27; (source: http://127.0.0.1:8000/ledger/bills?q=KL-0915)</p><img src="screens/023.png" loading="lazy"></section><section class="step"><h3>Step 24 · <code>done</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=KL-0915</span></h3>
+        <p class="thought">The invoice is already recorded; reporting instead of entering it again.</p>
+        <pre>{&quot;summary&quot;: &quot;KL-0915 is already recorded in ledger (exists: record #2). I did not enter it again.&quot;, &quot;assertions&quot;: [{&quot;kind&quot;: &quot;count&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;entity&quot;: &quot;bill&quot;, &quot;match&quot;: {&quot;invoice_number&quot;: &quot;KL-0915&quot;}, &quot;expect&quot;: {&quot;count&quot;: 1}, &quot;note&quot;: &quot;exactly one record must exist: the pre-existing one&quot;}]}</pre>
+        <p class="result">→ assertions recorded; verification will decide the status</p><img src="screens/024.png" loading="lazy"></section>
+</body></html>

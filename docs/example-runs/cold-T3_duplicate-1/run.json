@@ -1,0 +1,606 @@
+{
+ "run_id": "cold-T3_duplicate-1",
+ "request": "Enter Kestrel Logistics' invoice KL-0915 into Ledger",
+ "started_at": 1792267850.9121723,
+ "finished_at": 1792267852.8074775,
+ "brain": "scripted",
+ "model": "sop-controller",
+ "memory_mode": "off",
+ "contract": {
+  "intent": "record_supplier_invoice",
+  "summary": "Record the named vendor's KL-0915 invoice in ledger after reading its PDF, checking for revisions and duplicates, and getting approval if the amount requires it.",
+  "target_system": "ledger",
+  "params": {
+   "vendor": "",
+   "which": "KL-0915"
+  },
+  "questions": [],
+  "deliverable": "A short summary with evidence."
+ },
+ "milestones": [
+  {
+   "id": "M1",
+   "title": "Identify the invoice and read its PDF",
+   "done_when": "invoice number, PDF total, due date, PO and GSTIN are noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M2",
+   "title": "Check the mailbox for revisions or corrections",
+   "done_when": "any revision notice is noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M3",
+   "title": "Resolve the vendor in ledger by GSTIN and check for duplicates",
+   "done_when": "duplicate_check fact noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M4",
+   "title": "Record the bill in ledger",
+   "done_when": "the record is saved (approval obtained first if required)",
+   "writes": true,
+   "status": "done"
+  },
+  {
+   "id": "M5",
+   "title": "Verify the record and report",
+   "done_when": "the list shows the record with the right values",
+   "writes": false,
+   "status": "done"
+  }
+ ],
+ "steps": [
+  {
+   "index": 1,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&reason=signed_out",
+   "thought": "Opening the supplier portal filtered to all open invoices.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/portal/invoices?status=open"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/001.png",
+   "llm_calls": 0,
+   "ts": 1792267851.3221612,
+   "duration_ms": 70
+  },
+  {
+   "index": 2,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/002.png",
+   "llm_calls": 0,
+   "ts": 1792267851.4218924,
+   "duration_ms": 99
+  },
+  {
+   "index": 3,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fstatus%3Dopen&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/003.png",
+   "llm_calls": 0,
+   "ts": 1792267851.4677699,
+   "duration_ms": 45
+  },
+  {
+   "index": 4,
+   "url": "http://127.0.0.1:8000/portal/invoices?status=open",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/004.png",
+   "llm_calls": 0,
+   "ts": 1792267851.644618,
+   "duration_ms": 176
+  },
+  {
+   "index": 5,
+   "url": "http://127.0.0.1:8000/portal/invoices?status=open",
+   "thought": "Target invoice is KL-0915; noting it.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "invoice_number",
+     "value": "KL-0915",
+     "source": "http://127.0.0.1:8000/portal/invoices?status=open"
+    }
+   },
+   "result": "noted invoice_number = 'KL-0915' (source: http://127.0.0.1:8000/portal/invoices?status=open)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/005.png",
+   "llm_calls": 0,
+   "ts": 1792267851.6918776,
+   "duration_ms": 47
+  },
+  {
+   "index": 6,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Opening invoice KL-0915.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 10
+    }
+   },
+   "result": "clicked \"View\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/006.png",
+   "llm_calls": 0,
+   "ts": 1792267851.806717,
+   "duration_ms": 114
+  },
+  {
+   "index": 7,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Reading the invoice PDF, the document of record.",
+   "action": {
+    "tool": "read_pdf",
+    "args": {
+     "url": "/portal/invoices/5/pdf"
+    }
+   },
+   "result": "PDF text:\nKestrel Logistics\nGSTIN 27AAACK9012M1Z8  |  finance@kestrel.example\nTAX INVOICE\nInvoice number:\nKL-0915\nInvoice date:\n2026-09-28\nDue date:\n2026-10-28\nPurchase order:\n-\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nItem\nQty\nUnit price\nAmount\nFreight Pune-Delhi, 3 pallets\n1\nRs 18,750.00\nRs 18,750.00\nTotal due (INR):\nRs 18,750.00",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/007.png",
+   "llm_calls": 0,
+   "ts": 1792267851.8523872,
+   "duration_ms": 45
+  },
+  {
+   "index": 8,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Noting pdf_total:KL-0915 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "pdf_total:KL-0915",
+     "value": "1875000",
+     "source": "/portal/invoices/5/pdf"
+    }
+   },
+   "result": "noted pdf_total:KL-0915 = '1875000' (source: /portal/invoices/5/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/008.png",
+   "llm_calls": 0,
+   "ts": 1792267851.8816462,
+   "duration_ms": 29
+  },
+  {
+   "index": 9,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Noting due_date:KL-0915 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "due_date:KL-0915",
+     "value": "2026-10-28",
+     "source": "/portal/invoices/5/pdf"
+    }
+   },
+   "result": "noted due_date:KL-0915 = '2026-10-28' (source: /portal/invoices/5/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/009.png",
+   "llm_calls": 0,
+   "ts": 1792267851.9175673,
+   "duration_ms": 35
+  },
+  {
+   "index": 10,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Noting po:KL-0915 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "po:KL-0915",
+     "value": "",
+     "source": "/portal/invoices/5/pdf"
+    }
+   },
+   "result": "noted po:KL-0915 = '' (source: /portal/invoices/5/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/010.png",
+   "llm_calls": 0,
+   "ts": 1792267851.9484203,
+   "duration_ms": 30
+  },
+  {
+   "index": 11,
+   "url": "http://127.0.0.1:8000/portal/invoices/5",
+   "thought": "Noting vendor_gstin:KL-0915 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_gstin:KL-0915",
+     "value": "27AAACK9012M1Z8",
+     "source": "/portal/invoices/5/pdf"
+    }
+   },
+   "result": "noted vendor_gstin:KL-0915 = '27AAACK9012M1Z8' (source: /portal/invoices/5/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/011.png",
+   "llm_calls": 0,
+   "ts": 1792267851.9852507,
+   "duration_ms": 36
+  },
+  {
+   "index": 12,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&reason=signed_out",
+   "thought": "PDF facts noted; checking the mailbox for revisions.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/mail/inbox?q=KL-0915"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/012.png",
+   "llm_calls": 0,
+   "ts": 1792267852.0303373,
+   "duration_ms": 45
+  },
+  {
+   "index": 13,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/013.png",
+   "llm_calls": 0,
+   "ts": 1792267852.0811872,
+   "duration_ms": 50
+  },
+  {
+   "index": 14,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DKL-0915&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/014.png",
+   "llm_calls": 0,
+   "ts": 1792267852.1348634,
+   "duration_ms": 53
+  },
+  {
+   "index": 15,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=KL-0915",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/015.png",
+   "llm_calls": 0,
+   "ts": 1792267852.2894194,
+   "duration_ms": 154
+  },
+  {
+   "index": 16,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=KL-0915",
+   "thought": "No relevant mail; moving to the ERP.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "mail_check:KL-0915",
+     "value": "no relevant mail",
+     "source": "http://127.0.0.1:8000/mail/inbox?q=KL-0915"
+    }
+   },
+   "result": "noted mail_check:KL-0915 = 'no relevant mail' (source: http://127.0.0.1:8000/mail/inbox?q=KL-0915)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/016.png",
+   "llm_calls": 0,
+   "ts": 1792267852.3165193,
+   "duration_ms": 27
+  },
+  {
+   "index": 17,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Opening the vendor master to match by GSTIN.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/017.png",
+   "llm_calls": 0,
+   "ts": 1792267852.3655882,
+   "duration_ms": 49
+  },
+  {
+   "index": 18,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/018.png",
+   "llm_calls": 0,
+   "ts": 1792267852.416891,
+   "duration_ms": 51
+  },
+  {
+   "index": 19,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/019.png",
+   "llm_calls": 0,
+   "ts": 1792267852.4737852,
+   "duration_ms": 56
+  },
+  {
+   "index": 20,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/020.png",
+   "llm_calls": 0,
+   "ts": 1792267852.6182868,
+   "duration_ms": 144
+  },
+  {
+   "index": 21,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "GSTIN 27AAACK9012M1Z8 belongs to Kestrel Logistics.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_name:KL-0915",
+     "value": "Kestrel Logistics",
+     "source": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "noted vendor_name:KL-0915 = 'Kestrel Logistics' (source: http://127.0.0.1:8000/ledger/vendors)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/021.png",
+   "llm_calls": 0,
+   "ts": 1792267852.6511738,
+   "duration_ms": 32
+  },
+  {
+   "index": 22,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=KL-0915",
+   "thought": "Searching the ERP for this invoice number.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills?q=KL-0915"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills?q=KL-0915 (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/022.png",
+   "llm_calls": 0,
+   "ts": 1792267852.6993566,
+   "duration_ms": 48
+  },
+  {
+   "index": 23,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=KL-0915",
+   "thought": "Already recorded; noting the duplicate.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "duplicate_check:KL-0915",
+     "value": "exists: record #2",
+     "source": "http://127.0.0.1:8000/ledger/bills?q=KL-0915"
+    }
+   },
+   "result": "noted duplicate_check:KL-0915 = 'exists: record #2' (source: http://127.0.0.1:8000/ledger/bills?q=KL-0915)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/023.png",
+   "llm_calls": 0,
+   "ts": 1792267852.7297595,
+   "duration_ms": 30
+  },
+  {
+   "index": 24,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=KL-0915",
+   "thought": "The invoice is already recorded; reporting instead of entering it again.",
+   "action": {
+    "tool": "done",
+    "args": {
+     "summary": "KL-0915 is already recorded in ledger (exists: record #2). I did not enter it again.",
+     "assertions": [
+      {
+       "kind": "count",
+       "system": "ledger",
+       "entity": "bill",
+       "match": {
+        "invoice_number": "KL-0915"
+       },
+       "expect": {
+        "count": 1
+       },
+       "note": "exactly one record must exist: the pre-existing one"
+      }
+     ]
+    }
+   },
+   "result": "assertions recorded; verification will decide the status",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T3_duplicate-1/screens/024.png",
+   "llm_calls": 0,
+   "ts": 1792267852.7710426,
+   "duration_ms": 41
+  }
+ ],
+ "facts": [
+  {
+   "key": "invoice_number",
+   "value": "KL-0915",
+   "source": "http://127.0.0.1:8000/portal/invoices?status=open",
+   "step": 5
+  },
+  {
+   "key": "pdf_total:KL-0915",
+   "value": "1875000",
+   "source": "/portal/invoices/5/pdf",
+   "step": 8
+  },
+  {
+   "key": "due_date:KL-0915",
+   "value": "2026-10-28",
+   "source": "/portal/invoices/5/pdf",
+   "step": 9
+  },
+  {
+   "key": "po:KL-0915",
+   "value": "",
+   "source": "/portal/invoices/5/pdf",
+   "step": 10
+  },
+  {
+   "key": "vendor_gstin:KL-0915",
+   "value": "27AAACK9012M1Z8",
+   "source": "/portal/invoices/5/pdf",
+   "step": 11
+  },
+  {
+   "key": "mail_check:KL-0915",
+   "value": "no relevant mail",
+   "source": "http://127.0.0.1:8000/mail/inbox?q=KL-0915",
+   "step": 16
+  },
+  {
+   "key": "vendor_name:KL-0915",
+   "value": "Kestrel Logistics",
+   "source": "http://127.0.0.1:8000/ledger/vendors",
+   "step": 21
+  },
+  {
+   "key": "duplicate_check:KL-0915",
+   "value": "exists: record #2",
+   "source": "http://127.0.0.1:8000/ledger/bills?q=KL-0915",
+   "step": 23
+  }
+ ],
+ "clarifications": [],
+ "approvals": [],
+ "assertions": [
+  {
+   "kind": "count",
+   "system": "ledger",
+   "entity": "bill",
+   "match": {
+    "invoice_number": "KL-0915"
+   },
+   "expect": {
+    "count": 1
+   },
+   "note": "exactly one record must exist: the pre-existing one"
+  }
+ ],
+ "skills_used": [],
+ "rules_applied": [],
+ "final_status": "completed",
+ "final_summary": "KL-0915 is already recorded in ledger (exists: record #2). I did not enter it again.",
+ "verification": {
+  "status": "completed",
+  "checks": [
+   {
+    "assertion": {
+     "kind": "count",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "KL-0915"
+     },
+     "expect": {
+      "count": 1
+     },
+     "note": "exactly one record must exist: the pre-existing one"
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "expected 1, found 1"
+   }
+  ],
+  "unexplained_changes": [],
+  "summary": "all 1 assertion(s) hold; no undeclared writes"
+ },
+ "usage": {
+  "llm_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "browser_actions": 16,
+  "human_interventions": 0
+ },
+ "learned": []
+}

@@ -1,0 +1,191 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Replay chaos-T4_small-2</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:24px auto;color:#1d2330}
+.step{border:1px solid #e3e6ec;border-radius:8px;padding:12px 16px;margin:14px 0} img{max-width:100%;border:1px solid #ddd;margin-top:8px}
+.muted{color:#777;font-size:12px;font-weight:400} .thought{color:#444} .result{color:#0b5} pre{background:#f6f7f9;padding:8px;overflow:auto}
+.policy{padding:6px 10px;border-radius:4px;font-size:13px} .policy.ok{background:#e6f6ea} .policy.warn{background:#fff6e0}
+.status{padding:10px 14px;border-radius:6px;background:#eef1f6}</style></head><body>
+<h1>Please record the latest invoice from Orbit Office Supplies in Ledger</h1>
+<div class="status"><b>Status: completed</b> · verifier: completed — all 1 assertion(s) hold; no undeclared writes<br>
+Recorded OR-5521 (Orbit Office Supplies) for 6,400.00 INR due 2026-10-21 in ledger. Verified on the list page (record #4).</div>
+<h2>Verification</h2><ul><li>✅ row exists with the expected values</li></ul>
+<h2>Steps</h2><section class="step"><h3>Step 1 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the supplier portal filtered to Orbit Office Supplies open invoices.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/portal/invoices?vendor=Orbit Office Supplies&amp;status=open&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&amp;reason=signed_out (HTTP 200)</p><img src="screens/001.png" loading="lazy"></section><section class="step"><h3>Step 2 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/002.png" loading="lazy"></section><section class="step"><h3>Step 3 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/003.png" loading="lazy"></section><section class="step"><h3>Step 4 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/004.png" loading="lazy"></section><section class="step"><h3>Step 5 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login</span></h3>
+        <p class="thought">The service answered 503; retrying the page.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/portal/login&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/portal/login (HTTP 200)</p><img src="screens/005.png" loading="lazy"></section><section class="step"><h3>Step 6 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/006.png" loading="lazy"></section><section class="step"><h3>Step 7 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/007.png" loading="lazy"></section><section class="step"><h3>Step 8 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/008.png" loading="lazy"></section><section class="step"><h3>Step 9 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices</span></h3>
+        <p class="thought">Target invoice is OR-5521; noting it.</p>
+        <pre>{&quot;key&quot;: &quot;invoice_number&quot;, &quot;value&quot;: &quot;OR-5521&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/portal/invoices&quot;}</pre>
+        <p class="result">→ noted invoice_number = &#x27;OR-5521&#x27; (source: http://127.0.0.1:8000/portal/invoices)</p><img src="screens/009.png" loading="lazy"></section><section class="step"><h3>Step 10 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Opening invoice OR-5521.</p>
+        <pre>{&quot;id&quot;: 8}</pre>
+        <p class="result">→ clicked &quot;View&quot;</p><img src="screens/010.png" loading="lazy"></section><section class="step"><h3>Step 11 · <code>read_pdf</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Reading the invoice PDF, the document of record.</p>
+        <pre>{&quot;url&quot;: &quot;/portal/invoices/6/pdf&quot;}</pre>
+        <p class="result">→ PDF text:
+Orbit Office Supplies
+GSTIN 06AAACO3456P1Z1  |  ar@orbit.example
+TAX INVOICE
+Invoice number:
+OR-5521
+Invoice date:
+2026-10-07
+Due date:
+2026-10-21
+Purchase order:
+PO-7741
+Bill to:
+Acme Robotics Pvt Ltd, New Delhi
+Item
+Qty
+Unit price
+Amount
+Office chairs
+4
+Rs 1,600.00
+Rs 6,400.00
+Total due (INR):
+Rs 6,400.00</p><img src="screens/011.png" loading="lazy"></section><section class="step"><h3>Step 12 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Noting pdf_total:OR-5521 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;pdf_total:OR-5521&quot;, &quot;value&quot;: &quot;640000&quot;, &quot;source&quot;: &quot;/portal/invoices/6/pdf&quot;}</pre>
+        <p class="result">→ noted pdf_total:OR-5521 = &#x27;640000&#x27; (source: /portal/invoices/6/pdf)</p><img src="screens/012.png" loading="lazy"></section><section class="step"><h3>Step 13 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Noting due_date:OR-5521 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;due_date:OR-5521&quot;, &quot;value&quot;: &quot;2026-10-21&quot;, &quot;source&quot;: &quot;/portal/invoices/6/pdf&quot;}</pre>
+        <p class="result">→ noted due_date:OR-5521 = &#x27;2026-10-21&#x27; (source: /portal/invoices/6/pdf)</p><img src="screens/013.png" loading="lazy"></section><section class="step"><h3>Step 14 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Noting po:OR-5521 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;po:OR-5521&quot;, &quot;value&quot;: &quot;PO-7741&quot;, &quot;source&quot;: &quot;/portal/invoices/6/pdf&quot;}</pre>
+        <p class="result">→ noted po:OR-5521 = &#x27;PO-7741&#x27; (source: /portal/invoices/6/pdf)</p><img src="screens/014.png" loading="lazy"></section><section class="step"><h3>Step 15 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/6</span></h3>
+        <p class="thought">Noting vendor_gstin:OR-5521 from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_gstin:OR-5521&quot;, &quot;value&quot;: &quot;06AAACO3456P1Z1&quot;, &quot;source&quot;: &quot;/portal/invoices/6/pdf&quot;}</pre>
+        <p class="result">→ noted vendor_gstin:OR-5521 = &#x27;06AAACO3456P1Z1&#x27; (source: /portal/invoices/6/pdf)</p><img src="screens/015.png" loading="lazy"></section><section class="step"><h3>Step 16 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&amp;reason=signed_out</span></h3>
+        <p class="thought">PDF facts noted; checking the mailbox for revisions.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/mail/inbox?q=Orbit&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&amp;reason=signed_out (HTTP 200)</p><img src="screens/016.png" loading="lazy"></section><section class="step"><h3>Step 17 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/017.png" loading="lazy"></section><section class="step"><h3>Step 18 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/018.png" loading="lazy"></section><section class="step"><h3>Step 19 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox?q=Orbit</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/019.png" loading="lazy"></section><section class="step"><h3>Step 20 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox?q=Orbit</span></h3>
+        <p class="thought">No relevant mail; moving to the ERP.</p>
+        <pre>{&quot;key&quot;: &quot;mail_check:OR-5521&quot;, &quot;value&quot;: &quot;no relevant mail&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/mail/inbox?q=Orbit&quot;}</pre>
+        <p class="result">→ noted mail_check:OR-5521 = &#x27;no relevant mail&#x27; (source: http://127.0.0.1:8000/mail/inbox?q=Orbit)</p><img src="screens/020.png" loading="lazy"></section><section class="step"><h3>Step 21 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the vendor master to match by GSTIN.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/vendors&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out (HTTP 200)</p><img src="screens/021.png" loading="lazy"></section><section class="step"><h3>Step 22 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/022.png" loading="lazy"></section><section class="step"><h3>Step 23 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/023.png" loading="lazy"></section><section class="step"><h3>Step 24 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/024.png" loading="lazy"></section><section class="step"><h3>Step 25 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">GSTIN 06AAACO3456P1Z1 belongs to Orbit Office Supplies.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_name:OR-5521&quot;, &quot;value&quot;: &quot;Orbit Office Supplies&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/ledger/vendors&quot;}</pre>
+        <p class="result">→ noted vendor_name:OR-5521 = &#x27;Orbit Office Supplies&#x27; (source: http://127.0.0.1:8000/ledger/vendors)</p><img src="screens/025.png" loading="lazy"></section><section class="step"><h3>Step 26 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=OR-5521</span></h3>
+        <p class="thought">Searching the ERP for this invoice number.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/bills?q=OR-5521&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)</p><img src="screens/026.png" loading="lazy"></section><section class="step"><h3>Step 27 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=OR-5521</span></h3>
+        <p class="thought">No duplicate; proceeding to record.</p>
+        <pre>{&quot;key&quot;: &quot;duplicate_check:OR-5521&quot;, &quot;value&quot;: &quot;none&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/ledger/bills?q=OR-5521&quot;}</pre>
+        <p class="result">→ noted duplicate_check:OR-5521 = &#x27;none&#x27; (source: http://127.0.0.1:8000/ledger/bills?q=OR-5521)</p><img src="screens/027.png" loading="lazy"></section><section class="step"><h3>Step 28 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the new bill form.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/bills/new&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&amp;reason=signed_out (HTTP 200)</p><img src="screens/028.png" loading="lazy"></section><section class="step"><h3>Step 29 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/029.png" loading="lazy"></section><section class="step"><h3>Step 30 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/030.png" loading="lazy"></section><section class="step"><h3>Step 31 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/031.png" loading="lazy"></section><section class="step"><h3>Step 32 · <code>select</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Selecting vendor Orbit Office Supplies.</p>
+        <pre>{&quot;id&quot;: 5, &quot;option&quot;: &quot;Orbit Office Supplies&quot;}</pre>
+        <p class="result">→ selected &quot;Orbit Office Supplies&quot;</p><img src="screens/032.png" loading="lazy"></section><section class="step"><h3>Step 33 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Entering invoice.</p>
+        <pre>{&quot;id&quot;: 6, &quot;text&quot;: &quot;OR-5521&quot;}</pre>
+        <p class="result">→ typed &quot;OR-5521&quot;</p><img src="screens/033.png" loading="lazy"></section><section class="step"><h3>Step 34 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Entering total.</p>
+        <pre>{&quot;id&quot;: 7, &quot;text&quot;: &quot;6400.00&quot;}</pre>
+        <p class="result">→ typed &quot;6400.00&quot;</p><img src="screens/034.png" loading="lazy"></section><section class="step"><h3>Step 35 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Entering due.</p>
+        <pre>{&quot;id&quot;: 8, &quot;text&quot;: &quot;2026-10-21&quot;}</pre>
+        <p class="result">→ typed &quot;2026-10-21&quot;</p><img src="screens/035.png" loading="lazy"></section><section class="step"><h3>Step 36 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Entering purchase order.</p>
+        <pre>{&quot;id&quot;: 9, &quot;text&quot;: &quot;PO-7741&quot;}</pre>
+        <p class="result">→ typed &quot;PO-7741&quot;</p><img src="screens/036.png" loading="lazy"></section><section class="step"><h3>Step 37 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/4?flash=saved</span></h3>
+        <p class="thought">All fields entered; committing the bill through the policy gate.</p>
+        <pre>{&quot;id&quot;: 12, &quot;intent&quot;: {&quot;type&quot;: &quot;create_bill&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;vendor_name&quot;: &quot;Orbit Office Supplies&quot;, &quot;vendor_gstin&quot;: &quot;06AAACO3456P1Z1&quot;, &quot;invoice_number&quot;: &quot;OR-5521&quot;, &quot;amount_paise&quot;: 640000, &quot;due_date&quot;: &quot;2026-10-21&quot;, &quot;po_number&quot;: &quot;PO-7741&quot;, &quot;approved_by&quot;: &quot;&quot;}}</pre>
+        <p class="result">→ clicked &quot;Record invoice&quot;; submitted. Now verify on the page that the record exists with the right values.</p><div class="policy ok">policy: allowed</div><img src="screens/037.png" loading="lazy"></section><section class="step"><h3>Step 38 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=OR-5521</span></h3>
+        <p class="thought">Submitted; verifying on the list page.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/ledger/bills?q=OR-5521&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)</p><img src="screens/038.png" loading="lazy"></section><section class="step"><h3>Step 39 · <code>done</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=OR-5521</span></h3>
+        <p class="thought">The list shows the record; declaring what must now be true.</p>
+        <pre>{&quot;summary&quot;: &quot;Recorded OR-5521 (Orbit Office Supplies) for 6,400.00 INR due 2026-10-21 in ledger. Verified on the list page (record #4).&quot;, &quot;assertions&quot;: [{&quot;kind&quot;: &quot;exists&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;entity&quot;: &quot;bill&quot;, &quot;match&quot;: {&quot;invoice_number&quot;: &quot;OR-5521&quot;, &quot;vendor_gstin&quot;: &quot;06AAACO3456P1Z1&quot;}, &quot;expect&quot;: {&quot;amount_paise&quot;: 640000, &quot;due_date&quot;: &quot;2026-10-21&quot;, &quot;status&quot;: &quot;posted&quot;, &quot;po_number&quot;: &quot;PO-7741&quot;}}]}</pre>
+        <p class="result">→ assertions recorded; verification will decide the status</p><img src="screens/039.png" loading="lazy"></section>
+</body></html>

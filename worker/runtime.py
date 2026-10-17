@@ -197,6 +197,9 @@ class Runtime:
             # the review page of a wizard shows values as text rather than fields
             if inv.lower() not in obs.text.lower():
                 return f"the form does not contain invoice number '{inv}'"
+        approver = (intent.get("approved_by") or "").strip()
+        if approver and approver.lower() not in (values + " " + obs.text).lower():
+            return f"the form does not show the approver '{approver}'; enter it in the approval field first"
         amount = intent.get("amount_paise")
         if amount is not None and intent.get("type") in ("create_bill", "record_payable"):
             rupees = int(amount) / 100

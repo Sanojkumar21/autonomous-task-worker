@@ -5,7 +5,7 @@ PORT ?= 8000
 
 setup:            ## create the virtualenv, install deps and Chromium
 	uv venv --python 3.12 .venv || python3 -m venv .venv
-	uv pip install -e ".[dev]" || .venv/bin/pip install -e ".[dev]"
+	uv pip install -r requirements.txt || .venv/bin/pip install -r requirements.txt
 	.venv/bin/playwright install chromium
 	cp -n .env.example .env || true
 	$(PY) -m company.seed
@@ -29,7 +29,7 @@ test:             ## unit tests (no sandbox, no model)
 	$(PY) -m pytest tests -q --ignore=tests/test_e2e_scripted.py
 
 test-e2e:         ## end-to-end runtime tests against the sandbox (make serve first)
-	$(PY) -m pytest tests/test_e2e_scripted.py -q
+	$(PY) -m pytest tests/test_e2e_scripted.py tests/test_e2e_llm_plumbing.py -q
 
 eval-scripted:    ## runtime guarantees under cold + chaos with the scripted brain
 	$(PY) -m evals.run_eval --brain scripted --conditions cold chaos --runs 3 --name scripted

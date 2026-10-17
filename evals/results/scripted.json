@@ -1,0 +1,2522 @@
+{
+ "brain": "scripted",
+ "model": "sop-controller",
+ "when": "2026-10-18 01:42:46",
+ "runs": 2,
+ "results": [
+  {
+   "condition": "cold",
+   "task": "T1_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T1_hero-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T1_hero",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.6,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T1_hero-2"
+  },
+  {
+   "condition": "cold",
+   "task": "T2_pdf_truth",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T2_pdf_truth-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T2_pdf_truth",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.6,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T2_pdf_truth-2"
+  },
+  {
+   "condition": "cold",
+   "task": "T3_duplicate",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 24,
+   "browser_actions": 16,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 1.9,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T3_duplicate-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T3_duplicate",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 24,
+   "browser_actions": 16,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 1.9,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T3_duplicate-2"
+  },
+  {
+   "condition": "cold",
+   "task": "T4_small",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 32,
+   "browser_actions": 24,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.4,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T4_small-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T4_small",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 32,
+   "browser_actions": 24,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T4_small-2"
+  },
+  {
+   "condition": "cold",
+   "task": "T5_approval",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 34,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T5_approval-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T5_approval",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 34,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T5_approval-2"
+  },
+  {
+   "condition": "cold",
+   "task": "T6_denied",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 31,
+   "browser_actions": 22,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.1,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "cold-T6_denied-1"
+  },
+  {
+   "condition": "cold",
+   "task": "T6_denied",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 31,
+   "browser_actions": 22,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.1,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "cold-T6_denied-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T1_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 35,
+   "browser_actions": 26,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.7,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T1_hero-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T1_hero",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 35,
+   "browser_actions": 26,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.7,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T1_hero-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T2_pdf_truth",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.6,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T2_pdf_truth-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T2_pdf_truth",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 33,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.6,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T2_pdf_truth-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T3_duplicate",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 24,
+   "browser_actions": 16,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 1.8,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T3_duplicate-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T3_duplicate",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 24,
+   "browser_actions": 16,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 1.9,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T3_duplicate-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T4_small",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 32,
+   "browser_actions": 24,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.4,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T4_small-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T4_small",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 32,
+   "browser_actions": 24,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T4_small-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T5_approval",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 34,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T5_approval-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T5_approval",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 34,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T5_approval-2"
+  },
+  {
+   "condition": "learned",
+   "task": "T6_denied",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 31,
+   "browser_actions": 22,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.2,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "learned-T6_denied-1"
+  },
+  {
+   "condition": "learned",
+   "task": "T6_denied",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 31,
+   "browser_actions": 22,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.3,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_9dacd74b"
+   ],
+   "rules": 3,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "learned-T6_denied-2"
+  },
+  {
+   "condition": "unseen",
+   "task": "T7_nova_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 45,
+   "browser_actions": 36,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.6,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T7_nova_hero-1"
+  },
+  {
+   "condition": "unseen",
+   "task": "T7_nova_hero",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 45,
+   "browser_actions": 36,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T7_nova_hero-2"
+  },
+  {
+   "condition": "unseen",
+   "task": "T8_nova_pdf_truth",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 35,
+   "browser_actions": 27,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.9,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "recorded"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T8_nova_pdf_truth-1"
+  },
+  {
+   "condition": "unseen",
+   "task": "T8_nova_pdf_truth",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 35,
+   "browser_actions": 27,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.8,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "recorded"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T8_nova_pdf_truth-2"
+  },
+  {
+   "condition": "unseen",
+   "task": "T9_nova_approval",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 44,
+   "browser_actions": 35,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T9_nova_approval-1"
+  },
+  {
+   "condition": "unseen",
+   "task": "T9_nova_approval",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 44,
+   "browser_actions": 35,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_ceb10db8"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "unseen-T9_nova_approval-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T1_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 36,
+   "browser_actions": 28,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.8,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T1_hero-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T1_hero",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 40,
+   "browser_actions": 32,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.3,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T1_hero-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T2_pdf_truth",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 36,
+   "browser_actions": 28,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.8,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T2_pdf_truth-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T2_pdf_truth",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 40,
+   "browser_actions": 32,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.2,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207",
+       "vendor_gstin": "29AABCB5678K1Z2"
+      },
+      "expect": {
+       "amount_paise": 3480000,
+       "due_date": "2026-10-31",
+       "po_number": "PO-7729",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "BL-2207"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T2_pdf_truth-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T3_duplicate",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 24,
+   "browser_actions": 16,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.0,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T3_duplicate-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T3_duplicate",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 28,
+   "browser_actions": 20,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.1,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "KL-0915"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T3_duplicate-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T4_small",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 35,
+   "browser_actions": 27,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.8,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T4_small-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T4_small",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 39,
+   "browser_actions": 31,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.0,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521",
+       "vendor_gstin": "06AAACO3456P1Z1"
+      },
+      "expect": {
+       "amount_paise": 640000,
+       "due_date": "2026-10-21",
+       "po_number": "PO-7741",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "OR-5521"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T4_small-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T5_approval",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 37,
+   "browser_actions": 28,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.7,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T5_approval-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T5_approval",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 41,
+   "browser_actions": 32,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 3.2,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "vendor_gstin": "24AAACM7890R1Z6"
+      },
+      "expect": {
+       "amount_paise": 23450000,
+       "due_date": "2026-11-07",
+       "po_number": "PO-7738",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "chaos-T5_approval-2"
+  },
+  {
+   "condition": "chaos",
+   "task": "T6_denied",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 34,
+   "browser_actions": 25,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.5,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "chaos-T6_denied-1"
+  },
+  {
+   "condition": "chaos",
+   "task": "T6_denied",
+   "run": 2,
+   "success": true,
+   "honest": true,
+   "final_status": "blocked",
+   "verifier": "not_run",
+   "steps": 38,
+   "browser_actions": 29,
+   "llm_calls": 0,
+   "tokens": 0,
+   "cost_usd": 0.0,
+   "seconds": 2.8,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "MM-0882",
+       "status": "posted"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    }
+   ],
+   "run_id": "chaos-T6_denied-2"
+  }
+ ]
+}

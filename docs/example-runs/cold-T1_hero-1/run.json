@@ -1,0 +1,794 @@
+{
+ "run_id": "cold-T1_hero-1",
+ "request": "Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done",
+ "started_at": 1792267840.1140912,
+ "finished_at": 1792267842.591375,
+ "brain": "scripted",
+ "model": "sop-controller",
+ "memory_mode": "off",
+ "contract": {
+  "intent": "record_supplier_invoice",
+  "summary": "Record Northwind Supplies's latest invoice in ledger after reading its PDF, checking for revisions and duplicates, and getting approval if the amount requires it.",
+  "target_system": "ledger",
+  "params": {
+   "vendor": "Northwind Supplies",
+   "which": "latest"
+  },
+  "questions": [],
+  "deliverable": "A short summary with evidence."
+ },
+ "milestones": [
+  {
+   "id": "M1",
+   "title": "Identify the invoice and read its PDF",
+   "done_when": "invoice number, PDF total, due date, PO and GSTIN are noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M2",
+   "title": "Check the mailbox for revisions or corrections",
+   "done_when": "any revision notice is noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M3",
+   "title": "Resolve the vendor in ledger by GSTIN and check for duplicates",
+   "done_when": "duplicate_check fact noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M4",
+   "title": "Record the bill in ledger",
+   "done_when": "the record is saved (approval obtained first if required)",
+   "writes": true,
+   "status": "done"
+  },
+  {
+   "id": "M5",
+   "title": "Verify the record and report",
+   "done_when": "the list shows the record with the right values",
+   "writes": false,
+   "status": "done"
+  }
+ ],
+ "steps": [
+  {
+   "index": 1,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Opening the supplier portal filtered to Northwind Supplies open invoices.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind Supplies&status=open"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/001.png",
+   "llm_calls": 0,
+   "ts": 1792267840.5361702,
+   "duration_ms": 62
+  },
+  {
+   "index": 2,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/002.png",
+   "llm_calls": 0,
+   "ts": 1792267840.6159863,
+   "duration_ms": 79
+  },
+  {
+   "index": 3,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/003.png",
+   "llm_calls": 0,
+   "ts": 1792267840.6739445,
+   "duration_ms": 57
+  },
+  {
+   "index": 4,
+   "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/004.png",
+   "llm_calls": 0,
+   "ts": 1792267840.8177974,
+   "duration_ms": 143
+  },
+  {
+   "index": 5,
+   "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "thought": "Target invoice is NW-1043-R; noting it.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "invoice_number",
+     "value": "NW-1043-R",
+     "source": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open"
+    }
+   },
+   "result": "noted invoice_number = 'NW-1043-R' (source: http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/005.png",
+   "llm_calls": 0,
+   "ts": 1792267840.8520274,
+   "duration_ms": 34
+  },
+  {
+   "index": 6,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Opening invoice NW-1043-R.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 6
+    }
+   },
+   "result": "clicked \"View\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/006.png",
+   "llm_calls": 0,
+   "ts": 1792267840.9871442,
+   "duration_ms": 135
+  },
+  {
+   "index": 7,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Reading the invoice PDF, the document of record.",
+   "action": {
+    "tool": "read_pdf",
+    "args": {
+     "url": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "PDF text:\nNorthwind Supplies\nGSTIN 07AAACN1234F1Z5  |  accounts@northwind.example\nTAX INVOICE  (REVISED)\nInvoice number:\nNW-1043-R\nInvoice date:\n2026-10-09\nDue date:\n2026-11-08\nPurchase order:\nPO-7734\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nThis invoice supersedes NW-1043.\nItem\nQty\nUnit price\nAmount\nLinear actuator LA-220\n8\nRs 7,475.00\nRs 59,800.00\nTotal due (INR):\nRs 59,800.00",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/007.png",
+   "llm_calls": 0,
+   "ts": 1792267841.032942,
+   "duration_ms": 45
+  },
+  {
+   "index": 8,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting pdf_total:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "pdf_total:NW-1043-R",
+     "value": "5980000",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted pdf_total:NW-1043-R = '5980000' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/008.png",
+   "llm_calls": 0,
+   "ts": 1792267841.0646627,
+   "duration_ms": 31
+  },
+  {
+   "index": 9,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting due_date:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "due_date:NW-1043-R",
+     "value": "2026-11-08",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted due_date:NW-1043-R = '2026-11-08' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/009.png",
+   "llm_calls": 0,
+   "ts": 1792267841.0975597,
+   "duration_ms": 32
+  },
+  {
+   "index": 10,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting po:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "po:NW-1043-R",
+     "value": "PO-7734",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted po:NW-1043-R = 'PO-7734' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/010.png",
+   "llm_calls": 0,
+   "ts": 1792267841.1348915,
+   "duration_ms": 37
+  },
+  {
+   "index": 11,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting vendor_gstin:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_gstin:NW-1043-R",
+     "value": "07AAACN1234F1Z5",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted vendor_gstin:NW-1043-R = '07AAACN1234F1Z5' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/011.png",
+   "llm_calls": 0,
+   "ts": 1792267841.1714675,
+   "duration_ms": 36
+  },
+  {
+   "index": 12,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "PDF facts noted; checking the mailbox for revisions.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/mail/inbox?q=Northwind"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/012.png",
+   "llm_calls": 0,
+   "ts": 1792267841.217342,
+   "duration_ms": 45
+  },
+  {
+   "index": 13,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/013.png",
+   "llm_calls": 0,
+   "ts": 1792267841.2865007,
+   "duration_ms": 69
+  },
+  {
+   "index": 14,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/014.png",
+   "llm_calls": 0,
+   "ts": 1792267841.3331378,
+   "duration_ms": 46
+  },
+  {
+   "index": 15,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=Northwind",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/015.png",
+   "llm_calls": 0,
+   "ts": 1792267841.4370496,
+   "duration_ms": 103
+  },
+  {
+   "index": 16,
+   "url": "http://127.0.0.1:8000/mail/1",
+   "thought": "Opening the mail that mentions this invoice.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 4
+    }
+   },
+   "result": "clicked \"Revised invoice for PO-7734\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/016.png",
+   "llm_calls": 0,
+   "ts": 1792267841.5330281,
+   "duration_ms": 95
+  },
+  {
+   "index": 17,
+   "url": "http://127.0.0.1:8000/mail/1",
+   "thought": "Noting what the mail says.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "mail_check:NW-1043-R",
+     "value": "revision notice found: Revised invoice for PO-7734",
+     "source": "http://127.0.0.1:8000/mail/1"
+    }
+   },
+   "result": "noted mail_check:NW-1043-R = 'revision notice found: Revised invoice for PO-7734' (source: http://127.0.0.1:8000/mail/1)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/017.png",
+   "llm_calls": 0,
+   "ts": 1792267841.5707066,
+   "duration_ms": 37
+  },
+  {
+   "index": 18,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Opening the vendor master to match by GSTIN.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/018.png",
+   "llm_calls": 0,
+   "ts": 1792267841.6192825,
+   "duration_ms": 48
+  },
+  {
+   "index": 19,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/019.png",
+   "llm_calls": 0,
+   "ts": 1792267841.686415,
+   "duration_ms": 67
+  },
+  {
+   "index": 20,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/020.png",
+   "llm_calls": 0,
+   "ts": 1792267841.7399907,
+   "duration_ms": 53
+  },
+  {
+   "index": 21,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/021.png",
+   "llm_calls": 0,
+   "ts": 1792267841.8734937,
+   "duration_ms": 133
+  },
+  {
+   "index": 22,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "GSTIN 07AAACN1234F1Z5 belongs to Northwind Supplies.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_name:NW-1043-R",
+     "value": "Northwind Supplies",
+     "source": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "noted vendor_name:NW-1043-R = 'Northwind Supplies' (source: http://127.0.0.1:8000/ledger/vendors)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/022.png",
+   "llm_calls": 0,
+   "ts": 1792267841.9071689,
+   "duration_ms": 33
+  },
+  {
+   "index": 23,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R",
+   "thought": "Searching the ERP for this invoice number.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills?q=NW-1043-R (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/023.png",
+   "llm_calls": 0,
+   "ts": 1792267841.9707782,
+   "duration_ms": 63
+  },
+  {
+   "index": 24,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R",
+   "thought": "No duplicate; proceeding to record.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "duplicate_check:NW-1043-R",
+     "value": "none",
+     "source": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R"
+    }
+   },
+   "result": "noted duplicate_check:NW-1043-R = 'none' (source: http://127.0.0.1:8000/ledger/bills?q=NW-1043-R)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/024.png",
+   "llm_calls": 0,
+   "ts": 1792267842.0046012,
+   "duration_ms": 33
+  },
+  {
+   "index": 25,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Opening the new bill form.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills/new"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills/new (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/025.png",
+   "llm_calls": 0,
+   "ts": 1792267842.0739794,
+   "duration_ms": 69
+  },
+  {
+   "index": 26,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Selecting vendor Northwind Supplies.",
+   "action": {
+    "tool": "select",
+    "args": {
+     "id": 5,
+     "option": "Northwind Supplies"
+    }
+   },
+   "result": "selected \"Northwind Supplies\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/026.png",
+   "llm_calls": 0,
+   "ts": 1792267842.1370833,
+   "duration_ms": 63
+  },
+  {
+   "index": 27,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering invoice.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 6,
+     "text": "NW-1043-R"
+    }
+   },
+   "result": "typed \"NW-1043-R\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/027.png",
+   "llm_calls": 0,
+   "ts": 1792267842.1861074,
+   "duration_ms": 48
+  },
+  {
+   "index": 28,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering amount.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 7,
+     "text": "59800.00"
+    }
+   },
+   "result": "typed \"59800.00\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/028.png",
+   "llm_calls": 0,
+   "ts": 1792267842.2354045,
+   "duration_ms": 49
+  },
+  {
+   "index": 29,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering due.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 8,
+     "text": "2026-11-08"
+    }
+   },
+   "result": "typed \"2026-11-08\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/029.png",
+   "llm_calls": 0,
+   "ts": 1792267842.2855375,
+   "duration_ms": 50
+  },
+  {
+   "index": 30,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering po.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 9,
+     "text": "PO-7734"
+    }
+   },
+   "result": "typed \"PO-7734\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/030.png",
+   "llm_calls": 0,
+   "ts": 1792267842.3356595,
+   "duration_ms": 50
+  },
+  {
+   "index": 31,
+   "url": "http://127.0.0.1:8000/ledger/bills/4?flash=saved",
+   "thought": "All fields entered; committing the bill through the policy gate.",
+   "action": {
+    "tool": "commit",
+    "args": {
+     "id": 12,
+     "intent": {
+      "type": "create_bill",
+      "system": "ledger",
+      "vendor_name": "Northwind Supplies",
+      "vendor_gstin": "07AAACN1234F1Z5",
+      "invoice_number": "NW-1043-R",
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "po_number": "PO-7734",
+      "approved_by": ""
+     }
+    }
+   },
+   "result": "clicked \"Save bill\"; submitted. Now verify on the page that the record exists with the right values.",
+   "policy": {
+    "allowed": true,
+    "needs_approval": false,
+    "reasons": [
+     "allowed"
+    ],
+    "rule_ids": []
+   },
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/031.png",
+   "llm_calls": 0,
+   "ts": 1792267842.4681702,
+   "duration_ms": 132
+  },
+  {
+   "index": 32,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R",
+   "thought": "Submitted; verifying on the list page.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills?q=NW-1043-R (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/032.png",
+   "llm_calls": 0,
+   "ts": 1792267842.5167952,
+   "duration_ms": 48
+  },
+  {
+   "index": 33,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R",
+   "thought": "The list shows the record; declaring what must now be true.",
+   "action": {
+    "tool": "done",
+    "args": {
+     "summary": "Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in ledger. Verified on the list page (record #4).",
+     "assertions": [
+      {
+       "kind": "exists",
+       "system": "ledger",
+       "entity": "bill",
+       "match": {
+        "invoice_number": "NW-1043-R",
+        "vendor_gstin": "07AAACN1234F1Z5"
+       },
+       "expect": {
+        "amount_paise": 5980000,
+        "due_date": "2026-11-08",
+        "status": "posted",
+        "po_number": "PO-7734"
+       }
+      }
+     ]
+    }
+   },
+   "result": "assertions recorded; verification will decide the status",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/cold-T1_hero-1/screens/033.png",
+   "llm_calls": 0,
+   "ts": 1792267842.5509791,
+   "duration_ms": 34
+  }
+ ],
+ "facts": [
+  {
+   "key": "invoice_number",
+   "value": "NW-1043-R",
+   "source": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "step": 5
+  },
+  {
+   "key": "pdf_total:NW-1043-R",
+   "value": "5980000",
+   "source": "/portal/invoices/3/pdf",
+   "step": 8
+  },
+  {
+   "key": "due_date:NW-1043-R",
+   "value": "2026-11-08",
+   "source": "/portal/invoices/3/pdf",
+   "step": 9
+  },
+  {
+   "key": "po:NW-1043-R",
+   "value": "PO-7734",
+   "source": "/portal/invoices/3/pdf",
+   "step": 10
+  },
+  {
+   "key": "vendor_gstin:NW-1043-R",
+   "value": "07AAACN1234F1Z5",
+   "source": "/portal/invoices/3/pdf",
+   "step": 11
+  },
+  {
+   "key": "mail_check:NW-1043-R",
+   "value": "revision notice found: Revised invoice for PO-7734",
+   "source": "http://127.0.0.1:8000/mail/1",
+   "step": 17
+  },
+  {
+   "key": "vendor_name:NW-1043-R",
+   "value": "Northwind Supplies",
+   "source": "http://127.0.0.1:8000/ledger/vendors",
+   "step": 22
+  },
+  {
+   "key": "duplicate_check:NW-1043-R",
+   "value": "none",
+   "source": "http://127.0.0.1:8000/ledger/bills?q=NW-1043-R",
+   "step": 24
+  }
+ ],
+ "clarifications": [],
+ "approvals": [],
+ "assertions": [
+  {
+   "kind": "exists",
+   "system": "ledger",
+   "entity": "bill",
+   "match": {
+    "invoice_number": "NW-1043-R",
+    "vendor_gstin": "07AAACN1234F1Z5"
+   },
+   "expect": {
+    "amount_paise": 5980000,
+    "due_date": "2026-11-08",
+    "status": "posted",
+    "po_number": "PO-7734"
+   },
+   "note": ""
+  }
+ ],
+ "skills_used": [],
+ "rules_applied": [],
+ "final_status": "completed",
+ "final_summary": "Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in ledger. Verified on the list page (record #4).",
+ "verification": {
+  "status": "completed",
+  "checks": [
+   {
+    "assertion": {
+     "kind": "exists",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "NW-1043-R",
+      "vendor_gstin": "07AAACN1234F1Z5"
+     },
+     "expect": {
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "status": "posted",
+      "po_number": "PO-7734"
+     },
+     "note": ""
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "row exists with the expected values",
+    "row_id": 4
+   }
+  ],
+  "unexplained_changes": [],
+  "summary": "all 1 assertion(s) hold; no undeclared writes"
+ },
+ "usage": {
+  "llm_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "browser_actions": 25,
+  "human_interventions": 0
+ },
+ "learned": []
+}

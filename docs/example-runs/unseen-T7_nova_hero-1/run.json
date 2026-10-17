@@ -1,0 +1,1053 @@
+{
+ "run_id": "unseen-T7_nova_hero-1",
+ "request": "Record the latest invoice from Northwind Supplies in NovaBooks",
+ "started_at": 1792267911.0631938,
+ "finished_at": 1792267914.7102468,
+ "brain": "scripted",
+ "model": "sop-controller",
+ "memory_mode": "on",
+ "contract": {
+  "intent": "record_supplier_invoice",
+  "summary": "Record Northwind Supplies's latest invoice in nova after reading its PDF, checking for revisions and duplicates, and getting approval if the amount requires it.",
+  "target_system": "nova",
+  "params": {
+   "vendor": "Northwind Supplies",
+   "which": "latest"
+  },
+  "questions": [],
+  "deliverable": "A short summary with evidence."
+ },
+ "milestones": [
+  {
+   "id": "M1",
+   "title": "Identify the invoice and read its PDF",
+   "done_when": "invoice number, PDF total, due date, PO and GSTIN are noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M2",
+   "title": "Check the mailbox for revisions or corrections",
+   "done_when": "any revision notice is noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M3",
+   "title": "Resolve the vendor in nova by GSTIN and check for duplicates",
+   "done_when": "duplicate_check fact noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M4",
+   "title": "Record the bill in nova",
+   "done_when": "the record is saved (approval obtained first if required)",
+   "writes": true,
+   "status": "done"
+  },
+  {
+   "id": "M5",
+   "title": "Verify the record and report",
+   "done_when": "the list shows the record with the right values",
+   "writes": false,
+   "status": "done"
+  }
+ ],
+ "steps": [
+  {
+   "index": 1,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Opening the supplier portal filtered to Northwind Supplies open invoices.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind Supplies&status=open"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/001.png",
+   "llm_calls": 0,
+   "ts": 1792267911.447836,
+   "duration_ms": 55
+  },
+  {
+   "index": 2,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/002.png",
+   "llm_calls": 0,
+   "ts": 1792267911.5132186,
+   "duration_ms": 65
+  },
+  {
+   "index": 3,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/003.png",
+   "llm_calls": 0,
+   "ts": 1792267911.5678096,
+   "duration_ms": 54
+  },
+  {
+   "index": 4,
+   "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/004.png",
+   "llm_calls": 0,
+   "ts": 1792267911.719451,
+   "duration_ms": 151
+  },
+  {
+   "index": 5,
+   "url": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "thought": "Target invoice is NW-1043-R; noting it.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "invoice_number",
+     "value": "NW-1043-R",
+     "source": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open"
+    }
+   },
+   "result": "noted invoice_number = 'NW-1043-R' (source: http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/005.png",
+   "llm_calls": 0,
+   "ts": 1792267911.753938,
+   "duration_ms": 34
+  },
+  {
+   "index": 6,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Opening invoice NW-1043-R.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 6
+    }
+   },
+   "result": "clicked \"View\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/006.png",
+   "llm_calls": 0,
+   "ts": 1792267911.8529344,
+   "duration_ms": 98
+  },
+  {
+   "index": 7,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Reading the invoice PDF, the document of record.",
+   "action": {
+    "tool": "read_pdf",
+    "args": {
+     "url": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "PDF text:\nNorthwind Supplies\nGSTIN 07AAACN1234F1Z5  |  accounts@northwind.example\nTAX INVOICE  (REVISED)\nInvoice number:\nNW-1043-R\nInvoice date:\n2026-10-09\nDue date:\n2026-11-08\nPurchase order:\nPO-7734\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nThis invoice supersedes NW-1043.\nItem\nQty\nUnit price\nAmount\nLinear actuator LA-220\n8\nRs 7,475.00\nRs 59,800.00\nTotal due (INR):\nRs 59,800.00",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/007.png",
+   "llm_calls": 0,
+   "ts": 1792267911.9199789,
+   "duration_ms": 66
+  },
+  {
+   "index": 8,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting pdf_total:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "pdf_total:NW-1043-R",
+     "value": "5980000",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted pdf_total:NW-1043-R = '5980000' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/008.png",
+   "llm_calls": 0,
+   "ts": 1792267911.9496965,
+   "duration_ms": 29
+  },
+  {
+   "index": 9,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting due_date:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "due_date:NW-1043-R",
+     "value": "2026-11-08",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted due_date:NW-1043-R = '2026-11-08' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/009.png",
+   "llm_calls": 0,
+   "ts": 1792267911.9829636,
+   "duration_ms": 33
+  },
+  {
+   "index": 10,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting po:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "po:NW-1043-R",
+     "value": "PO-7734",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted po:NW-1043-R = 'PO-7734' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/010.png",
+   "llm_calls": 0,
+   "ts": 1792267912.0195935,
+   "duration_ms": 36
+  },
+  {
+   "index": 11,
+   "url": "http://127.0.0.1:8000/portal/invoices/3",
+   "thought": "Noting vendor_gstin:NW-1043-R from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_gstin:NW-1043-R",
+     "value": "07AAACN1234F1Z5",
+     "source": "/portal/invoices/3/pdf"
+    }
+   },
+   "result": "noted vendor_gstin:NW-1043-R = '07AAACN1234F1Z5' (source: /portal/invoices/3/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/011.png",
+   "llm_calls": 0,
+   "ts": 1792267912.0485196,
+   "duration_ms": 28
+  },
+  {
+   "index": 12,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "PDF facts noted; checking the mailbox for revisions.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/mail/inbox?q=Northwind"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/012.png",
+   "llm_calls": 0,
+   "ts": 1792267912.0928302,
+   "duration_ms": 44
+  },
+  {
+   "index": 13,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/013.png",
+   "llm_calls": 0,
+   "ts": 1792267912.1453214,
+   "duration_ms": 52
+  },
+  {
+   "index": 14,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/014.png",
+   "llm_calls": 0,
+   "ts": 1792267912.2077096,
+   "duration_ms": 62
+  },
+  {
+   "index": 15,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=Northwind",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/015.png",
+   "llm_calls": 0,
+   "ts": 1792267912.354636,
+   "duration_ms": 146
+  },
+  {
+   "index": 16,
+   "url": "http://127.0.0.1:8000/mail/1",
+   "thought": "Opening the mail that mentions this invoice.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 4
+    }
+   },
+   "result": "clicked \"Revised invoice for PO-7734\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/016.png",
+   "llm_calls": 0,
+   "ts": 1792267912.497048,
+   "duration_ms": 142
+  },
+  {
+   "index": 17,
+   "url": "http://127.0.0.1:8000/mail/1",
+   "thought": "Noting what the mail says.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "mail_check:NW-1043-R",
+     "value": "revision notice found: Revised invoice for PO-7734",
+     "source": "http://127.0.0.1:8000/mail/1"
+    }
+   },
+   "result": "noted mail_check:NW-1043-R = 'revision notice found: Revised invoice for PO-7734' (source: http://127.0.0.1:8000/mail/1)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/017.png",
+   "llm_calls": 0,
+   "ts": 1792267912.5362298,
+   "duration_ms": 39
+  },
+  {
+   "index": 18,
+   "url": "http://127.0.0.1:8000/nova/login?next=/nova/suppliers&reason=signed_out",
+   "thought": "Opening the vendor master to match by GSTIN.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/nova/suppliers"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/nova/login?next=/nova/suppliers&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/018.png",
+   "llm_calls": 0,
+   "ts": 1792267912.583657,
+   "duration_ms": 47
+  },
+  {
+   "index": 19,
+   "url": "http://127.0.0.1:8000/nova/login?next=/nova/suppliers&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/019.png",
+   "llm_calls": 0,
+   "ts": 1792267912.6536896,
+   "duration_ms": 69
+  },
+  {
+   "index": 20,
+   "url": "http://127.0.0.1:8000/nova/login?next=/nova/suppliers&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/020.png",
+   "llm_calls": 0,
+   "ts": 1792267912.7013054,
+   "duration_ms": 47
+  },
+  {
+   "index": 21,
+   "url": "http://127.0.0.1:8000/nova/suppliers",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/021.png",
+   "llm_calls": 0,
+   "ts": 1792267912.852551,
+   "duration_ms": 151
+  },
+  {
+   "index": 22,
+   "url": "http://127.0.0.1:8000/nova/suppliers",
+   "thought": "GSTIN 07AAACN1234F1Z5 belongs to Northwind Supplies.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_name:NW-1043-R",
+     "value": "Northwind Supplies",
+     "source": "http://127.0.0.1:8000/nova/suppliers"
+    }
+   },
+   "result": "noted vendor_name:NW-1043-R = 'Northwind Supplies' (source: http://127.0.0.1:8000/nova/suppliers)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/022.png",
+   "llm_calls": 0,
+   "ts": 1792267912.881417,
+   "duration_ms": 28
+  },
+  {
+   "index": 23,
+   "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R",
+   "thought": "Searching the ERP for this invoice number.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/nova/payables?search=NW-1043-R (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/023.png",
+   "llm_calls": 0,
+   "ts": 1792267912.9285328,
+   "duration_ms": 47
+  },
+  {
+   "index": 24,
+   "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R",
+   "thought": "No duplicate; proceeding to record.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "duplicate_check:NW-1043-R",
+     "value": "none",
+     "source": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R"
+    }
+   },
+   "result": "noted duplicate_check:NW-1043-R = 'none' (source: http://127.0.0.1:8000/nova/payables?search=NW-1043-R)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/024.png",
+   "llm_calls": 0,
+   "ts": 1792267912.9652631,
+   "duration_ms": 36
+  },
+  {
+   "index": 25,
+   "url": "http://127.0.0.1:8000/nova/payables/record",
+   "thought": "Starting the record-payable wizard.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/nova/payables/record"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/nova/payables/record (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/025.png",
+   "llm_calls": 0,
+   "ts": 1792267913.0130672,
+   "duration_ms": 47
+  },
+  {
+   "index": 26,
+   "url": "http://127.0.0.1:8000/nova/payables/record",
+   "thought": "Choosing supplier Northwind Supplies.",
+   "action": {
+    "tool": "check",
+    "args": {
+     "id": 8
+    }
+   },
+   "result": "checked",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/026.png",
+   "llm_calls": 0,
+   "ts": 1792267913.121824,
+   "duration_ms": 108
+  },
+  {
+   "index": 27,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Continuing to the details step.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 11
+    }
+   },
+   "result": "clicked \"Continue\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/027.png",
+   "llm_calls": 0,
+   "ts": 1792267913.2736404,
+   "duration_ms": 151
+  },
+  {
+   "index": 28,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering reference.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 5,
+     "text": "NW-1043-R"
+    }
+   },
+   "result": "typed \"NW-1043-R\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/028.png",
+   "llm_calls": 0,
+   "ts": 1792267913.3599508,
+   "duration_ms": 86
+  },
+  {
+   "index": 29,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering total.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 6,
+     "text": "59800.00"
+    }
+   },
+   "result": "typed \"59800.00\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/029.png",
+   "llm_calls": 0,
+   "ts": 1792267913.4235275,
+   "duration_ms": 63
+  },
+  {
+   "index": 30,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering pay by.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 7,
+     "text": "08/11/2026"
+    }
+   },
+   "result": "typed \"08/11/2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/030.png",
+   "llm_calls": 0,
+   "ts": 1792267913.4680905,
+   "duration_ms": 44
+  },
+  {
+   "index": 31,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering order ref.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 8,
+     "text": "PO-7734"
+    }
+   },
+   "result": "typed \"PO-7734\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/031.png",
+   "llm_calls": 0,
+   "ts": 1792267913.5223212,
+   "duration_ms": 54
+  },
+  {
+   "index": 32,
+   "url": "http://127.0.0.1:8000/nova/payables/record/review",
+   "thought": "Going to the review step.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 11
+    }
+   },
+   "result": "clicked \"Review\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/032.png",
+   "llm_calls": 0,
+   "ts": 1792267913.6675498,
+   "duration_ms": 145
+  },
+  {
+   "index": 33,
+   "url": "http://127.0.0.1:8000/nova/payables/record/review",
+   "thought": "Reviewed; committing through the policy gate.",
+   "action": {
+    "tool": "commit",
+    "args": {
+     "id": 5,
+     "intent": {
+      "type": "record_payable",
+      "system": "nova",
+      "vendor_name": "Northwind Supplies",
+      "vendor_gstin": "07AAACN1234F1Z5",
+      "invoice_number": "NW-1043-R",
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "po_number": "PO-7734",
+      "approved_by": ""
+     }
+    }
+   },
+   "result": "approval GRANTED by priya.manager — fill the approval field with 'priya.manager' and commit again.",
+   "policy": {
+    "allowed": false,
+    "needs_approval": true,
+    "reasons": [
+     "amount 59,800.00 is at or above the approval threshold 50,000.00 (rule_5db100c3); a manager must approve first"
+    ],
+    "rule_ids": [
+     "approval_threshold:rule_5db100c3"
+    ]
+   },
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/033.png",
+   "llm_calls": 0,
+   "ts": 1792267913.6938586,
+   "duration_ms": 26
+  },
+  {
+   "index": 34,
+   "url": "http://127.0.0.1:8000/nova/payables/record",
+   "thought": "Approval was granted after this review was built; redoing the wizard with the authoriser.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/nova/payables/record"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/nova/payables/record (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/034.png",
+   "llm_calls": 0,
+   "ts": 1792267913.7525728,
+   "duration_ms": 58
+  },
+  {
+   "index": 35,
+   "url": "http://127.0.0.1:8000/nova/payables/record",
+   "thought": "Choosing supplier Northwind Supplies.",
+   "action": {
+    "tool": "check",
+    "args": {
+     "id": 8
+    }
+   },
+   "result": "checked",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/035.png",
+   "llm_calls": 0,
+   "ts": 1792267913.8551502,
+   "duration_ms": 102
+  },
+  {
+   "index": 36,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Continuing to the details step.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 11
+    }
+   },
+   "result": "clicked \"Continue\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/036.png",
+   "llm_calls": 0,
+   "ts": 1792267914.0088933,
+   "duration_ms": 153
+  },
+  {
+   "index": 37,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering reference.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 5,
+     "text": "NW-1043-R"
+    }
+   },
+   "result": "typed \"NW-1043-R\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/037.png",
+   "llm_calls": 0,
+   "ts": 1792267914.0901122,
+   "duration_ms": 81
+  },
+  {
+   "index": 38,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering total.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 6,
+     "text": "59800.00"
+    }
+   },
+   "result": "typed \"59800.00\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/038.png",
+   "llm_calls": 0,
+   "ts": 1792267914.1342952,
+   "duration_ms": 44
+  },
+  {
+   "index": 39,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering pay by.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 7,
+     "text": "08/11/2026"
+    }
+   },
+   "result": "typed \"08/11/2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/039.png",
+   "llm_calls": 0,
+   "ts": 1792267914.1905158,
+   "duration_ms": 56
+  },
+  {
+   "index": 40,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering order ref.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 8,
+     "text": "PO-7734"
+    }
+   },
+   "result": "typed \"PO-7734\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/040.png",
+   "llm_calls": 0,
+   "ts": 1792267914.236428,
+   "duration_ms": 45
+  },
+  {
+   "index": 41,
+   "url": "http://127.0.0.1:8000/nova/payables/record/details",
+   "thought": "Entering authorised by.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 9,
+     "text": "priya.manager"
+    }
+   },
+   "result": "typed \"priya.manager\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/041.png",
+   "llm_calls": 0,
+   "ts": 1792267914.292215,
+   "duration_ms": 55
+  },
+  {
+   "index": 42,
+   "url": "http://127.0.0.1:8000/nova/payables/record/review",
+   "thought": "Going to the review step.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 11
+    }
+   },
+   "result": "clicked \"Review\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/042.png",
+   "llm_calls": 0,
+   "ts": 1792267914.41819,
+   "duration_ms": 125
+  },
+  {
+   "index": 43,
+   "url": "http://127.0.0.1:8000/nova/payables/3?flash=saved",
+   "thought": "Reviewed; committing through the policy gate.",
+   "action": {
+    "tool": "commit",
+    "args": {
+     "id": 5,
+     "intent": {
+      "type": "record_payable",
+      "system": "nova",
+      "vendor_name": "Northwind Supplies",
+      "vendor_gstin": "07AAACN1234F1Z5",
+      "invoice_number": "NW-1043-R",
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "po_number": "PO-7734",
+      "approved_by": "priya.manager"
+     }
+    }
+   },
+   "result": "clicked \"Confirm and record\"; submitted. Now verify on the page that the record exists with the right values.",
+   "policy": {
+    "allowed": true,
+    "needs_approval": false,
+    "reasons": [
+     "approved by priya.manager (approval 33)"
+    ],
+    "rule_ids": [
+     "approval_threshold:rule_5db100c3"
+    ]
+   },
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/043.png",
+   "llm_calls": 0,
+   "ts": 1792267914.592616,
+   "duration_ms": 174
+  },
+  {
+   "index": 44,
+   "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R",
+   "thought": "Submitted; verifying on the list page.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/nova/payables?search=NW-1043-R (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/044.png",
+   "llm_calls": 0,
+   "ts": 1792267914.6541374,
+   "duration_ms": 61
+  },
+  {
+   "index": 45,
+   "url": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R",
+   "thought": "The list shows the record; declaring what must now be true.",
+   "action": {
+    "tool": "done",
+    "args": {
+     "summary": "Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in nova, approved by priya.manager. Verified on the list page (record #3).",
+     "assertions": [
+      {
+       "kind": "exists",
+       "system": "nova",
+       "entity": "payable",
+       "match": {
+        "invoice_number": "NW-1043-R",
+        "vendor_gstin": "07AAACN1234F1Z5"
+       },
+       "expect": {
+        "amount_paise": 5980000,
+        "due_date": "2026-11-08",
+        "status": "recorded",
+        "po_number": "PO-7734",
+        "approved_by": "priya.manager"
+       }
+      }
+     ]
+    }
+   },
+   "result": "assertions recorded; verification will decide the status",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/unseen-T7_nova_hero-1/screens/045.png",
+   "llm_calls": 0,
+   "ts": 1792267914.677478,
+   "duration_ms": 23
+  }
+ ],
+ "facts": [
+  {
+   "key": "invoice_number",
+   "value": "NW-1043-R",
+   "source": "http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&status=open",
+   "step": 5
+  },
+  {
+   "key": "pdf_total:NW-1043-R",
+   "value": "5980000",
+   "source": "/portal/invoices/3/pdf",
+   "step": 8
+  },
+  {
+   "key": "due_date:NW-1043-R",
+   "value": "2026-11-08",
+   "source": "/portal/invoices/3/pdf",
+   "step": 9
+  },
+  {
+   "key": "po:NW-1043-R",
+   "value": "PO-7734",
+   "source": "/portal/invoices/3/pdf",
+   "step": 10
+  },
+  {
+   "key": "vendor_gstin:NW-1043-R",
+   "value": "07AAACN1234F1Z5",
+   "source": "/portal/invoices/3/pdf",
+   "step": 11
+  },
+  {
+   "key": "mail_check:NW-1043-R",
+   "value": "revision notice found: Revised invoice for PO-7734",
+   "source": "http://127.0.0.1:8000/mail/1",
+   "step": 17
+  },
+  {
+   "key": "vendor_name:NW-1043-R",
+   "value": "Northwind Supplies",
+   "source": "http://127.0.0.1:8000/nova/suppliers",
+   "step": 22
+  },
+  {
+   "key": "duplicate_check:NW-1043-R",
+   "value": "none",
+   "source": "http://127.0.0.1:8000/nova/payables?search=NW-1043-R",
+   "step": 24
+  }
+ ],
+ "clarifications": [],
+ "approvals": [
+  {
+   "step": 33,
+   "intent": {
+    "type": "record_payable",
+    "system": "nova",
+    "vendor_name": "Northwind Supplies",
+    "vendor_gstin": "07AAACN1234F1Z5",
+    "invoice_number": "NW-1043-R",
+    "amount_paise": 5980000,
+    "due_date": "2026-11-08",
+    "po_number": "PO-7734",
+    "approved_by": ""
+   },
+   "reason": "amount 59,800.00 is at or above the approval threshold 50,000.00 (rule_5db100c3); a manager must approve first",
+   "granted": true,
+   "approver": "priya.manager",
+   "note": "",
+   "ts": 1792267913.6677177
+  }
+ ],
+ "assertions": [
+  {
+   "kind": "exists",
+   "system": "nova",
+   "entity": "payable",
+   "match": {
+    "invoice_number": "NW-1043-R",
+    "vendor_gstin": "07AAACN1234F1Z5"
+   },
+   "expect": {
+    "amount_paise": 5980000,
+    "due_date": "2026-11-08",
+    "status": "recorded",
+    "po_number": "PO-7734",
+    "approved_by": "priya.manager"
+   },
+   "note": ""
+  }
+ ],
+ "skills_used": [
+  "skill_ceb10db8"
+ ],
+ "rules_applied": [
+  "rule_5db100c3",
+  "rule_ddc3ceec",
+  "rule_a2e64ab5"
+ ],
+ "final_status": "completed",
+ "final_summary": "Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in nova, approved by priya.manager. Verified on the list page (record #3).",
+ "verification": {
+  "status": "completed",
+  "checks": [
+   {
+    "assertion": {
+     "kind": "exists",
+     "system": "nova",
+     "entity": "payable",
+     "match": {
+      "invoice_number": "NW-1043-R",
+      "vendor_gstin": "07AAACN1234F1Z5"
+     },
+     "expect": {
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "status": "recorded",
+      "po_number": "PO-7734",
+      "approved_by": "priya.manager"
+     },
+     "note": ""
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "row exists with the expected values",
+    "row_id": 3
+   }
+  ],
+  "unexplained_changes": [],
+  "summary": "all 1 assertion(s) hold; no undeclared writes"
+ },
+ "usage": {
+  "llm_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "browser_actions": 36,
+  "human_interventions": 1
+ },
+ "learned": []
+}

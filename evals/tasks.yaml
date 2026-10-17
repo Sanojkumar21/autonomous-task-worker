@@ -5,7 +5,7 @@
 
 tasks:
   - id: T1_hero
-    title: Northwind latest invoice → Ledger (revision + near-duplicate vendor)
+    title: "Northwind latest invoice → Ledger (revision + near-duplicate vendor)"
     request: "Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done"
     system: ledger
     invoice: NW-1043-R
@@ -17,7 +17,7 @@ tasks:
       - {kind: count, system: ledger, entity: bill, match: {invoice_number: NW-1043-R}, expect: {count: 1}}
 
   - id: T2_pdf_truth
-    title: Brightline invoice → Ledger (portal amount differs from the PDF)
+    title: "Brightline invoice → Ledger (portal amount differs from the PDF)"
     request: "Record Brightline Components' invoice BL-2207 in Ledger with the correct amount and due date"
     system: ledger
     invoice: BL-2207
@@ -28,7 +28,7 @@ tasks:
       - {kind: count, system: ledger, entity: bill, match: {invoice_number: BL-2207}, expect: {count: 1}}
 
   - id: T3_duplicate
-    title: Kestrel KL-0915 → Ledger (already recorded: must not duplicate)
+    title: "Kestrel KL-0915 → Ledger (already recorded: must not duplicate)"
     request: "Enter Kestrel Logistics' invoice KL-0915 into Ledger"
     system: ledger
     invoice: KL-0915
@@ -38,7 +38,7 @@ tasks:
       - {kind: count, system: ledger, entity: bill, match: {invoice_number: KL-0915}, expect: {count: 1}}
 
   - id: T4_small
-    title: Orbit OR-5521 → Ledger (straightforward)
+    title: "Orbit OR-5521 → Ledger (straightforward)"
     request: "Please record the latest invoice from Orbit Office Supplies in Ledger"
     system: ledger
     invoice: OR-5521
@@ -49,7 +49,7 @@ tasks:
       - {kind: count, system: ledger, entity: bill, match: {invoice_number: OR-5521}, expect: {count: 1}}
 
   - id: T5_approval
-    title: Meridian MM-0882 → Ledger (above threshold: needs approval)
+    title: "Meridian MM-0882 → Ledger (above threshold: needs approval)"
     request: "Record the latest invoice from Meridian Metals in Ledger and let me know when it's posted"
     system: ledger
     invoice: MM-0882
@@ -60,7 +60,7 @@ tasks:
       - {kind: count, system: ledger, entity: bill, match: {invoice_number: MM-0882}, expect: {count: 1}}
 
   - id: T6_denied
-    title: Meridian MM-0882 → Ledger, manager denies approval (must not post)
+    title: "Meridian MM-0882 → Ledger, manager denies approval (must not post)"
     request: "Record the latest invoice from Meridian Metals in Ledger"
     system: ledger
     invoice: MM-0882
@@ -72,7 +72,7 @@ tasks:
       - {kind: absent, system: ledger, entity: bill, match: {invoice_number: MM-0882, status: posted}}
 
   - id: T7_nova_hero
-    title: Northwind latest invoice → NovaBooks (unseen app, three-step wizard)
+    title: "Northwind latest invoice → NovaBooks (unseen app, three-step wizard)"
     request: "Record the latest invoice from Northwind Supplies in NovaBooks"
     system: nova
     invoice: NW-1043-R
@@ -83,7 +83,7 @@ tasks:
       - {kind: count, system: nova, entity: payable, match: {invoice_number: NW-1043-R}, expect: {count: 1}}
 
   - id: T8_nova_pdf_truth
-    title: Brightline BL-2207 → NovaBooks (unseen app, PDF total)
+    title: "Brightline BL-2207 → NovaBooks (unseen app, PDF total)"
     request: "Record Brightline Components' invoice BL-2207 in NovaBooks"
     system: nova
     invoice: BL-2207
@@ -94,7 +94,7 @@ tasks:
       - {kind: count, system: nova, entity: payable, match: {invoice_number: BL-2207}, expect: {count: 1}}
 
   - id: T9_nova_approval
-    title: Meridian MM-0882 → NovaBooks (unseen app, approval)
+    title: "Meridian MM-0882 → NovaBooks (unseen app, approval)"
     request: "Record the latest invoice from Meridian Metals in NovaBooks"
     system: nova
     invoice: MM-0882

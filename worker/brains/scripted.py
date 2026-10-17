@@ -301,6 +301,8 @@ class ScriptedBrain(Brain):
                     return f"Entering {key}.", Action(tool="type", args={"id": e.id, "text": value})
             return "Going to the review step.", Action(tool="click", args={"id": find(obs, "button", "review").id})
         if "step 3" in obs.text.lower():
+            if s.get("approver") and s["approver"] not in obs.text:
+                return "Approval was granted after this review was built; redoing the wizard with the authoriser.", Action(tool="navigate", args={"url": base + "/nova/payables/record"})
             btn = find(obs, "button", "confirm and record")
             return "Reviewed; committing through the policy gate.", Action(tool="commit", args={"id": btn.id, "intent": intent})
         if "/nova" not in obs.url or "/nova/payables/record" not in obs.url:

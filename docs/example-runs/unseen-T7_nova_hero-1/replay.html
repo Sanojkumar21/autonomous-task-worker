@@ -1,0 +1,216 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Replay unseen-T7_nova_hero-1</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:24px auto;color:#1d2330}
+.step{border:1px solid #e3e6ec;border-radius:8px;padding:12px 16px;margin:14px 0} img{max-width:100%;border:1px solid #ddd;margin-top:8px}
+.muted{color:#777;font-size:12px;font-weight:400} .thought{color:#444} .result{color:#0b5} pre{background:#f6f7f9;padding:8px;overflow:auto}
+.policy{padding:6px 10px;border-radius:4px;font-size:13px} .policy.ok{background:#e6f6ea} .policy.warn{background:#fff6e0}
+.status{padding:10px 14px;border-radius:6px;background:#eef1f6}</style></head><body>
+<h1>Record the latest invoice from Northwind Supplies in NovaBooks</h1>
+<div class="status"><b>Status: completed</b> · verifier: completed — all 1 assertion(s) hold; no undeclared writes<br>
+Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in nova, approved by priya.manager. Verified on the list page (record #3).</div>
+<h2>Verification</h2><ul><li>✅ row exists with the expected values</li></ul>
+<h2>Steps</h2><section class="step"><h3>Step 1 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the supplier portal filtered to Northwind Supplies open invoices.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/portal/invoices?vendor=Northwind Supplies&amp;status=open&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&amp;reason=signed_out (HTTP 200)</p><img src="screens/001.png" loading="lazy"></section><section class="step"><h3>Step 2 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/002.png" loading="lazy"></section><section class="step"><h3>Step 3 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DNorthwind%2520Supplies%26status%3Dopen&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/003.png" loading="lazy"></section><section class="step"><h3>Step 4 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&amp;status=open</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/004.png" loading="lazy"></section><section class="step"><h3>Step 5 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&amp;status=open</span></h3>
+        <p class="thought">Target invoice is NW-1043-R; noting it.</p>
+        <pre>{&quot;key&quot;: &quot;invoice_number&quot;, &quot;value&quot;: &quot;NW-1043-R&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&amp;status=open&quot;}</pre>
+        <p class="result">→ noted invoice_number = &#x27;NW-1043-R&#x27; (source: http://127.0.0.1:8000/portal/invoices?vendor=Northwind%20Supplies&amp;status=open)</p><img src="screens/005.png" loading="lazy"></section><section class="step"><h3>Step 6 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Opening invoice NW-1043-R.</p>
+        <pre>{&quot;id&quot;: 6}</pre>
+        <p class="result">→ clicked &quot;View&quot;</p><img src="screens/006.png" loading="lazy"></section><section class="step"><h3>Step 7 · <code>read_pdf</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Reading the invoice PDF, the document of record.</p>
+        <pre>{&quot;url&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ PDF text:
+Northwind Supplies
+GSTIN 07AAACN1234F1Z5  |  accounts@northwind.example
+TAX INVOICE  (REVISED)
+Invoice number:
+NW-1043-R
+Invoice date:
+2026-10-09
+Due date:
+2026-11-08
+Purchase order:
+PO-7734
+Bill to:
+Acme Robotics Pvt Ltd, New Delhi
+This invoice supersedes NW-1043.
+Item
+Qty
+Unit price
+Amount
+Linear actuator LA-220
+8
+Rs 7,475.00
+Rs 59,800.00
+Total due (INR):
+Rs 59,800.00</p><img src="screens/007.png" loading="lazy"></section><section class="step"><h3>Step 8 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Noting pdf_total:NW-1043-R from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;pdf_total:NW-1043-R&quot;, &quot;value&quot;: &quot;5980000&quot;, &quot;source&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ noted pdf_total:NW-1043-R = &#x27;5980000&#x27; (source: /portal/invoices/3/pdf)</p><img src="screens/008.png" loading="lazy"></section><section class="step"><h3>Step 9 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Noting due_date:NW-1043-R from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;due_date:NW-1043-R&quot;, &quot;value&quot;: &quot;2026-11-08&quot;, &quot;source&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ noted due_date:NW-1043-R = &#x27;2026-11-08&#x27; (source: /portal/invoices/3/pdf)</p><img src="screens/009.png" loading="lazy"></section><section class="step"><h3>Step 10 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Noting po:NW-1043-R from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;po:NW-1043-R&quot;, &quot;value&quot;: &quot;PO-7734&quot;, &quot;source&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ noted po:NW-1043-R = &#x27;PO-7734&#x27; (source: /portal/invoices/3/pdf)</p><img src="screens/010.png" loading="lazy"></section><section class="step"><h3>Step 11 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">Noting vendor_gstin:NW-1043-R from the PDF.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_gstin:NW-1043-R&quot;, &quot;value&quot;: &quot;07AAACN1234F1Z5&quot;, &quot;source&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ noted vendor_gstin:NW-1043-R = &#x27;07AAACN1234F1Z5&#x27; (source: /portal/invoices/3/pdf)</p><img src="screens/011.png" loading="lazy"></section><section class="step"><h3>Step 12 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&amp;reason=signed_out</span></h3>
+        <p class="thought">PDF facts noted; checking the mailbox for revisions.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/mail/inbox?q=Northwind&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&amp;reason=signed_out (HTTP 200)</p><img src="screens/012.png" loading="lazy"></section><section class="step"><h3>Step 13 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/013.png" loading="lazy"></section><section class="step"><h3>Step 14 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DNorthwind&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/014.png" loading="lazy"></section><section class="step"><h3>Step 15 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox?q=Northwind</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/015.png" loading="lazy"></section><section class="step"><h3>Step 16 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/mail/1</span></h3>
+        <p class="thought">Opening the mail that mentions this invoice.</p>
+        <pre>{&quot;id&quot;: 4}</pre>
+        <p class="result">→ clicked &quot;Revised invoice for PO-7734&quot;</p><img src="screens/016.png" loading="lazy"></section><section class="step"><h3>Step 17 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/mail/1</span></h3>
+        <p class="thought">Noting what the mail says.</p>
+        <pre>{&quot;key&quot;: &quot;mail_check:NW-1043-R&quot;, &quot;value&quot;: &quot;revision notice found: Revised invoice for PO-7734&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/mail/1&quot;}</pre>
+        <p class="result">→ noted mail_check:NW-1043-R = &#x27;revision notice found: Revised invoice for PO-7734&#x27; (source: http://127.0.0.1:8000/mail/1)</p><img src="screens/017.png" loading="lazy"></section><section class="step"><h3>Step 18 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/nova/login?next=/nova/suppliers&amp;reason=signed_out</span></h3>
+        <p class="thought">Opening the vendor master to match by GSTIN.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/nova/suppliers&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/nova/login?next=/nova/suppliers&amp;reason=signed_out (HTTP 200)</p><img src="screens/018.png" loading="lazy"></section><section class="step"><h3>Step 19 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/login?next=/nova/suppliers&amp;reason=signed_out</span></h3>
+        <p class="thought">Session expired; signing in again.</p>
+        <pre>{&quot;id&quot;: 1, &quot;text&quot;: &quot;ops.agent&quot;}</pre>
+        <p class="result">→ typed &quot;ops.agent&quot;</p><img src="screens/019.png" loading="lazy"></section><section class="step"><h3>Step 20 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/login?next=/nova/suppliers&amp;reason=signed_out</span></h3>
+        <p class="thought">Entering the password.</p>
+        <pre>{&quot;id&quot;: 2, &quot;text&quot;: &quot;acme-ops-2026&quot;}</pre>
+        <p class="result">→ typed &quot;acme-ops-2026&quot;</p><img src="screens/020.png" loading="lazy"></section><section class="step"><h3>Step 21 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/nova/suppliers</span></h3>
+        <p class="thought">Submitting the sign-in form.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Sign in&quot;</p><img src="screens/021.png" loading="lazy"></section><section class="step"><h3>Step 22 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/nova/suppliers</span></h3>
+        <p class="thought">GSTIN 07AAACN1234F1Z5 belongs to Northwind Supplies.</p>
+        <pre>{&quot;key&quot;: &quot;vendor_name:NW-1043-R&quot;, &quot;value&quot;: &quot;Northwind Supplies&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/nova/suppliers&quot;}</pre>
+        <p class="result">→ noted vendor_name:NW-1043-R = &#x27;Northwind Supplies&#x27; (source: http://127.0.0.1:8000/nova/suppliers)</p><img src="screens/022.png" loading="lazy"></section><section class="step"><h3>Step 23 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables?search=NW-1043-R</span></h3>
+        <p class="thought">Searching the ERP for this invoice number.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/nova/payables?search=NW-1043-R&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/nova/payables?search=NW-1043-R (HTTP 200)</p><img src="screens/023.png" loading="lazy"></section><section class="step"><h3>Step 24 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables?search=NW-1043-R</span></h3>
+        <p class="thought">No duplicate; proceeding to record.</p>
+        <pre>{&quot;key&quot;: &quot;duplicate_check:NW-1043-R&quot;, &quot;value&quot;: &quot;none&quot;, &quot;source&quot;: &quot;http://127.0.0.1:8000/nova/payables?search=NW-1043-R&quot;}</pre>
+        <p class="result">→ noted duplicate_check:NW-1043-R = &#x27;none&#x27; (source: http://127.0.0.1:8000/nova/payables?search=NW-1043-R)</p><img src="screens/024.png" loading="lazy"></section><section class="step"><h3>Step 25 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record</span></h3>
+        <p class="thought">Starting the record-payable wizard.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/nova/payables/record&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/nova/payables/record (HTTP 200)</p><img src="screens/025.png" loading="lazy"></section><section class="step"><h3>Step 26 · <code>check</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record</span></h3>
+        <p class="thought">Choosing supplier Northwind Supplies.</p>
+        <pre>{&quot;id&quot;: 8}</pre>
+        <p class="result">→ checked</p><img src="screens/026.png" loading="lazy"></section><section class="step"><h3>Step 27 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Continuing to the details step.</p>
+        <pre>{&quot;id&quot;: 11}</pre>
+        <p class="result">→ clicked &quot;Continue&quot;</p><img src="screens/027.png" loading="lazy"></section><section class="step"><h3>Step 28 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering reference.</p>
+        <pre>{&quot;id&quot;: 5, &quot;text&quot;: &quot;NW-1043-R&quot;}</pre>
+        <p class="result">→ typed &quot;NW-1043-R&quot;</p><img src="screens/028.png" loading="lazy"></section><section class="step"><h3>Step 29 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering total.</p>
+        <pre>{&quot;id&quot;: 6, &quot;text&quot;: &quot;59800.00&quot;}</pre>
+        <p class="result">→ typed &quot;59800.00&quot;</p><img src="screens/029.png" loading="lazy"></section><section class="step"><h3>Step 30 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering pay by.</p>
+        <pre>{&quot;id&quot;: 7, &quot;text&quot;: &quot;08/11/2026&quot;}</pre>
+        <p class="result">→ typed &quot;08/11/2026&quot;</p><img src="screens/030.png" loading="lazy"></section><section class="step"><h3>Step 31 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering order ref.</p>
+        <pre>{&quot;id&quot;: 8, &quot;text&quot;: &quot;PO-7734&quot;}</pre>
+        <p class="result">→ typed &quot;PO-7734&quot;</p><img src="screens/031.png" loading="lazy"></section><section class="step"><h3>Step 32 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/review</span></h3>
+        <p class="thought">Going to the review step.</p>
+        <pre>{&quot;id&quot;: 11}</pre>
+        <p class="result">→ clicked &quot;Review&quot;</p><img src="screens/032.png" loading="lazy"></section><section class="step"><h3>Step 33 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/review</span></h3>
+        <p class="thought">Reviewed; committing through the policy gate.</p>
+        <pre>{&quot;id&quot;: 5, &quot;intent&quot;: {&quot;type&quot;: &quot;record_payable&quot;, &quot;system&quot;: &quot;nova&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;vendor_gstin&quot;: &quot;07AAACN1234F1Z5&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;&quot;}}</pre>
+        <p class="result">→ approval GRANTED by priya.manager — fill the approval field with &#x27;priya.manager&#x27; and commit again.</p><div class="policy warn">policy: amount 59,800.00 is at or above the approval threshold 50,000.00 (rule_5db100c3); a manager must approve first</div><img src="screens/033.png" loading="lazy"></section><section class="step"><h3>Step 34 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record</span></h3>
+        <p class="thought">Approval was granted after this review was built; redoing the wizard with the authoriser.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/nova/payables/record&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/nova/payables/record (HTTP 200)</p><img src="screens/034.png" loading="lazy"></section><section class="step"><h3>Step 35 · <code>check</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record</span></h3>
+        <p class="thought">Choosing supplier Northwind Supplies.</p>
+        <pre>{&quot;id&quot;: 8}</pre>
+        <p class="result">→ checked</p><img src="screens/035.png" loading="lazy"></section><section class="step"><h3>Step 36 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Continuing to the details step.</p>
+        <pre>{&quot;id&quot;: 11}</pre>
+        <p class="result">→ clicked &quot;Continue&quot;</p><img src="screens/036.png" loading="lazy"></section><section class="step"><h3>Step 37 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering reference.</p>
+        <pre>{&quot;id&quot;: 5, &quot;text&quot;: &quot;NW-1043-R&quot;}</pre>
+        <p class="result">→ typed &quot;NW-1043-R&quot;</p><img src="screens/037.png" loading="lazy"></section><section class="step"><h3>Step 38 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering total.</p>
+        <pre>{&quot;id&quot;: 6, &quot;text&quot;: &quot;59800.00&quot;}</pre>
+        <p class="result">→ typed &quot;59800.00&quot;</p><img src="screens/038.png" loading="lazy"></section><section class="step"><h3>Step 39 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering pay by.</p>
+        <pre>{&quot;id&quot;: 7, &quot;text&quot;: &quot;08/11/2026&quot;}</pre>
+        <p class="result">→ typed &quot;08/11/2026&quot;</p><img src="screens/039.png" loading="lazy"></section><section class="step"><h3>Step 40 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering order ref.</p>
+        <pre>{&quot;id&quot;: 8, &quot;text&quot;: &quot;PO-7734&quot;}</pre>
+        <p class="result">→ typed &quot;PO-7734&quot;</p><img src="screens/040.png" loading="lazy"></section><section class="step"><h3>Step 41 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/details</span></h3>
+        <p class="thought">Entering authorised by.</p>
+        <pre>{&quot;id&quot;: 9, &quot;text&quot;: &quot;priya.manager&quot;}</pre>
+        <p class="result">→ typed &quot;priya.manager&quot;</p><img src="screens/041.png" loading="lazy"></section><section class="step"><h3>Step 42 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/record/review</span></h3>
+        <p class="thought">Going to the review step.</p>
+        <pre>{&quot;id&quot;: 11}</pre>
+        <p class="result">→ clicked &quot;Review&quot;</p><img src="screens/042.png" loading="lazy"></section><section class="step"><h3>Step 43 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables/3?flash=saved</span></h3>
+        <p class="thought">Reviewed; committing through the policy gate.</p>
+        <pre>{&quot;id&quot;: 5, &quot;intent&quot;: {&quot;type&quot;: &quot;record_payable&quot;, &quot;system&quot;: &quot;nova&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;vendor_gstin&quot;: &quot;07AAACN1234F1Z5&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;priya.manager&quot;}}</pre>
+        <p class="result">→ clicked &quot;Confirm and record&quot;; submitted. Now verify on the page that the record exists with the right values.</p><div class="policy ok">policy: approved by priya.manager (approval 33)</div><img src="screens/043.png" loading="lazy"></section><section class="step"><h3>Step 44 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables?search=NW-1043-R</span></h3>
+        <p class="thought">Submitted; verifying on the list page.</p>
+        <pre>{&quot;url&quot;: &quot;http://127.0.0.1:8000/nova/payables?search=NW-1043-R&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/nova/payables?search=NW-1043-R (HTTP 200)</p><img src="screens/044.png" loading="lazy"></section><section class="step"><h3>Step 45 · <code>done</code>
+        <span class="muted">http://127.0.0.1:8000/nova/payables?search=NW-1043-R</span></h3>
+        <p class="thought">The list shows the record; declaring what must now be true.</p>
+        <pre>{&quot;summary&quot;: &quot;Recorded NW-1043-R (Northwind Supplies) for 59,800.00 INR due 2026-11-08 in nova, approved by priya.manager. Verified on the list page (record #3).&quot;, &quot;assertions&quot;: [{&quot;kind&quot;: &quot;exists&quot;, &quot;system&quot;: &quot;nova&quot;, &quot;entity&quot;: &quot;payable&quot;, &quot;match&quot;: {&quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;vendor_gstin&quot;: &quot;07AAACN1234F1Z5&quot;}, &quot;expect&quot;: {&quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;status&quot;: &quot;recorded&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;priya.manager&quot;}}]}</pre>
+        <p class="result">→ assertions recorded; verification will decide the status</p><img src="screens/045.png" loading="lazy"></section>
+</body></html>

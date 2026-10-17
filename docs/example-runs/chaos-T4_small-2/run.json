@@ -1,0 +1,900 @@
+{
+ "run_id": "chaos-T4_small-2",
+ "request": "Please record the latest invoice from Orbit Office Supplies in Ledger",
+ "started_at": 1792267951.7604504,
+ "finished_at": 1792267954.7672005,
+ "brain": "scripted",
+ "model": "sop-controller",
+ "memory_mode": "off",
+ "contract": {
+  "intent": "record_supplier_invoice",
+  "summary": "Record Orbit Office Supplies's latest invoice in ledger after reading its PDF, checking for revisions and duplicates, and getting approval if the amount requires it.",
+  "target_system": "ledger",
+  "params": {
+   "vendor": "Orbit Office Supplies",
+   "which": "latest"
+  },
+  "questions": [],
+  "deliverable": "A short summary with evidence."
+ },
+ "milestones": [
+  {
+   "id": "M1",
+   "title": "Identify the invoice and read its PDF",
+   "done_when": "invoice number, PDF total, due date, PO and GSTIN are noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M2",
+   "title": "Check the mailbox for revisions or corrections",
+   "done_when": "any revision notice is noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M3",
+   "title": "Resolve the vendor in ledger by GSTIN and check for duplicates",
+   "done_when": "duplicate_check fact noted",
+   "writes": false,
+   "status": "done"
+  },
+  {
+   "id": "M4",
+   "title": "Record the bill in ledger",
+   "done_when": "the record is saved (approval obtained first if required)",
+   "writes": true,
+   "status": "done"
+  },
+  {
+   "id": "M5",
+   "title": "Verify the record and report",
+   "done_when": "the list shows the record with the right values",
+   "writes": false,
+   "status": "done"
+  }
+ ],
+ "steps": [
+  {
+   "index": 1,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Opening the supplier portal filtered to Orbit Office Supplies open invoices.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/portal/invoices?vendor=Orbit Office Supplies&status=open"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/001.png",
+   "llm_calls": 0,
+   "ts": 1792267952.1943018,
+   "duration_ms": 55
+  },
+  {
+   "index": 2,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/002.png",
+   "llm_calls": 0,
+   "ts": 1792267952.2664719,
+   "duration_ms": 72
+  },
+  {
+   "index": 3,
+   "url": "http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/003.png",
+   "llm_calls": 0,
+   "ts": 1792267952.3183558,
+   "duration_ms": 51
+  },
+  {
+   "index": 4,
+   "url": "http://127.0.0.1:8000/portal/login",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/004.png",
+   "llm_calls": 0,
+   "ts": 1792267952.4631593,
+   "duration_ms": 144
+  },
+  {
+   "index": 5,
+   "url": "http://127.0.0.1:8000/portal/login",
+   "thought": "The service answered 503; retrying the page.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/portal/login"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/portal/login (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/005.png",
+   "llm_calls": 0,
+   "ts": 1792267952.5164323,
+   "duration_ms": 53
+  },
+  {
+   "index": 6,
+   "url": "http://127.0.0.1:8000/portal/login",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/006.png",
+   "llm_calls": 0,
+   "ts": 1792267952.5838428,
+   "duration_ms": 67
+  },
+  {
+   "index": 7,
+   "url": "http://127.0.0.1:8000/portal/login",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/007.png",
+   "llm_calls": 0,
+   "ts": 1792267952.6533124,
+   "duration_ms": 69
+  },
+  {
+   "index": 8,
+   "url": "http://127.0.0.1:8000/portal/invoices",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/008.png",
+   "llm_calls": 0,
+   "ts": 1792267952.8222692,
+   "duration_ms": 168
+  },
+  {
+   "index": 9,
+   "url": "http://127.0.0.1:8000/portal/invoices",
+   "thought": "Target invoice is OR-5521; noting it.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "invoice_number",
+     "value": "OR-5521",
+     "source": "http://127.0.0.1:8000/portal/invoices"
+    }
+   },
+   "result": "noted invoice_number = 'OR-5521' (source: http://127.0.0.1:8000/portal/invoices)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/009.png",
+   "llm_calls": 0,
+   "ts": 1792267952.8738146,
+   "duration_ms": 51
+  },
+  {
+   "index": 10,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Opening invoice OR-5521.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 8
+    }
+   },
+   "result": "clicked \"View\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/010.png",
+   "llm_calls": 0,
+   "ts": 1792267953.0140672,
+   "duration_ms": 140
+  },
+  {
+   "index": 11,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Reading the invoice PDF, the document of record.",
+   "action": {
+    "tool": "read_pdf",
+    "args": {
+     "url": "/portal/invoices/6/pdf"
+    }
+   },
+   "result": "PDF text:\nOrbit Office Supplies\nGSTIN 06AAACO3456P1Z1  |  ar@orbit.example\nTAX INVOICE\nInvoice number:\nOR-5521\nInvoice date:\n2026-10-07\nDue date:\n2026-10-21\nPurchase order:\nPO-7741\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nItem\nQty\nUnit price\nAmount\nOffice chairs\n4\nRs 1,600.00\nRs 6,400.00\nTotal due (INR):\nRs 6,400.00",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/011.png",
+   "llm_calls": 0,
+   "ts": 1792267953.0681672,
+   "duration_ms": 54
+  },
+  {
+   "index": 12,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Noting pdf_total:OR-5521 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "pdf_total:OR-5521",
+     "value": "640000",
+     "source": "/portal/invoices/6/pdf"
+    }
+   },
+   "result": "noted pdf_total:OR-5521 = '640000' (source: /portal/invoices/6/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/012.png",
+   "llm_calls": 0,
+   "ts": 1792267953.0944583,
+   "duration_ms": 26
+  },
+  {
+   "index": 13,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Noting due_date:OR-5521 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "due_date:OR-5521",
+     "value": "2026-10-21",
+     "source": "/portal/invoices/6/pdf"
+    }
+   },
+   "result": "noted due_date:OR-5521 = '2026-10-21' (source: /portal/invoices/6/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/013.png",
+   "llm_calls": 0,
+   "ts": 1792267953.126085,
+   "duration_ms": 31
+  },
+  {
+   "index": 14,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Noting po:OR-5521 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "po:OR-5521",
+     "value": "PO-7741",
+     "source": "/portal/invoices/6/pdf"
+    }
+   },
+   "result": "noted po:OR-5521 = 'PO-7741' (source: /portal/invoices/6/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/014.png",
+   "llm_calls": 0,
+   "ts": 1792267953.166626,
+   "duration_ms": 40
+  },
+  {
+   "index": 15,
+   "url": "http://127.0.0.1:8000/portal/invoices/6",
+   "thought": "Noting vendor_gstin:OR-5521 from the PDF.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_gstin:OR-5521",
+     "value": "06AAACO3456P1Z1",
+     "source": "/portal/invoices/6/pdf"
+    }
+   },
+   "result": "noted vendor_gstin:OR-5521 = '06AAACO3456P1Z1' (source: /portal/invoices/6/pdf)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/015.png",
+   "llm_calls": 0,
+   "ts": 1792267953.1956995,
+   "duration_ms": 29
+  },
+  {
+   "index": 16,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&reason=signed_out",
+   "thought": "PDF facts noted; checking the mailbox for revisions.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/mail/inbox?q=Orbit"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/016.png",
+   "llm_calls": 0,
+   "ts": 1792267953.2482648,
+   "duration_ms": 52
+  },
+  {
+   "index": 17,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/017.png",
+   "llm_calls": 0,
+   "ts": 1792267953.318343,
+   "duration_ms": 70
+  },
+  {
+   "index": 18,
+   "url": "http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/018.png",
+   "llm_calls": 0,
+   "ts": 1792267953.3663633,
+   "duration_ms": 47
+  },
+  {
+   "index": 19,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=Orbit",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/019.png",
+   "llm_calls": 0,
+   "ts": 1792267953.4913335,
+   "duration_ms": 124
+  },
+  {
+   "index": 20,
+   "url": "http://127.0.0.1:8000/mail/inbox?q=Orbit",
+   "thought": "No relevant mail; moving to the ERP.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "mail_check:OR-5521",
+     "value": "no relevant mail",
+     "source": "http://127.0.0.1:8000/mail/inbox?q=Orbit"
+    }
+   },
+   "result": "noted mail_check:OR-5521 = 'no relevant mail' (source: http://127.0.0.1:8000/mail/inbox?q=Orbit)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/020.png",
+   "llm_calls": 0,
+   "ts": 1792267953.5265846,
+   "duration_ms": 35
+  },
+  {
+   "index": 21,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Opening the vendor master to match by GSTIN.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/021.png",
+   "llm_calls": 0,
+   "ts": 1792267953.5780816,
+   "duration_ms": 51
+  },
+  {
+   "index": 22,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/022.png",
+   "llm_calls": 0,
+   "ts": 1792267953.6271577,
+   "duration_ms": 49
+  },
+  {
+   "index": 23,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/023.png",
+   "llm_calls": 0,
+   "ts": 1792267953.6798668,
+   "duration_ms": 52
+  },
+  {
+   "index": 24,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/024.png",
+   "llm_calls": 0,
+   "ts": 1792267953.7992256,
+   "duration_ms": 119
+  },
+  {
+   "index": 25,
+   "url": "http://127.0.0.1:8000/ledger/vendors",
+   "thought": "GSTIN 06AAACO3456P1Z1 belongs to Orbit Office Supplies.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "vendor_name:OR-5521",
+     "value": "Orbit Office Supplies",
+     "source": "http://127.0.0.1:8000/ledger/vendors"
+    }
+   },
+   "result": "noted vendor_name:OR-5521 = 'Orbit Office Supplies' (source: http://127.0.0.1:8000/ledger/vendors)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/025.png",
+   "llm_calls": 0,
+   "ts": 1792267953.830473,
+   "duration_ms": 31
+  },
+  {
+   "index": 26,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521",
+   "thought": "Searching the ERP for this invoice number.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/026.png",
+   "llm_calls": 0,
+   "ts": 1792267953.8764825,
+   "duration_ms": 45
+  },
+  {
+   "index": 27,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521",
+   "thought": "No duplicate; proceeding to record.",
+   "action": {
+    "tool": "note_fact",
+    "args": {
+     "key": "duplicate_check:OR-5521",
+     "value": "none",
+     "source": "http://127.0.0.1:8000/ledger/bills?q=OR-5521"
+    }
+   },
+   "result": "noted duplicate_check:OR-5521 = 'none' (source: http://127.0.0.1:8000/ledger/bills?q=OR-5521)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/027.png",
+   "llm_calls": 0,
+   "ts": 1792267953.9103732,
+   "duration_ms": 33
+  },
+  {
+   "index": 28,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&reason=signed_out",
+   "thought": "Opening the new bill form.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills/new"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&reason=signed_out (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/028.png",
+   "llm_calls": 0,
+   "ts": 1792267953.959709,
+   "duration_ms": 49
+  },
+  {
+   "index": 29,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&reason=signed_out",
+   "thought": "Session expired; signing in again.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 1,
+     "text": "ops.agent"
+    }
+   },
+   "result": "typed \"ops.agent\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/029.png",
+   "llm_calls": 0,
+   "ts": 1792267954.0163527,
+   "duration_ms": 56
+  },
+  {
+   "index": 30,
+   "url": "http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&reason=signed_out",
+   "thought": "Entering the password.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 2,
+     "text": "acme-ops-2026"
+    }
+   },
+   "result": "typed \"acme-ops-2026\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/030.png",
+   "llm_calls": 0,
+   "ts": 1792267954.0649745,
+   "duration_ms": 48
+  },
+  {
+   "index": 31,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Submitting the sign-in form.",
+   "action": {
+    "tool": "click",
+    "args": {
+     "id": 3
+    }
+   },
+   "result": "clicked \"Sign in\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/031.png",
+   "llm_calls": 0,
+   "ts": 1792267954.2120345,
+   "duration_ms": 146
+  },
+  {
+   "index": 32,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Selecting vendor Orbit Office Supplies.",
+   "action": {
+    "tool": "select",
+    "args": {
+     "id": 5,
+     "option": "Orbit Office Supplies"
+    }
+   },
+   "result": "selected \"Orbit Office Supplies\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/032.png",
+   "llm_calls": 0,
+   "ts": 1792267954.2887068,
+   "duration_ms": 76
+  },
+  {
+   "index": 33,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering invoice.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 6,
+     "text": "OR-5521"
+    }
+   },
+   "result": "typed \"OR-5521\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/033.png",
+   "llm_calls": 0,
+   "ts": 1792267954.3354282,
+   "duration_ms": 46
+  },
+  {
+   "index": 34,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering total.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 7,
+     "text": "6400.00"
+    }
+   },
+   "result": "typed \"6400.00\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/034.png",
+   "llm_calls": 0,
+   "ts": 1792267954.3883069,
+   "duration_ms": 52
+  },
+  {
+   "index": 35,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering due.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 8,
+     "text": "2026-10-21"
+    }
+   },
+   "result": "typed \"2026-10-21\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/035.png",
+   "llm_calls": 0,
+   "ts": 1792267954.434981,
+   "duration_ms": 46
+  },
+  {
+   "index": 36,
+   "url": "http://127.0.0.1:8000/ledger/bills/new",
+   "thought": "Entering purchase order.",
+   "action": {
+    "tool": "type",
+    "args": {
+     "id": 9,
+     "text": "PO-7741"
+    }
+   },
+   "result": "typed \"PO-7741\"",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/036.png",
+   "llm_calls": 0,
+   "ts": 1792267954.4843638,
+   "duration_ms": 49
+  },
+  {
+   "index": 37,
+   "url": "http://127.0.0.1:8000/ledger/bills/4?flash=saved",
+   "thought": "All fields entered; committing the bill through the policy gate.",
+   "action": {
+    "tool": "commit",
+    "args": {
+     "id": 12,
+     "intent": {
+      "type": "create_bill",
+      "system": "ledger",
+      "vendor_name": "Orbit Office Supplies",
+      "vendor_gstin": "06AAACO3456P1Z1",
+      "invoice_number": "OR-5521",
+      "amount_paise": 640000,
+      "due_date": "2026-10-21",
+      "po_number": "PO-7741",
+      "approved_by": ""
+     }
+    }
+   },
+   "result": "clicked \"Record invoice\"; submitted. Now verify on the page that the record exists with the right values.",
+   "policy": {
+    "allowed": true,
+    "needs_approval": false,
+    "reasons": [
+     "allowed"
+    ],
+    "rule_ids": []
+   },
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/037.png",
+   "llm_calls": 0,
+   "ts": 1792267954.6390831,
+   "duration_ms": 154
+  },
+  {
+   "index": 38,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521",
+   "thought": "Submitted; verifying on the list page.",
+   "action": {
+    "tool": "navigate",
+    "args": {
+     "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521"
+    }
+   },
+   "result": "opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/038.png",
+   "llm_calls": 0,
+   "ts": 1792267954.700524,
+   "duration_ms": 61
+  },
+  {
+   "index": 39,
+   "url": "http://127.0.0.1:8000/ledger/bills?q=OR-5521",
+   "thought": "The list shows the record; declaring what must now be true.",
+   "action": {
+    "tool": "done",
+    "args": {
+     "summary": "Recorded OR-5521 (Orbit Office Supplies) for 6,400.00 INR due 2026-10-21 in ledger. Verified on the list page (record #4).",
+     "assertions": [
+      {
+       "kind": "exists",
+       "system": "ledger",
+       "entity": "bill",
+       "match": {
+        "invoice_number": "OR-5521",
+        "vendor_gstin": "06AAACO3456P1Z1"
+       },
+       "expect": {
+        "amount_paise": 640000,
+        "due_date": "2026-10-21",
+        "status": "posted",
+        "po_number": "PO-7741"
+       }
+      }
+     ]
+    }
+   },
+   "result": "assertions recorded; verification will decide the status",
+   "policy": null,
+   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/039.png",
+   "llm_calls": 0,
+   "ts": 1792267954.7332687,
+   "duration_ms": 32
+  }
+ ],
+ "facts": [
+  {
+   "key": "invoice_number",
+   "value": "OR-5521",
+   "source": "http://127.0.0.1:8000/portal/invoices",
+   "step": 9
+  },
+  {
+   "key": "pdf_total:OR-5521",
+   "value": "640000",
+   "source": "/portal/invoices/6/pdf",
+   "step": 12
+  },
+  {
+   "key": "due_date:OR-5521",
+   "value": "2026-10-21",
+   "source": "/portal/invoices/6/pdf",
+   "step": 13
+  },
+  {
+   "key": "po:OR-5521",
+   "value": "PO-7741",
+   "source": "/portal/invoices/6/pdf",
+   "step": 14
+  },
+  {
+   "key": "vendor_gstin:OR-5521",
+   "value": "06AAACO3456P1Z1",
+   "source": "/portal/invoices/6/pdf",
+   "step": 15
+  },
+  {
+   "key": "mail_check:OR-5521",
+   "value": "no relevant mail",
+   "source": "http://127.0.0.1:8000/mail/inbox?q=Orbit",
+   "step": 20
+  },
+  {
+   "key": "vendor_name:OR-5521",
+   "value": "Orbit Office Supplies",
+   "source": "http://127.0.0.1:8000/ledger/vendors",
+   "step": 25
+  },
+  {
+   "key": "duplicate_check:OR-5521",
+   "value": "none",
+   "source": "http://127.0.0.1:8000/ledger/bills?q=OR-5521",
+   "step": 27
+  }
+ ],
+ "clarifications": [],
+ "approvals": [],
+ "assertions": [
+  {
+   "kind": "exists",
+   "system": "ledger",
+   "entity": "bill",
+   "match": {
+    "invoice_number": "OR-5521",
+    "vendor_gstin": "06AAACO3456P1Z1"
+   },
+   "expect": {
+    "amount_paise": 640000,
+    "due_date": "2026-10-21",
+    "status": "posted",
+    "po_number": "PO-7741"
+   },
+   "note": ""
+  }
+ ],
+ "skills_used": [],
+ "rules_applied": [],
+ "final_status": "completed",
+ "final_summary": "Recorded OR-5521 (Orbit Office Supplies) for 6,400.00 INR due 2026-10-21 in ledger. Verified on the list page (record #4).",
+ "verification": {
+  "status": "completed",
+  "checks": [
+   {
+    "assertion": {
+     "kind": "exists",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "OR-5521",
+      "vendor_gstin": "06AAACO3456P1Z1"
+     },
+     "expect": {
+      "amount_paise": 640000,
+      "due_date": "2026-10-21",
+      "status": "posted",
+      "po_number": "PO-7741"
+     },
+     "note": ""
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "row exists with the expected values",
+    "row_id": 4
+   }
+  ],
+  "unexplained_changes": [],
+  "summary": "all 1 assertion(s) hold; no undeclared writes"
+ },
+ "usage": {
+  "llm_calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0.0,
+  "browser_actions": 31,
+  "human_interventions": 0
+ },
+ "learned": []
+}
