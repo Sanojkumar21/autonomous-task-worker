@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}{{ title }} — sign in{% endblock %}{% block brand %}{{ title }}{% endblock %}
+{% block content %}
+<h1>Sign in to {{ title }}</h1>
+{% if reason == "signed_out" %}<div class="warn">Your session has expired. Please sign in again.</div>{% endif %}
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+<form method="post" action="/{{ system }}/login">
+ <input type="hidden" name="next" value="{{ next }}">
+ <label for="username">Username</label><input id="username" name="username" autocomplete="username">
+ <label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password">
+ <div class="actions"><button type="submit">Sign in</button></div>
+</form>
+{% endblock %}

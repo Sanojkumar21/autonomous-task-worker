@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Acme Mail — inbox{% endblock %}{% block brand %}Acme Mail{% endblock %}{% block brand_color %}#8a4b1f{% endblock %}
+{% block nav %}<a href="/mail/inbox">Inbox</a>{% endblock %}
+{% block content %}
+<h1>Inbox</h1>
+<form method="get" action="/mail/inbox" style="display:flex;gap:10px;align-items:end"><div><label for="q">Search mail</label><input id="q" name="q" value="{{ q }}"></div><button type="submit">Search</button></form>
+<table style="margin-top:16px"><thead><tr><th>From</th><th>Subject</th><th>Received</th></tr></thead>
+<tbody>{% for m in items %}<tr><td>{{ m.sender }}</td><td><a href="/mail/{{ m.id }}">{% if not m.read %}<strong>{{ m.subject }}</strong>{% else %}{{ m.subject }}{% endif %}</a></td><td>{{ m.received_at }}</td></tr>
+{% else %}<tr><td colspan="3" class="muted">No mail.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

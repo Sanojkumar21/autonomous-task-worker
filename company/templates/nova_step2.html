@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}NovaBooks — record payable (2/3){% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Record payable — step 2 of 3: details</h1>
+<p>Supplier: <strong>{{ s.name }}</strong> (tax ID {{ s.tax_id }})</p>
+{% if errors %}<div class="warn" role="alert">Please fix the fields below.</div>{% endif %}
+<form method="post" action="/nova/payables/record/review">
+ <input type="hidden" name="supplier_id" value="{{ s.id }}">
+ <label for="reference">Supplier reference (their invoice number)</label><input id="reference" name="reference" value="{{ v.reference or '' }}">{% if errors.reference %}<div class="error">{{ errors.reference }}</div>{% endif %}
+ <label for="total">Total payable (INR)</label><input id="total" name="total" value="{{ v.total or '' }}">{% if errors.total %}<div class="error">{{ errors.total }}</div>{% endif %}
+ <label for="pay_by">Pay by (dd/mm/yyyy)</label><input id="pay_by" name="pay_by" value="{{ v.pay_by or '' }}" placeholder="31/10/2026">{% if errors.pay_by %}<div class="error">{{ errors.pay_by }}</div>{% endif %}
+ <label for="order_ref">Order ref</label><input id="order_ref" name="order_ref" value="{{ v.order_ref or '' }}">
+ <label for="authorised_by">Authorised by (manager, if the amount needs authorisation)</label><input id="authorised_by" name="authorised_by" value="{{ v.authorised_by or '' }}">
+ <label for="note">Note</label><input id="note" name="note" value="{{ v.note or '' }}">
+ <div class="actions"><button type="submit">Review</button><a class="btn secondary" href="/nova/payables/record">Back</a></div>
+</form>
+{% endblock %}

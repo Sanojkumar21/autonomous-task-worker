@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Invoice {{ inv.number }}{% endblock %}{% block brand %}Supplier Portal{% endblock %}{% block brand_color %}#2f6f4e{% endblock %}
+{% block nav %}<a href="/portal/invoices">Invoices</a><a href="/portal/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Invoice {{ inv.number }} <span class="pill {{ inv.status }}">{{ inv.status }}</span></h1>
+{% if inv.supersedes %}<div class="warn">This is a revised invoice. It supersedes {{ inv.supersedes }}.</div>{% endif %}
+{% if replacement %}<div class="warn">This invoice has been superseded by <a href="/portal/invoices/{{ replacement.id }}">{{ replacement.number }}</a>.</div>{% endif %}
+<dl>
+ <dt>Supplier</dt><dd>{{ inv.vendor_name }}</dd>
+ <dt>Supplier GSTIN</dt><dd>{{ inv.gstin }}</dd>
+ <dt>Issued on</dt><dd>{{ inv.issued_on }}</dd>
+ <dt>Listed amount (INR)</dt><dd>{{ rupees(inv.listed_amount_paise) }}</dd>
+ <dt>Document</dt><dd><a href="/portal/invoices/{{ inv.id }}/pdf">Download PDF ({{ inv.pdf_name }})</a></dd>
+</dl>
+<p class="muted">Due date, purchase order and the final total are stated on the PDF.</p>
+{% endblock %}

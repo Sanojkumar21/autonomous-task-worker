@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block title %}NovaBooks — record payable (3/3){% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Record payable — step 3 of 3: review</h1>
+<dl>
+ <dt>Supplier</dt><dd>{{ s.name }}</dd><dt>Reference</dt><dd>{{ v.reference }}</dd><dt>Total (INR)</dt><dd>{{ rupees(paise) }}</dd>
+ <dt>Pay by</dt><dd>{{ v.pay_by }}</dd><dt>Order ref</dt><dd>{{ v.order_ref or "-" }}</dd><dt>Authorised by</dt><dd>{{ v.authorised_by or "-" }}</dd><dt>Note</dt><dd>{{ v.note or "-" }}</dd>
+</dl>
+<form method="post" action="/nova/payables/record/confirm">
+ <input type="hidden" name="supplier_id" value="{{ s.id }}"><input type="hidden" name="reference" value="{{ v.reference }}">
+ <input type="hidden" name="total_paise" value="{{ paise }}"><input type="hidden" name="pay_by_iso" value="{{ iso }}">
+ <input type="hidden" name="order_ref" value="{{ v.order_ref }}"><input type="hidden" name="authorised_by" value="{{ v.authorised_by }}"><input type="hidden" name="note" value="{{ v.note }}">
+ <div class="actions">
+  <button type="submit" name="state" value="recorded">Confirm and record</button>
+  <button type="submit" name="state" value="parked" class="secondary">Park for later</button>
+ </div>
+</form>
+{% endblock %}

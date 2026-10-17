@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block title %}Ledger — bill #{{ b.id }}{% endblock %}{% block brand %}Ledger ERP{% endblock %}
+{% block nav %}<a href="/ledger/bills">{{ label("bills") }}</a><a href="/ledger/bills/new">{{ label("new_bill") }}</a><a href="/ledger/vendors">Vendors</a><a href="/ledger/logout">Sign out</a>{% endblock %}
+{% block content %}
+{% if flash == "saved" %}<div class="flash" role="status">Bill #{{ b.id }} saved as {{ b.status }}.</div>{% elif flash == "posted" %}<div class="flash" role="status">Bill #{{ b.id }} posted.</div>{% endif %}
+<h1>Bill #{{ b.id }} <span class="pill {{ b.status }}">{{ b.status }}</span></h1>
+<dl>
+ <dt>{{ label("vendor") }}</dt><dd>{{ b.vendor_name }} <span class="muted">(GSTIN {{ b.gstin }})</span></dd>
+ <dt>{{ label("invoice_number") }}</dt><dd>{{ b.invoice_number }}</dd>
+ <dt>{{ label("amount") }}</dt><dd>{{ rupees(b.amount_paise) }}</dd>
+ <dt>{{ label("due_date") }}</dt><dd>{{ b.due_date }}</dd>
+ <dt>{{ label("po_number") }}</dt><dd>{{ b.po_number or "-" }}</dd>
+ <dt>Approved by</dt><dd>{{ b.approved_by or "-" }}</dd>
+ <dt>Memo</dt><dd>{{ b.memo or "-" }}</dd>
+ <dt>Created by</dt><dd>{{ b.created_by }}</dd>
+</dl>
+{% if b.status == "draft" %}
+<form method="post" action="/ledger/bills/{{ b.id }}/post">
+ <label for="approved_by">Approved by (if required)</label><input id="approved_by" name="approved_by" value="{{ b.approved_by or '' }}">
+ <div class="actions"><button type="submit">Post bill</button></div>
+</form>
+{% endif %}
+{% endblock %}

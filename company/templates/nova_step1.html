@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}NovaBooks — record payable (1/3){% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Record payable — step 1 of 3: supplier</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+<form method="post" action="/nova/payables/record/details">
+ <fieldset style="border:0;padding:0"><legend style="font-weight:600;margin-bottom:6px">Which supplier sent this invoice?</legend>
+ {% for s in suppliers %}<div><input type="radio" id="s{{ s.id }}" name="supplier_id" value="{{ s.id }}" style="min-width:0"><label for="s{{ s.id }}" style="display:inline;font-weight:400;margin-left:6px">{{ s.name }}</label></div>{% endfor %}
+ </fieldset>
+ <div class="actions"><button type="submit">Continue</button></div>
+</form>
+{% endblock %}

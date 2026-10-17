@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}{{ m.subject }}{% endblock %}{% block brand %}Acme Mail{% endblock %}{% block brand_color %}#8a4b1f{% endblock %}
+{% block nav %}<a href="/mail/inbox">Inbox</a>{% endblock %}
+{% block content %}
+<h1>{{ m.subject }}</h1>
+<p class="muted">From {{ m.sender }} · to {{ m.recipient }} · {{ m.received_at }}</p>
+<pre style="white-space:pre-wrap;font-family:inherit;background:#f6f7f9;padding:14px;border-radius:6px">{{ m.body }}</pre>
+<p><a href="/mail/inbox">Back to inbox</a></p>
+{% endblock %}

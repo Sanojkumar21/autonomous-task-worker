@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Ledger — vendors{% endblock %}{% block brand %}Ledger ERP{% endblock %}
+{% block nav %}<a href="/ledger/bills">{{ label("bills") }}</a><a href="/ledger/bills/new">{{ label("new_bill") }}</a><a href="/ledger/vendors">Vendors</a><a href="/ledger/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Vendor master</h1>
+<table><thead><tr><th>ID</th><th>Name</th><th>GSTIN</th><th>Active</th></tr></thead>
+<tbody>{% for vd in items %}<tr><td>{{ vd.id }}</td><td>{{ vd.name }}</td><td>{{ vd.gstin }}</td><td>{{ "yes" if vd.active else "no" }}</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

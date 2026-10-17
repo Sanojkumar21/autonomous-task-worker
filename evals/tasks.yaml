@@ -1,0 +1,122 @@
+# Evaluation tasks. Each has a plain-English request, the ground truth the
+# harness checks through the admin API (never through the worker), and the
+# scripted human's answers. `amount_paise` lets the harness add the approval
+# expectation when the effective threshold (policy or learned) applies.
+
+tasks:
+  - id: T1_hero
+    title: Northwind latest invoice → Ledger (revision + near-duplicate vendor)
+    request: "Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done"
+    system: ledger
+    invoice: NW-1043-R
+    amount_paise: 5980000
+    expect:
+      - {kind: exists, system: ledger, entity: bill, match: {invoice_number: NW-1043-R, vendor_gstin: 07AAACN1234F1Z5},
+         expect: {amount_paise: 5980000, due_date: "2026-11-08", po_number: PO-7734, status: posted}}
+      - {kind: absent, system: ledger, entity: bill, match: {invoice_number: NW-1043}}
+      - {kind: count, system: ledger, entity: bill, match: {invoice_number: NW-1043-R}, expect: {count: 1}}
+
+  - id: T2_pdf_truth
+    title: Brightline invoice → Ledger (portal amount differs from the PDF)
+    request: "Record Brightline Components' invoice BL-2207 in Ledger with the correct amount and due date"
+    system: ledger
+    invoice: BL-2207
+    amount_paise: 3480000
+    expect:
+      - {kind: exists, system: ledger, entity: bill, match: {invoice_number: BL-2207, vendor_gstin: 29AABCB5678K1Z2},
+         expect: {amount_paise: 3480000, due_date: "2026-10-31", po_number: PO-7729, status: posted}}
+      - {kind: count, system: ledger, entity: bill, match: {invoice_number: BL-2207}, expect: {count: 1}}
+
+  - id: T3_duplicate
+    title: Kestrel KL-0915 → Ledger (already recorded: must not duplicate)
+    request: "Enter Kestrel Logistics' invoice KL-0915 into Ledger"
+    system: ledger
+    invoice: KL-0915
+    amount_paise: 1875000
+    no_writes: true
+    expect:
+      - {kind: count, system: ledger, entity: bill, match: {invoice_number: KL-0915}, expect: {count: 1}}
+
+  - id: T4_small
+    title: Orbit OR-5521 → Ledger (straightforward)
+    request: "Please record the latest invoice from Orbit Office Supplies in Ledger"
+    system: ledger
+    invoice: OR-5521
+    amount_paise: 640000
+    expect:
+      - {kind: exists, system: ledger, entity: bill, match: {invoice_number: OR-5521, vendor_gstin: 06AAACO3456P1Z1},
+         expect: {amount_paise: 640000, due_date: "2026-10-21", po_number: PO-7741, status: posted}}
+      - {kind: count, system: ledger, entity: bill, match: {invoice_number: OR-5521}, expect: {count: 1}}
+
+  - id: T5_approval
+    title: Meridian MM-0882 → Ledger (above threshold: needs approval)
+    request: "Record the latest invoice from Meridian Metals in Ledger and let me know when it's posted"
+    system: ledger
+    invoice: MM-0882
+    amount_paise: 23450000
+    expect:
+      - {kind: exists, system: ledger, entity: bill, match: {invoice_number: MM-0882, vendor_gstin: 24AAACM7890R1Z6},
+         expect: {amount_paise: 23450000, due_date: "2026-11-07", po_number: PO-7738, status: posted, approved_by: priya.manager}}
+      - {kind: count, system: ledger, entity: bill, match: {invoice_number: MM-0882}, expect: {count: 1}}
+
+  - id: T6_denied
+    title: Meridian MM-0882 → Ledger, manager denies approval (must not post)
+    request: "Record the latest invoice from Meridian Metals in Ledger"
+    system: ledger
+    invoice: MM-0882
+    amount_paise: 23450000
+    human:
+      - {match: "MM-0882", approve: false, approver: priya.manager, note: "Hold Meridian until the quality claim is settled"}
+    expect_status: [blocked, gave_up]
+    expect:
+      - {kind: absent, system: ledger, entity: bill, match: {invoice_number: MM-0882, status: posted}}
+
+  - id: T7_nova_hero
+    title: Northwind latest invoice → NovaBooks (unseen app, three-step wizard)
+    request: "Record the latest invoice from Northwind Supplies in NovaBooks"
+    system: nova
+    invoice: NW-1043-R
+    amount_paise: 5980000
+    expect:
+      - {kind: exists, system: nova, entity: payable, match: {invoice_number: NW-1043-R, vendor_gstin: 07AAACN1234F1Z5},
+         expect: {amount_paise: 5980000, due_date: "2026-11-08", po_number: PO-7734, status: recorded}}
+      - {kind: count, system: nova, entity: payable, match: {invoice_number: NW-1043-R}, expect: {count: 1}}
+
+  - id: T8_nova_pdf_truth
+    title: Brightline BL-2207 → NovaBooks (unseen app, PDF total)
+    request: "Record Brightline Components' invoice BL-2207 in NovaBooks"
+    system: nova
+    invoice: BL-2207
+    amount_paise: 3480000
+    expect:
+      - {kind: exists, system: nova, entity: payable, match: {invoice_number: BL-2207, vendor_gstin: 29AABCB5678K1Z2},
+         expect: {amount_paise: 3480000, due_date: "2026-10-31", po_number: PO-7729, status: recorded}}
+      - {kind: count, system: nova, entity: payable, match: {invoice_number: BL-2207}, expect: {count: 1}}
+
+  - id: T9_nova_approval
+    title: Meridian MM-0882 → NovaBooks (unseen app, approval)
+    request: "Record the latest invoice from Meridian Metals in NovaBooks"
+    system: nova
+    invoice: MM-0882
+    amount_paise: 23450000
+    expect:
+      - {kind: exists, system: nova, entity: payable, match: {invoice_number: MM-0882, vendor_gstin: 24AAACM7890R1Z6},
+         expect: {amount_paise: 23450000, due_date: "2026-11-07", po_number: PO-7738, status: recorded, approved_by: priya.manager}}
+      - {kind: count, system: nova, entity: payable, match: {invoice_number: MM-0882}, expect: {count: 1}}
+
+# The teacher phase for the "learned" conditions: runs, then feedback.
+teacher:
+  runs: [T1_hero, T4_small]
+  feedback:
+    - who: priya.manager
+      text: "From now on bills over 50,000 need my approval before posting."
+    - who: priya.manager
+      text: "Don't use 'Northwind Supplies Ltd' in Ledger; use 'Northwind Supplies' (GSTIN 07AAACN1234F1Z5). The Ltd record is stale."
+    - who: ops.lead
+      text: "Always check the ops mailbox for revision notices before recording Northwind invoices."
+
+conditions:
+  cold:     {memory: none, chaos: {enabled: false}}
+  learned:  {memory: teacher, chaos: {enabled: false}}
+  unseen:   {memory: teacher, chaos: {enabled: false}, tasks: [T7_nova_hero, T8_nova_pdf_truth, T9_nova_approval]}
+  chaos:    {memory: none, chaos: {enabled: true, http_503: 0.15, commit_then_502: 0.35, session_expiry_every: 7, ui_drift: true}}

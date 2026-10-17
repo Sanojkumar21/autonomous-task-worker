@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}NovaBooks{% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Welcome to NovaBooks</h1>
+<p>Accounts payable for the Pune unit. Use <strong>Record payable</strong> to enter a supplier invoice in three steps.</p>
+<div class="actions"><a class="btn" href="/nova/payables/record">Record payable</a><a class="btn secondary" href="/nova/payables">Payables</a></div>
+{% endblock %}

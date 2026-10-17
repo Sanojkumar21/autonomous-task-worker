@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% block title %}Ledger — new bill{% endblock %}{% block brand %}Ledger ERP{% endblock %}
+{% block nav %}<a href="/ledger/bills">{{ label("bills") }}</a><a href="/ledger/bills/new">{{ label("new_bill") }}</a><a href="/ledger/vendors">Vendors</a><a href="/ledger/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>{{ label("new_bill") }}</h1>
+{% if errors %}<div class="warn" role="alert">Please correct the highlighted fields.</div>{% endif %}
+<form method="post" action="/ledger/bills/new">
+ <label for="vendor_id">{{ label("vendor") }}</label>
+ <select id="vendor_id" name="vendor_id"><option value="">— choose —</option>{% for vd in vendors %}<option value="{{ vd.id }}" {% if v.vendor_id == vd.id|string %}selected{% endif %}>{{ vd.name }}</option>{% endfor %}</select>
+ {% if errors.vendor_id %}<div class="error">{{ errors.vendor_id }}</div>{% endif %}
+ <label for="invoice_number">{{ label("invoice_number") }}</label><input id="invoice_number" name="invoice_number" value="{{ v.invoice_number or '' }}">
+ {% if errors.invoice_number %}<div class="error">{{ errors.invoice_number }}</div>{% endif %}
+ <label for="amount">{{ label("amount") }}</label><input id="amount" name="amount" value="{{ v.amount or '' }}" placeholder="59,800.00">
+ {% if errors.amount %}<div class="error">{{ errors.amount }}</div>{% endif %}
+ <label for="due_date">{{ label("due_date") }}</label><input id="due_date" name="due_date" value="{{ v.due_date or '' }}" placeholder="YYYY-MM-DD">
+ {% if errors.due_date %}<div class="error">{{ errors.due_date }}</div>{% endif %}
+ <label for="po_number">{{ label("po_number") }}</label><input id="po_number" name="po_number" value="{{ v.po_number or '' }}">
+ <label for="approved_by">Approved by (manager username, for bills needing approval)</label><input id="approved_by" name="approved_by" value="{{ v.approved_by or '' }}">
+ <label for="memo">Memo</label><textarea id="memo" name="memo" rows="2">{{ v.memo or '' }}</textarea>
+ <div class="actions">
+  <button type="submit" name="action" value="post">{{ label("save_bill") }}</button>
+  <button type="submit" name="action" value="draft" class="secondary">Save as draft</button>
+ </div>
+</form>
+{% endblock %}

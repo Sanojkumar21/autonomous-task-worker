@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}NovaBooks — payable {{ p.id }}{% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+{% if flash == "saved" %}<div class="flash" role="status">Payable {{ p.id }} {{ p.state }}.</div>{% endif %}
+<h1>Payable {{ p.id }} <span class="pill {{ p.state }}">{{ p.state }}</span></h1>
+<dl>
+ <dt>Supplier</dt><dd>{{ p.supplier_name }} <span class="muted">(tax ID {{ p.tax_id }})</span></dd>
+ <dt>Reference</dt><dd>{{ p.reference }}</dd><dt>Total (INR)</dt><dd>{{ rupees(p.total_paise) }}</dd>
+ <dt>Pay by</dt><dd>{{ p.pay_by }}</dd><dt>Order ref</dt><dd>{{ p.order_ref or "-" }}</dd>
+ <dt>Authorised by</dt><dd>{{ p.authorised_by or "-" }}</dd><dt>Note</dt><dd>{{ p.note or "-" }}</dd><dt>Recorded by</dt><dd>{{ p.created_by }}</dd>
+</dl>
+{% endblock %}

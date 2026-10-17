@@ -1,0 +1,27 @@
+# Company policy the worker's policy gate enforces in code.
+# The model plans; these rules decide what it may do. Learned rules
+# (memory/rules.json) can tighten or adjust them with full provenance.
+
+approval:
+  # Bills at or above this amount need a manager's approval before they are posted.
+  threshold_paise: 10000000        # Rs 1,00,000.00
+  approvers: [priya.manager]
+
+writes:
+  # Every create/record write must be preceded by these recorded facts for the
+  # invoice in question. The gate refuses the write otherwise.
+  require_facts:
+    - duplicate_check            # "duplicate_check:<invoice>" = "none" | "exists: ..."
+    - pdf_total                  # "pdf_total:<invoice>" = amount in paise read from the PDF
+  amount_must_match_pdf: true    # the amount entered must equal the PDF total
+  block_if_duplicate: true
+  readback_after_unknown_outcome: true   # after a 5xx on submit, read the list before retrying
+
+forbidden:
+  - delete                       # the worker never deletes records
+  - external_email               # no mail leaves the company without approval
+  - admin_api                    # the verifier's channel is off-limits to the worker
+
+limits:
+  max_steps: 60
+  max_minutes: 20

@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Ledger ERP{% endblock %}{% block brand %}Ledger ERP{% endblock %}
+{% block nav %}<a href="/ledger/bills">{{ label("bills") }}</a><a href="/ledger/bills/new">{{ label("new_bill") }}</a><a href="/ledger/vendors">Vendors</a><a href="/ledger/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Accounts payable</h1>
+<p>{{ counts.n }} bills on file, {{ counts.drafts }} in draft.</p>
+<div class="actions"><a class="btn" href="/ledger/bills/new">{{ label("new_bill") }}</a><a class="btn secondary" href="/ledger/bills">{{ label("bills") }}</a><a class="btn secondary" href="/ledger/vendors">Vendors</a></div>
+{% endblock %}

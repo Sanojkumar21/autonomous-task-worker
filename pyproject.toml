@@ -1,0 +1,27 @@
+[project]
+name = "centralign-worker"
+version = "0.1.0"
+description = "An autonomous AI task worker that learns a company's way of working: plans, drives a real browser, verifies independently, asks before risky actions, and improves from feedback."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.9",
+    "itsdangerous>=2.2",
+    "playwright>=1.47",
+    "pydantic>=2.7",
+    "httpx>=0.27",
+    "pypdf>=4.3",
+    "reportlab>=4.2",
+    "pyyaml>=6.0",
+    "rich>=13.7",
+    "pillow>=10.4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.24"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

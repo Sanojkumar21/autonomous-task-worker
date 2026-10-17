@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}NovaBooks — payables{% endblock %}{% block brand %}NovaBooks{% endblock %}{% block brand_color %}#7a3e9d{% endblock %}
+{% block nav %}<a href="/nova/payables">Payables</a><a href="/nova/payables/record">Record payable</a><a href="/nova/suppliers">Suppliers</a><a href="/nova/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Payables</h1>
+<form method="get" action="/nova/payables" style="display:flex;gap:10px;align-items:end"><div><label for="search">Find</label><input id="search" name="search" value="{{ search }}" placeholder="reference or supplier"></div><button type="submit">Find</button></form>
+<table style="margin-top:16px"><thead><tr><th>ID</th><th>Supplier</th><th>Reference</th><th>Total (INR)</th><th>Pay by</th><th>Order ref</th><th>State</th><th>Authorised by</th></tr></thead>
+<tbody>{% for p in items %}<tr><td><a href="/nova/payables/{{ p.id }}">{{ p.id }}</a></td><td>{{ p.supplier_name }}</td><td>{{ p.reference }}</td><td>{{ rupees(p.total_paise) }}</td><td>{{ p.pay_by }}</td><td>{{ p.order_ref or "-" }}</td><td><span class="pill {{ p.state }}">{{ p.state }}</span></td><td>{{ p.authorised_by or "-" }}</td></tr>
+{% else %}<tr><td colspan="8" class="muted">Nothing recorded yet.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

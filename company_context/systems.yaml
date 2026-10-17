@@ -1,0 +1,40 @@
+# The systems an Acme ops clerk uses, and how to reach them.
+# A human clerk has these in a password manager; the worker reads them here.
+base_url: http://127.0.0.1:8000
+
+systems:
+  portal:
+    name: Supplier Portal
+    purpose: Suppliers publish their invoices here. Each invoice has a PDF (the document of record).
+    home: /portal/invoices
+    login: /portal/login
+    username: ops.agent
+    password: acme-ops-2026
+  ledger:
+    name: Ledger ERP
+    purpose: Accounts payable for Delhi. Supplier bills are recorded and posted here.
+    home: /ledger/
+    login: /ledger/login
+    username: ops.agent
+    password: acme-ops-2026
+    notes: Dates are YYYY-MM-DD. Amounts in rupees with decimals, e.g. 59800.00.
+  nova:
+    name: NovaBooks
+    purpose: Accounts payable for the Pune unit. Supplier invoices are "payables" here.
+    home: /nova/
+    login: /nova/login
+    username: ops.agent
+    password: acme-ops-2026
+    notes: Dates are dd/mm/yyyy. Recording a payable is a three-step wizard (supplier, details, review).
+  mail:
+    name: Acme Mail
+    purpose: The ops team mailbox. Suppliers send corrections and revisions here.
+    home: /mail/inbox
+    login: /mail/login
+    username: ops.agent
+    password: acme-ops-2026
+
+people:
+  priya.manager:
+    role: Finance manager
+    approves: supplier bills above the approval threshold

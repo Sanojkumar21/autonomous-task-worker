@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Ledger — bills{% endblock %}{% block brand %}Ledger ERP{% endblock %}
+{% block nav %}<a href="/ledger/bills">{{ label("bills") }}</a><a href="/ledger/bills/new">{{ label("new_bill") }}</a><a href="/ledger/vendors">Vendors</a><a href="/ledger/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>{{ label("bills") }}</h1>
+<form method="get" action="/ledger/bills" style="display:flex;gap:10px;align-items:end">
+ <div><label for="q">Search</label><input id="q" name="q" value="{{ q }}" placeholder="invoice number, vendor or PO"></div><button type="submit">Search</button>
+</form>
+<table style="margin-top:16px"><thead><tr><th>#</th><th>{{ label("vendor") }}</th><th>{{ label("invoice_number") }}</th><th>{{ label("amount") }}</th><th>{{ label("due_date") }}</th><th>{{ label("po_number") }}</th><th>Status</th><th>Approved by</th></tr></thead>
+<tbody>{% for b in items %}<tr><td><a href="/ledger/bills/{{ b.id }}">{{ b.id }}</a></td><td>{{ b.vendor_name }}</td><td>{{ b.invoice_number }}</td><td>{{ rupees(b.amount_paise) }}</td><td>{{ b.due_date }}</td><td>{{ b.po_number or "-" }}</td><td><span class="pill {{ b.status }}">{{ b.status }}</span></td><td>{{ b.approved_by or "-" }}</td></tr>
+{% else %}<tr><td colspan="8" class="muted">No bills found.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

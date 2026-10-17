@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block title %}Supplier Portal — invoices{% endblock %}{% block brand %}Supplier Portal{% endblock %}{% block brand_color %}#2f6f4e{% endblock %}
+{% block nav %}<a href="/portal/invoices">Invoices</a><a href="/portal/logout">Sign out</a>{% endblock %}
+{% block content %}
+<h1>Invoices</h1>
+<form method="get" action="/portal/invoices" style="display:flex;gap:10px;align-items:end">
+ <div><label for="vendor">Supplier</label><input id="vendor" name="vendor" value="{{ vendor }}" placeholder="e.g. Northwind"></div>
+ <div><label for="status">Status</label><select id="status" name="status"><option value="">Any</option>
+  {% for s in ["open","paid","superseded"] %}<option value="{{ s }}" {% if status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></div>
+ <button type="submit">Filter</button>
+</form>
+<table style="margin-top:16px">
+<thead><tr><th>Supplier</th><th>Invoice</th><th>Issued</th><th>Listed amount (INR)</th><th>Status</th><th></th></tr></thead>
+<tbody>
+{% for i in items %}<tr>
+ <td>{{ i.vendor_name }}</td><td>{{ i.number }}</td><td>{{ i.issued_on }}</td><td>{{ rupees(i.listed_amount_paise) }}</td>
+ <td><span class="pill {{ i.status }}">{{ i.status }}</span></td><td><a href="/portal/invoices/{{ i.id }}">View</a></td>
+</tr>{% else %}<tr><td colspan="6" class="muted">No invoices match.</td></tr>{% endfor %}
+</tbody></table>
+<p class="muted">Listed amounts are as submitted by the supplier at upload time. The PDF is the document of record.</p>
+{% endblock %}
