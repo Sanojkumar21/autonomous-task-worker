@@ -7,7 +7,7 @@ setup:            ## create the virtualenv, install deps and Chromium
 	uv venv --python 3.12 .venv || python3 -m venv .venv
 	uv pip install -r requirements.txt || .venv/bin/pip install -r requirements.txt
 	.venv/bin/playwright install chromium
-	cp -n .env.example .env || true
+	[ -f .env ] || cp .env.example .env
 	$(PY) -m company.seed
 
 serve:            ## start the simulated company on http://127.0.0.1:$(PORT)
