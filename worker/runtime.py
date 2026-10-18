@@ -35,7 +35,8 @@ TOOLS = {
                   "submit": "optional id of a non-write button to click afterwards (sign in, search, filter, continue, review)"},
     "back": {},
     "read_pdf": {"url": "URL or path of a PDF link on the current site"},
-    "note_fact": {"facts": "mapping {key: value} to record several facts in ONE step, e.g. {pdf_total:<inv>: 5980000, due_date:<inv>: ...}",
+    "note_fact": {"facts": "mapping of several facts in ONE step, keys include the invoice: {\"pdf_total:NW-1043-R\": 5980000, \"due_date:NW-1043-R\": \"2026-11-08\"}",
+                  "invoice": "optional invoice number; bare keys like pdf_total are then stored as pdf_total:<invoice>",
                   "key": "single fact key (alternative to facts)", "value": "its value",
                   "source": "where you read them (URL or PDF name)"},
     "ask_human": {"question": "what you need decided", "options": "optional list of choices"},
@@ -205,15 +206,36 @@ class Runtime:
         return ToolResult("screenshot attached", image=self.browser.screenshot_bytes())
 
     # ---- knowledge tools
-    def t_note_fact(self, step, key="", value="", source="", facts=None):
+    # facts the policy gate reads per invoice: they are meaningless without the invoice number
+    INVOICE_FACTS = ("pdf_total", "due_date", "po", "vendor_gstin", "duplicate_check", "mail_check", "readback", "unknown_outcome")
+
+    def t_note_fact(self, step, key="", value="", source="", facts=None, invoice=""):
         src = source or (self.last_observation.url if self.last_observation else "unknown")
         pairs = list(facts.items()) if isinstance(facts, dict) else []
-        if key:
+        empty_key = str(key).strip() and str(value).strip() == ""
+        if key and not (pairs and empty_key):        # models sometimes put the invoice in `key` next to `facts`
             pairs.append((key, value))
         if not pairs:
             return ToolResult("note_fact needs facts: {key: value, ...} or a key and value")
-        noted = [self.add_fact(k, v, src, step) for k, v in pairs if str(k).strip()]
-        return ToolResult("noted " + "; ".join(f"{f.key} = {f.value!r}" for f in noted) + f" (source: {src})")
+        inv = str(invoice).strip()
+        if not inv and pairs and empty_key:
+            inv = str(key).split(":", 1)[-1].strip()
+        noted, problems = [], []
+        for k, v in pairs:
+            k, v = str(k).strip(), "" if v is None else str(v).strip()
+            if not k:
+                continue
+            if v == "":
+                problems.append(f"{k}: empty value not recorded")
+                continue
+            if ":" not in k and k in self.INVOICE_FACTS:
+                if not inv:
+                    problems.append(f"{k}: needs the invoice number, e.g. {k}:NW-1043-R (or pass invoice)")
+                    continue
+                k = f"{k}:{inv}"
+            noted.append(self.add_fact(k, v, src, step))
+        out = ("noted " + "; ".join(f"{f.key} = {f.value!r}" for f in noted) + f" (source: {src})") if noted else "nothing noted"
+        return ToolResult(out + (" | NOT recorded: " + "; ".join(problems) if problems else ""))
 
     def t_ask_human(self, step, question="", options=None):
         options = list(options or []) if not isinstance(options, str) else [options]

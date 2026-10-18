@@ -184,7 +184,7 @@ class RunRecord(BaseModel):
 
     def fact(self, key: str) -> str | None:
         for f in reversed(self.facts):
-            if f.key == key:
+            if f.key == key and f.value != "":      # an empty value is no evidence of anything
                 return f.value
         return None
 

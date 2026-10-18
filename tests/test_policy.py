@@ -89,3 +89,13 @@ def test_missing_type_is_still_governed():
     assert not d.allowed and any("pdf_total" in r for r in d.reasons)
     run = make_run([("duplicate_check:NW-1043-R", "none"), ("pdf_total:NW-1043-R", "5980000")])
     assert gate.evaluate(dict(intent), run).allowed
+
+
+def test_empty_or_negative_duplicate_check_is_not_a_duplicate():
+    gate = PolicyGate(load_policy())
+    for value in ("none", "not found", "no matching bill"):
+        run = make_run([("duplicate_check:NW-1043-R", value), ("pdf_total:NW-1043-R", "5980000")])
+        assert gate.evaluate(dict(INTENT), run).allowed, value
+    run = make_run([("duplicate_check:NW-1043-R", ""), ("pdf_total:NW-1043-R", "5980000")])
+    d = gate.evaluate(dict(INTENT), run)
+    assert not d.allowed and any("missing fact 'duplicate_check" in r for r in d.reasons)

@@ -83,3 +83,19 @@ def test_alternating_between_two_pages_gets_a_hint():
 def test_nav_links_are_marked_in_the_observation():
     from worker.types import Element
     assert Element(id=3, role="link", name="Vendors", href="/ledger/vendors", nav=True).line() == '[3] link "Vendors" (nav) -> /ledger/vendors'
+
+
+def test_bare_invoice_fact_keys_get_the_invoice_or_are_refused():
+    rt = make_runtime()
+    res = rt.t_note_fact(4, facts={"pdf_total": "5980000", "duplicate_check": "none"}, source="pdf")
+    assert "NOT recorded" in res.text and rt.run.fact("pdf_total:NW-1043-R") is None
+    rt.t_note_fact(5, facts={"pdf_total": "5980000", "duplicate_check": "none"}, key="NW-1043-R", source="pdf")
+    assert rt.run.fact("pdf_total:NW-1043-R") == "5980000" and rt.run.fact("duplicate_check:NW-1043-R") == "none"
+    rt.t_note_fact(6, facts={"due_date": "2026-11-08"}, invoice="NW-1043-R")
+    assert rt.run.fact("due_date:NW-1043-R") == "2026-11-08"
+
+
+def test_empty_values_are_never_recorded():
+    rt = make_runtime()
+    res = rt.t_note_fact(4, key="duplicate_check:NW-1043-R", value="")
+    assert "empty value" in res.text and rt.run.fact("duplicate_check:NW-1043-R") is None

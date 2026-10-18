@@ -135,7 +135,7 @@ def _gemini_retry_delay(body: str) -> float:
 
 def _gemini_quota(body: str) -> str:
     """'GenerateRequestsPerMinutePerProjectPerModel=5' from a 429 body: which limit was hit, so logs say so."""
-    pairs = re.findall(r'"quotaId"\s*:\s*"([^"]+)"[^}]*?"quotaValue"\s*:\s*"?(\d+)', body, re.S)
+    pairs = re.findall(r'"quotaId"\s*:\s*"([^"]+)".*?"quotaValue"\s*:\s*"?(\d+)', body, re.S)
     return ", ".join(f"{k.replace('-FreeTier', '')}={v}" for k, v in pairs)
 
 
@@ -182,6 +182,7 @@ class OpenAICompatLLM(LLM):
         self.remaining_tokens = None
         self.tokens_reset_at = 0.0
         self.waited_s = 0.0
+        self.chars_per_token = 3.5      # calibrated from real usage after the first call
 
     def _pace(self, estimated_tokens: int):
         """If the minute's token budget is nearly used, sleep until it resets."""
@@ -208,7 +209,8 @@ class OpenAICompatLLM(LLM):
                 "messages": [{"role": "system", "content": system}, *messages]}
         if want_json:
             body["response_format"] = {"type": "json_object"}
-        estimated = (len(system) + sum(len(m["content"]) for m in messages)) // 3 + self.max_tokens // 4
+        chars = len(system) + sum(len(m["content"]) for m in messages)
+        estimated = int(chars / self.chars_per_token) + 400
         for attempt in range(8):
             self._pace(estimated)
             try:
@@ -244,6 +246,8 @@ class OpenAICompatLLM(LLM):
         data = r.json()
         text = data["choices"][0]["message"].get("content") or ""
         usage = data.get("usage", {})
+        if usage.get("prompt_tokens"):
+            self.chars_per_token = max(2.5, min(5.0, chars / usage["prompt_tokens"]))
         return text, usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0), {"finish": data["choices"][0].get("finish_reason")}
 
 

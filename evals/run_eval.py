@@ -92,12 +92,12 @@ def ground_truth(task: dict, verifier: Verifier, started_at: float, run, thresho
             "writes": len(writes), "no_writes_ok": no_writes_ok}
 
 
-def teach(suite, brain, ctx, memory_dir: Path, sandbox: Sandbox, human_default, verbose):
+def teach(suite, brain, ctx, memory_dir: Path, sandbox: Sandbox, human_default, verbose, runs=None):
     """Build the 'learned' memory: verified runs produce skills; people give feedback."""
     memory = MemoryStore(memory_dir)
     memory.clear()
     tasks = {t["id"]: t for t in suite["tasks"]}
-    for tid in suite["teacher"]["runs"]:
+    for tid in (runs or suite["teacher"]["runs"]):
         task = tasks[tid]
         sandbox.reset()
         human = ScriptedHuman(task.get("human", []) + human_default)
@@ -123,6 +123,8 @@ def main(argv=None):
     ap.add_argument("--runs", type=int, default=1)
     ap.add_argument("--base-url", default=os.environ.get("COMPANY_URL", "http://127.0.0.1:8000"))
     ap.add_argument("--name", default=None, help="results file name")
+    ap.add_argument("--teacher-runs", nargs="*", default=None,
+                    help="teacher tasks (default from tasks.yaml); fewer saves model quota")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
 
@@ -137,13 +139,20 @@ def main(argv=None):
     name = args.name or f"{args.brain.replace(':', '-').replace('/', '-')}-{time.strftime('%Y%m%d-%H%M%S')}"
     RESULTS.mkdir(parents=True, exist_ok=True)
 
+    taught: MemoryStore | None = None       # one teacher phase serves every condition that needs it (memory is frozen)
+    teacher_dir = Path(tempfile.mkdtemp(prefix="memory-teacher-"))
     for cond_name in args.conditions:
         cond = suite["conditions"][cond_name]
-        task_ids = args.tasks or cond.get("tasks") or [t["id"] for t in suite["tasks"] if t["system"] == "ledger"]
+        allowed = cond.get("tasks") or [t["id"] for t in suite["tasks"] if t["system"] == "ledger"]
+        task_ids = [t for t in args.tasks if t in allowed] if args.tasks else allowed
         memory_dir = Path(tempfile.mkdtemp(prefix=f"memory-{cond_name}-"))
         if cond["memory"] == "teacher":
-            print(f"[{cond_name}] teaching...")
-            memory = teach(suite, brain, ctx, memory_dir, sandbox, human_default, args.verbose)
+            if taught is None:
+                print(f"[{cond_name}] teaching...")
+                taught = teach(suite, brain, ctx, teacher_dir, sandbox, human_default, args.verbose, args.teacher_runs)
+            else:
+                print(f"[{cond_name}] reusing the teacher memory")
+            memory = taught
             memory_enabled = True
         else:
             memory = MemoryStore(memory_dir, enabled=False)
@@ -168,12 +177,15 @@ def main(argv=None):
                        "seconds": round(run.elapsed(), 1), "human": run.usage.human_interventions,
                        "policy_blocks": sum(1 for s in run.steps if s.policy and not s.policy.allowed and not s.policy.needs_approval),
                        "approvals": len(run.approvals), "skills_used": run.skills_used, "rules": len(run.rules_applied),
-                       "writes": truth["writes"], "checks": truth["checks"], "run_id": run_id}
+                       "writes": truth["writes"], "checks": truth["checks"], "run_id": run_id, "model": run.model}
                 results.append(row)
+                (RESULTS / f"{name}.partial.json").write_text(json.dumps(results, indent=1))   # survives an interruption
                 mark = "PASS" if row["success"] else "FAIL"
                 print(f"[{cond_name}] {tid} run {n}: {mark} status={run.final_status} steps={row['steps']} llm={row['llm_calls']} "
                       f"human={row['human']} t={row['seconds']}s" + ("" if truth["honest"] else "  (FALSE CLAIM)"))
         shutil.rmtree(memory_dir, ignore_errors=True)
+    shutil.rmtree(teacher_dir, ignore_errors=True)
+    (RESULTS / f"{name}.partial.json").unlink(missing_ok=True)
 
     out = {"brain": args.brain, "model": brain.model, "when": time.strftime("%Y-%m-%d %H:%M:%S"), "runs": args.runs, "results": results}
     (RESULTS / f"{name}.json").write_text(json.dumps(out, indent=1))

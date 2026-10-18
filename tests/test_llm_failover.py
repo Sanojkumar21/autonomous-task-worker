@@ -103,7 +103,8 @@ def test_gemini_learns_its_rpm_quota_and_paces(monkeypatch):
     slept = []
     monkeypatch.setattr(time, "sleep", lambda s: slept.append(s))
     body = ('{"error":{"details":[{"violations":[{"quotaMetric":"generativelanguage.googleapis.com/generate_content_free_tier_requests",'
-            '"quotaId":"GenerateRequestsPerMinutePerProjectPerModel-FreeTier","quotaValue":"5"}]},{"retryDelay":"21s"}]}}')
+            '"quotaId":"GenerateRequestsPerMinutePerProjectPerModel-FreeTier","quotaDimensions":{"model":"gemini-3.8-flash","location":"global"},'
+            '"quotaValue":"5"}]},{"retryDelay":"21s"}]}}')
     monkeypatch.setattr(P.httpx, "post", lambda url, **kw: Resp(429, body))
     llm = GeminiLLM("gemini-3.8-flash", api_key="x")
     with pytest.raises(LLMError, match="PerMinute"):

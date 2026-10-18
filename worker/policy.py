@@ -99,7 +99,7 @@ class PolicyGate:
                     reasons.append(f"missing fact '{fact_key}:{inv}' (learned rule {rid})")
                     rule_ids.append(rid)
             dup = run.fact(f"duplicate_check:{inv}")
-            if writes.get("block_if_duplicate") and dup is not None and not dup.lower().startswith("none"):
+            if writes.get("block_if_duplicate") and dup and not dup.lower().startswith(("none", "no ", "not found", "absent")):
                 reasons.append(f"duplicate: '{inv}' already exists ({dup}); do not record it again, report it")
                 rule_ids.append("policy.writes.block_if_duplicate")
             pdf_total = run.fact(f"pdf_total:{inv}")
