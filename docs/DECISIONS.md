@@ -29,3 +29,7 @@ Each entry: the decision, the alternative, why.
 13. **Free models by default.** Gemini Flash, Groq and OpenRouter free tiers are supported through plain HTTPS; an Anthropic provider is included. The scripted brain runs the whole suite with no key at all, so reviewers can reproduce the runtime guarantees for free.
 
 14. **A simulated company, not mocks.** Four real web apps with logins, validation, PDFs, a mailbox, an audit log and fault injection. "It works on a mock" proves nothing; "it survived commit-then-502 with zero duplicates" does.
+
+14. **Budgets are a failure mode, so they are handled in code.** Free tiers meter tokens per minute *and* per day. The provider layer paces itself on the per-minute headers, but a per-day quota will not come back inside a run, so it raises `BudgetExhausted` immediately instead of sleeping; `FailoverLLM` parks that model until its reset time and continues with the next one in `LLM=a,b,c`, mid-run. Alternative: let the run hang on retries (the first evaluation attempt did exactly that for 36 minutes). The report names every model that worked on a run, so a failover is never a silent change of model.
+
+15. **Secrets never travel in URLs.** API keys go in headers, and the HTTP client's URL logging is turned off at import. Alternative: trust that nobody reads the logs; one INFO line from the HTTP library was enough to prove that wrong during development.

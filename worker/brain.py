@@ -24,6 +24,8 @@ class BrainState:
     skills: list[Skill] = field(default_factory=list)
     hints: list[str] = field(default_factory=list)      # runtime detectors talking to the brain
     last_results: list[str] = field(default_factory=list)
+    documents: dict[str, str] = field(default_factory=dict)   # PDFs read this run, kept in view so they are read once
+    sessions: list[str] = field(default_factory=list)         # systems the browser is currently signed in to
 
 
 class Brain:

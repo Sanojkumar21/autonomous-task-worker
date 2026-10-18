@@ -49,7 +49,8 @@ OBSERVE_JS = r"""
   for (const el of els) {
     n += 1; el.setAttribute('data-wk', String(n));
     const role = roleOf(el);
-    const item = { id: n, role, name: nameOf(el), value: '', href: '', options: [], checked: null, disabled: !!el.disabled };
+    const item = { id: n, role, name: nameOf(el), value: '', href: '', options: [], checked: null, disabled: !!el.disabled,
+                   nav: !!el.closest('nav, header') };
     if (role === 'textbox' || role === 'textarea') item.value = (el.value || '').slice(0, 200);
     if (role === 'password') item.value = el.value ? '•'.repeat(Math.min(el.value.length, 8)) : '';
     if (role === 'select') { item.value = el.options[el.selectedIndex] ? el.options[el.selectedIndex].text.trim() : ''; item.options = Array.from(el.options).map(o => o.text.trim()); }

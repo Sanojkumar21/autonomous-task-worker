@@ -45,9 +45,10 @@ How you work
   due_date:<inv>, po:<inv>, vendor_gstin:<inv>, duplicate_check:<inv> ("none" or "exists: ..."), and any mail_check:<inv>.
 - Keep going until the task is done or you must stop. Prefer navigate with a path over clicking through menus when
   you know the path. Do not repeat an action that did not change anything.
-- Be economical: read a PDF once and record every fact you need from it in the following steps (do not read it again);
-  use `look` only when the text view is not enough; the intent of `commit` must include "type"
-  (create_bill | record_payable | post_bill) and the system.
+- Be economical: a PDF is read once; its text then stays in your prompt under "Open documents", so never read it
+  again. Record all facts from a document in ONE note_fact call ({{"facts": {{...}}, "source": ...}}). "Signed in to"
+  lists the systems whose session is live: do not sign in again unless you see a sign-in page. The intent of `commit`
+  must include "type" (create_bill | record_payable | post_bill) and the system.
 
 Tools (reply with exactly one per step): {tools}
 Use fill_form to enter several fields at once (and to sign in: fields + submit). Use commit, never fill_form's submit, for buttons that save or record.
@@ -78,10 +79,13 @@ class LLMBrain(Brain):
 
     def __init__(self, llm: LLM, history_steps: int = 5):
         self.llm = llm
-        self.model = llm.model
         self.history_steps = history_steps
         self._system_cache: dict[str, str] = {}
         self._pending_image: bytes | None = None
+
+    @property
+    def model(self) -> str:                # read live: a failover may change the model mid-run
+        return self.llm.model
 
     def usage(self):
         return {"llm_calls": self.llm.calls, "input_tokens": self.llm.input_tokens,
@@ -89,9 +93,10 @@ class LLMBrain(Brain):
 
     # ---- prompts
     def system_prompt(self, context: CompanyContext) -> str:
-        key = context.base_url
+        key = (context.base_url, bool(self.llm.supports_vision))
         if key not in self._system_cache:
-            tools = "; ".join(f"{name}({', '.join(args) if args else ''})" for name, args in TOOLS.items())
+            tools = "; ".join(f"{name}({', '.join(args) if args else ''})" for name, args in TOOLS.items()
+                              if name != "look" or self.llm.supports_vision)   # a text-only model cannot use `look`
             self._system_cache[key] = SYSTEM_PROMPT.format(
                 company="Acme Robotics Pvt Ltd", tools=tools, systems=context.systems_summary(),
                 threshold=context.approval_threshold_paise() / 100, approvers=", ".join(context.policy["approval"]["approvers"]),
@@ -180,6 +185,7 @@ Mark the ones that change a system of record with "writes": true. Reply with JSO
             is_last = i == len(recent) - 1
             limit = (2500 if is_last else 160) if "PDF text" in r else (400 if is_last else 200)
             history.append(_short(r, limit))
+        docs = "\n".join(f"[{name}]\n{text}" for name, text in list(state.documents.items())[-2:])
         clar = "\n".join(f"- Q: {c.question} A: {c.answer}" for c in run.clarifications if c.answer)
         appr = "\n".join(f"- {('granted by ' + a.approver) if a.granted else 'DENIED'}: {json.dumps(a.intent)[:160]}" for a in run.approvals)
         user = f"""Request: "{run.request}"
@@ -192,6 +198,8 @@ Milestones:
 
 Facts recorded so far:
 {facts}
+Signed in to: {', '.join(state.sessions) or 'nothing yet'}
+{('Open documents (already read; take facts from here):\n' + docs) if docs else ''}
 {('Answers from people:\n' + clar) if clar else ''}
 {('Approvals:\n' + appr) if appr else ''}
 Recent steps (oldest first):

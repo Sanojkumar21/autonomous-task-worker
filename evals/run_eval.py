@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import shutil
 import statistics
@@ -114,6 +115,7 @@ def teach(suite, brain, ctx, memory_dir: Path, sandbox: Sandbox, human_default, 
 
 def main(argv=None):
     load_env()
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s", datefmt="%H:%M:%S")
     ap = argparse.ArgumentParser()
     ap.add_argument("--brain", default=os.environ.get("BRAIN", "scripted"))
     ap.add_argument("--conditions", nargs="+", default=["cold"])

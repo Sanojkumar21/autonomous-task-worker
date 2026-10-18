@@ -21,9 +21,10 @@ class Element(BaseModel):
     options: list[str] = []        # for selects
     checked: bool | None = None
     disabled: bool = False
+    nav: bool = False              # inside the site navigation: moves between pages, never part of a form
 
     def line(self) -> str:
-        parts = [f"[{self.id}] {self.role} \"{self.name}\""]
+        parts = [f"[{self.id}] {self.role} \"{self.name}\"" + (" (nav)" if self.nav else "")]
         if self.role in ("textbox", "select", "textarea", "password") or self.value:
             parts.append(f'= "{self.value}"')
         if self.options:

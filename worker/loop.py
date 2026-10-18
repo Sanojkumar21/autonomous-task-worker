@@ -41,6 +41,10 @@ class Worker:
     def log(self, msg):
         if self.verbose:
             print(msg, flush=True)
+        path = getattr(self, "_log_path", None)
+        if path:
+            with open(path, "a") as fh:
+                fh.write(time.strftime("%H:%M:%S ") + msg + "\n")
 
     def run(self, request: str, run_id: str | None = None) -> RunRecord:
         run_id = run_id or time.strftime("%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:4]
@@ -48,6 +52,7 @@ class Worker:
                         memory_mode="on" if self.memory.enabled else "off")
         run_dir = self.runs_dir / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
+        self._log_path = run_dir / "worker.log"    # every step, hint and model warning, readable while the run is live
         limits = self.ctx.limits()
         browser = Browser(headless=self.headless, screenshots_dir=run_dir / "screens")
         gate = PolicyGate(self.ctx.policy, self.memory.active_rules())
@@ -95,7 +100,8 @@ class Worker:
                     status = "gave_up"
                     break
                 state = BrainState(run=run, context=self.ctx, memory=self.memory, observation=obs, skills=skills,
-                                   hints=list(hints), last_results=last_results[-6:])
+                                   hints=list(hints), last_results=last_results[-6:],
+                                   documents=dict(rt.documents), sessions=sorted(rt.sessions))
                 calls_before = self.brain.usage()["llm_calls"]
                 t0 = time.time()
                 thought, action = self.brain.decide(state)
@@ -108,6 +114,8 @@ class Worker:
                             screenshot=browser.screenshot(f"{i:03d}"), llm_calls=self.brain.usage()["llm_calls"] - calls_before,
                             duration_ms=int((time.time() - t0) * 1000))
                 run.steps.append(step)
+                with (run_dir / "trajectory.jsonl").open("a") as fh:
+                    fh.write(step.model_dump_json() + "\n")
                 last_results.append(f"step {i}: {action.tool} {action.args if action.tool != 'done' else ''} -> {result.text[:4500]}")
                 self.log(f"[{i}] {action.tool} {str(action.args)[:120]} -> {result.text[:140]}")
                 hints = self._detect(run, obs, result.text)
@@ -130,6 +138,7 @@ class Worker:
                 if denied:
                     run.final_status = "blocked"
             run.usage.browser_actions = browser.actions
+            run.model = self.brain.model          # may differ from the start after a budget failover
             u = self.brain.usage()
             run.usage.llm_calls, run.usage.input_tokens = u["llm_calls"], u["input_tokens"]
             run.usage.output_tokens, run.usage.cost_usd = u["output_tokens"], round(u["cost_usd"], 5)
@@ -147,6 +156,11 @@ class Worker:
         if len(steps) >= 2 and len({s.action.signature() for s in steps[-2:]}) == 1:
             hints.append(f"You just repeated the exact same call and it returned: '{steps[-1].result[:160]}'. Do not send it again: "
                          "fix the arguments to match the tool's expected shape, use a different element or path, or ask for help.")
+        if len(steps) >= 4:
+            sig = [s.action.signature() for s in steps[-4:]]
+            if sig[0] == sig[2] and sig[1] == sig[3] and sig[0] != sig[1]:
+                hints.append("You are alternating between two pages without acting on either. Navigation links (marked nav) "
+                             "only move between pages: on a form, act on the form controls (select/textbox ids), e.g. with fill_form.")
         if obs.is_login_page:
             hints.append("The page is a sign-in form: your session expired. Sign in again with the credentials from the company context, then continue where you left off.")
         if obs.http_error and obs.http_error >= 500:

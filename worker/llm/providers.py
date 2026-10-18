@@ -8,11 +8,15 @@ from __future__ import annotations
 
 import base64
 import os
+import re
 import time
 
 import httpx
 
-from worker.llm.base import LLM, LLMError
+from worker.llm.base import LLM, BudgetExhausted, LLMError, log
+
+# A quota that will not come back within a run's lifetime is not worth sleeping on.
+LONG_WAIT_S = 120.0
 
 
 def _msgs_to_text(messages):
@@ -23,7 +27,8 @@ class GeminiLLM(LLM):
     name = "gemini"
     supports_vision = True
 
-    PREFERRED = ("gemini-3-flash", "gemini-3.5-flash", "gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-2.0-flash")
+    PREFERRED = ("gemini-3.8-flash", "gemini-3.5-flash", "gemini-3-flash", "gemini-flash-latest", "gemini-2.5-flash",
+                 "gemini-3.5-flash-lite", "gemini-2.5-flash-lite")
 
     def __init__(self, model="auto", api_key=None, **kw):
         super().__init__(model, **kw)
@@ -31,13 +36,32 @@ class GeminiLLM(LLM):
         if not self.api_key:
             raise LLMError("GEMINI_API_KEY is not set")
         self.base = os.environ.get("GEMINI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta")
+        self.rpm_limit: int | None = None      # learned from the first per-minute 429; then we pace ourselves
+        self._sent: list[float] = []
+        self.waited_s = 0.0
         if model in ("", "auto"):
             self.model = self.pick_model()
+
+    def _pace(self):
+        """Stay under the requests-per-minute quota once it is known, instead of bouncing off it twice per minute."""
+        if not self.rpm_limit:
+            return
+        now = time.time()
+        self._sent = [t for t in self._sent if now - t < 60]
+        if len(self._sent) >= self.rpm_limit:
+            wait = 60.5 - (now - self._sent[0])
+            if wait > 0:
+                log.info("gemini %s: pacing %.0fs to stay under %d requests/min", self.model, wait, self.rpm_limit)
+                time.sleep(wait)
+                self.waited_s += wait
+
+    def _headers(self) -> dict:
+        return {"x-goog-api-key": self.api_key}     # a header, not a query parameter: URLs end up in logs
 
     def pick_model(self) -> str:
         """Free-tier model availability changes; ask the API which Flash models this key can use."""
         try:
-            r = httpx.get(f"{self.base}/models", params={"key": self.api_key, "pageSize": 200}, timeout=30)
+            r = httpx.get(f"{self.base}/models", params={"pageSize": 200}, headers=self._headers(), timeout=30)
             names = [m["name"].split("/", 1)[1] for m in r.json().get("models", [])
                      if "generateContent" in m.get("supportedGenerationMethods", [])]
         except (httpx.HTTPError, ValueError, KeyError):
@@ -48,6 +72,24 @@ class GeminiLLM(LLM):
                     return n
         flash = [n for n in names if "flash" in n and "image" not in n and "tts" not in n and "live" not in n]
         return flash[0] if flash else "gemini-2.5-flash"
+
+    def _handle_429(self, r):
+        """Per-minute limits: wait and let the caller retry. Per-day limits: fail fast with the reset time."""
+        body = r.text
+        wait = _gemini_retry_delay(body) or _seconds(r.headers.get("retry-after", ""))
+        per_day = "PerDay" in body or "per day" in body.lower()
+        if per_day or wait > LONG_WAIT_S:
+            raise BudgetExhausted(f"gemini {self.model}: quota exhausted ({'daily' if per_day else f'retry in {wait:.0f}s'}; {_gemini_quota(body)})",
+                                  retry_after=wait or 3600.0, model=self.model)
+        wait = min(max(wait, 2.0), 60.0)
+        quota = _gemini_quota(body)
+        m = re.search(r"PerMinute\w*=(\d+)", quota)
+        if m:
+            self.rpm_limit = int(m.group(1))
+        log.warning("gemini %s: rate limited (%s), waiting %.0fs", self.model, quota or "per-minute", wait)
+        time.sleep(wait)
+        self.waited_s = getattr(self, "waited_s", 0.0) + wait
+        raise LLMError(f"gemini 429 {quota} (waited {wait:.0f}s)")
 
     def _call(self, system, messages, want_json, images):
         contents = []
@@ -65,11 +107,15 @@ class GeminiLLM(LLM):
                                  **({"responseMimeType": "application/json"} if want_json else {})},
         }
         url = f"{self.base}/models/{self.model}:generateContent"
+        self._pace()
+        self._sent.append(time.time())
         try:
-            r = httpx.post(url, params={"key": self.api_key}, json=body, timeout=self.timeout)
+            r = httpx.post(url, json=body, timeout=self.timeout, headers=self._headers())
         except httpx.HTTPError as e:
             raise LLMError(f"gemini request failed: {e}") from None
-        if r.status_code in (429, 500, 502, 503):
+        if r.status_code == 429:
+            self._handle_429(r)
+        if r.status_code in (500, 502, 503):
             raise LLMError(f"gemini {r.status_code}: {r.text[:200]}")
         if r.status_code != 200:
             raise LLMError(f"gemini {r.status_code}: {r.text[:300]}")
@@ -80,6 +126,17 @@ class GeminiLLM(LLM):
             raise LLMError(f"gemini: empty response {str(data)[:200]}")
         usage = data.get("usageMetadata", {})
         return text, usage.get("promptTokenCount", 0), usage.get("candidatesTokenCount", 0), {"finish": data["candidates"][0].get("finishReason")}
+
+
+def _gemini_retry_delay(body: str) -> float:
+    m = re.search(r'"retryDelay"\s*:\s*"([^"]+)"', body)
+    return _seconds(m.group(1)) if m else 0.0
+
+
+def _gemini_quota(body: str) -> str:
+    """'GenerateRequestsPerMinutePerProjectPerModel=5' from a 429 body: which limit was hit, so logs say so."""
+    pairs = re.findall(r'"quotaId"\s*:\s*"([^"]+)"[^}]*?"quotaValue"\s*:\s*"?(\d+)', body, re.S)
+    return ", ".join(f"{k.replace('-FreeTier', '')}={v}" for k, v in pairs)
 
 
 def _seconds(text: str) -> float:
@@ -131,6 +188,8 @@ class OpenAICompatLLM(LLM):
         if self.remaining_tokens is not None and self.remaining_tokens < estimated_tokens:
             wait = max(0.0, self.tokens_reset_at - time.time()) + 0.5
             if wait > 0:
+                if wait > 5:
+                    log.info("llm %s: waiting %.0fs for the per-minute token budget", self.model, min(wait, 90))
                 time.sleep(min(wait, 90))
                 self.waited_s += min(wait, 90)
                 self.remaining_tokens = None
@@ -160,7 +219,12 @@ class OpenAICompatLLM(LLM):
             self._note_headers(r.headers)
             if r.status_code == 429:
                 wait = _seconds(r.headers.get("retry-after", "")) or max(1.0, self.tokens_reset_at - time.time()) or 5.0
+                body = r.text
+                if "per day" in body.lower() or "TPD" in body or "RPD" in body or wait > LONG_WAIT_S:
+                    raise BudgetExhausted(f"{self.model}: daily budget exhausted, retry in {wait / 60:.0f} min "
+                                          f"({body[:140]})", retry_after=wait, model=self.model)
                 wait = min(max(wait, 1.0), 90.0)
+                log.warning("llm %s: 429, waiting %.0fs", self.model, wait)
                 time.sleep(wait)
                 self.waited_s += wait
                 self.remaining_tokens = None
@@ -173,6 +237,8 @@ class OpenAICompatLLM(LLM):
             raise LLMError(f"{self.base_url} 429 after waiting: {r.text[:200]}")
         if r.status_code in (500, 502, 503):
             raise LLMError(f"{self.base_url} {r.status_code}: {r.text[:200]}")
+        if r.status_code == 413:
+            raise LLMError(f"{self.model}: request too large for this tier's per-request token limit: {r.text[:200]}")
         if r.status_code != 200:
             raise LLMError(f"{self.base_url} {r.status_code}: {r.text[:300]}")
         data = r.json()
@@ -218,10 +284,80 @@ class AnthropicLLM(LLM):
         return text, usage.get("input_tokens", 0), usage.get("output_tokens", 0), {"stop": data.get("stop_reason")}
 
 
+class FailoverLLM(LLM):
+    """Several models in preference order. A model whose budget is exhausted is parked until its
+    quota resets and the next one takes over mid-run; usage is summed across them. The run report
+    shows every model that worked on it ("a -> b"), never silently a different one."""
+    name = "failover"
+
+    def __init__(self, members: list[LLM]):
+        super().__init__(members[0].model)
+        self.members = members
+        self.index = 0
+        self.parked: dict[int, float] = {}          # member index -> time it is worth trying again
+        self.switches: list[str] = []
+
+    @property
+    def current(self) -> LLM:
+        return self.members[self.index]
+
+    @property
+    def supports_vision(self):
+        return self.current.supports_vision
+
+    def _advance(self):
+        now = time.time()
+        for i in range(len(self.members)):
+            if i not in self.parked or self.parked[i] <= now:
+                if i != self.index:
+                    self.switches.append(f"{self.members[self.index].model} -> {self.members[i].model}")
+                    log.warning("llm failover: %s", self.switches[-1])
+                self.index = i
+                return
+        soonest = min(self.parked.values()) - now
+        raise LLMError(f"every model's budget is exhausted ({', '.join(m.model for m in self.members)}); "
+                       f"the first resets in {max(soonest, 0) / 60:.0f} min")
+
+    def complete(self, system, messages, want_json=True, images=None, retries=3):
+        self._advance()
+        for _ in range(len(self.members)):
+            try:
+                res = self.current.complete(system, messages, want_json, images, retries)
+            except BudgetExhausted as e:
+                self.parked[self.index] = time.time() + max(e.retry_after, 60.0)
+                log.warning("llm %s parked: %s", self.current.model, str(e)[:160])
+                self._advance()
+                continue
+            self.calls = sum(m.calls for m in self.members)
+            self.input_tokens = sum(m.input_tokens for m in self.members)
+            self.output_tokens = sum(m.output_tokens for m in self.members)
+            self.cost_usd = sum(m.cost_usd for m in self.members)
+            return res
+        raise LLMError("every model failed")
+
+    @property
+    def model(self) -> str:                         # the models that actually worked, in order
+        used = [self.members[0].model]
+        for s in self.switches:
+            used.append(s.split(" -> ")[1])
+        out = []
+        for m in used:
+            if m not in out:
+                out.append(m)
+        return " -> ".join(out)
+
+    @model.setter
+    def model(self, value):
+        pass
+
+
 def make_llm(spec: str | None = None, **kw) -> LLM:
-    """Build an LLM from a spec like 'gemini:gemini-2.5-flash', 'groq:openai/gpt-oss-120b',
-    'openai_compat:<model>', 'anthropic:claude-haiku-5-5'. Defaults from LLM env var."""
+    """Build an LLM from a spec like 'gemini:gemini-3.8-flash', 'groq:openai/gpt-oss-120b',
+    'openai_compat:<model>', 'anthropic:claude-haiku-5-5'. A comma-separated list builds a
+    FailoverLLM that moves to the next model when a budget runs out. Defaults from LLM env var."""
     spec = spec or os.environ.get("LLM") or "gemini:auto"
+    if "," in spec:
+        return FailoverLLM([make_llm(s.strip(), **kw) for s in spec.split(",") if s.strip()])
     provider, _, model = spec.partition(":")
     provider = provider.lower()
     if provider == "gemini":

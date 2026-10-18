@@ -35,8 +35,9 @@ TOOLS = {
                   "submit": "optional id of a non-write button to click afterwards (sign in, search, filter, continue, review)"},
     "back": {},
     "read_pdf": {"url": "URL or path of a PDF link on the current site"},
-    "note_fact": {"key": "e.g. invoice_number, pdf_total:<invoice>, duplicate_check:<invoice>", "value": "the value",
-                  "source": "where you read it (URL or PDF name)"},
+    "note_fact": {"facts": "mapping {key: value} to record several facts in ONE step, e.g. {pdf_total:<inv>: 5980000, due_date:<inv>: ...}",
+                  "key": "single fact key (alternative to facts)", "value": "its value",
+                  "source": "where you read them (URL or PDF name)"},
     "ask_human": {"question": "what you need decided", "options": "optional list of choices"},
     "commit": {"id": "element id of the submit button", "intent": "declared write: {type, system, vendor_name, vendor_gstin, "
                "invoice_number, amount_paise, due_date, po_number, approved_by}"},
@@ -66,6 +67,9 @@ class Runtime:
         self.run_dir = run_dir
         self.last_observation: Observation | None = None
         self.pending_assertions: list[Assertion] = []
+        self.documents: dict[str, str] = {}      # PDF name -> text, shown to the brain every step
+        self._pdf_steps: dict[str, int] = {}     # PDF url -> step it was first read
+        self.sessions: set[str] = set()          # systems whose session is live, from what the pages show
 
     # ---- helpers
     def _abs(self, url: str) -> str:
@@ -75,6 +79,12 @@ class Runtime:
 
     def observe(self) -> Observation:
         self.last_observation = self.browser.observe()
+        system = self.system_of(self.last_observation)
+        if system:
+            if self.last_observation.is_login_page:
+                self.sessions.discard(system)
+            else:
+                self.sessions.add(system)
         return self.last_observation
 
     def add_fact(self, key: str, value, source: str, step: int) -> Fact:
@@ -178,21 +188,32 @@ class Runtime:
         return ToolResult("; ".join(done))
 
     def t_read_pdf(self, step, url=""):
-        text = self.browser.fetch_pdf_text(self._abs(str(url)))
+        full = self._abs(str(url))
+        name = full.rsplit("/", 2)[-2] + "/" + full.rsplit("/", 1)[-1] if "/" in full else full
+        if full in self._pdf_steps and name in self.documents:
+            return ToolResult(f"you already read this PDF at step {self._pdf_steps[full]}; its text stays in your prompt under "
+                              f"'Open documents'. Record the facts you need with note_fact instead of reading it again.")
+        text = self.browser.fetch_pdf_text(full)
         if len(text) > 4000:
             text = text[:4000] + " …[truncated]"
+        if not text.startswith(("download failed", "could not read")):
+            self._pdf_steps[full] = step
+            self.documents[name] = text[:1800]
         return ToolResult("PDF text:\n" + text)
 
     def t_look(self, step):
         return ToolResult("screenshot attached", image=self.browser.screenshot_bytes())
 
     # ---- knowledge tools
-    def t_note_fact(self, step, key="", value="", source=""):
-        if not key:
-            return ToolResult("note_fact needs a key")
+    def t_note_fact(self, step, key="", value="", source="", facts=None):
         src = source or (self.last_observation.url if self.last_observation else "unknown")
-        fact = self.add_fact(key, value, src, step)
-        return ToolResult(f"noted {fact.key} = {fact.value!r} (source: {fact.source})")
+        pairs = list(facts.items()) if isinstance(facts, dict) else []
+        if key:
+            pairs.append((key, value))
+        if not pairs:
+            return ToolResult("note_fact needs facts: {key: value, ...} or a key and value")
+        noted = [self.add_fact(k, v, src, step) for k, v in pairs if str(k).strip()]
+        return ToolResult("noted " + "; ".join(f"{f.key} = {f.value!r}" for f in noted) + f" (source: {src})")
 
     def t_ask_human(self, step, question="", options=None):
         options = list(options or []) if not isinstance(options, str) else [options]

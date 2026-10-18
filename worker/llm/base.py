@@ -7,9 +7,13 @@ returns text, parsed JSON when asked, and token usage with an estimated cost.
 from __future__ import annotations
 
 import json
+import logging
 import re
 import time
 from dataclasses import dataclass, field
+
+log = logging.getLogger("worker.llm")
+logging.getLogger("httpx").setLevel(logging.WARNING)   # httpx logs full request URLs at INFO; keys never belong in logs
 
 
 @dataclass
@@ -26,6 +30,16 @@ class LLMResult:
 
 class LLMError(RuntimeError):
     pass
+
+
+class BudgetExhausted(LLMError):
+    """A provider's quota for this model is used up for longer than a run can wait (daily token or
+    request budgets). Carries when it is worth trying again, so a failover can pick another model."""
+
+    def __init__(self, message: str, retry_after: float = 3600.0, model: str = ""):
+        super().__init__(message)
+        self.retry_after = retry_after
+        self.model = model
 
 
 def extract_json(text: str):
@@ -75,7 +89,8 @@ def extract_json(text: str):
 # USD per million tokens (input, output). Used only for the cost column in reports.
 PRICES = {
     "gemini-2.5-flash": (0.30, 2.50), "gemini-2.5-flash-lite": (0.10, 0.40), "gemini-2.0-flash": (0.10, 0.40),
-    "gemini-3-flash": (0.30, 2.50), "gemini-3.5-flash": (0.30, 2.50),
+    "gemini-3-flash": (0.30, 2.50), "gemini-3.5-flash": (0.30, 2.50), "gemini-3.8-flash": (0.30, 2.50),
+    "gemini-flash-latest": (0.30, 2.50),
     "llama-3.3-70b-versatile": (0.59, 0.79), "openai/gpt-oss-120b": (0.15, 0.60), "openai/gpt-oss-20b": (0.10, 0.50),
     "claude-haiku-5-5": (0.10, 0.50), "claude-sonnet-5-5": (2.0, 10.0), "claude-opus-5-5": (4.0, 20.0),
 }
@@ -112,8 +127,11 @@ class LLM:
             t0 = time.time()
             try:
                 text, inp, out, raw = self._call(system, messages, want_json, images or [])
+            except BudgetExhausted:
+                raise                      # retrying the same model cannot help; let a failover decide
             except LLMError as e:
                 last_err = e
+                log.warning("llm %s: %s (attempt %d/%d)", self.model, str(e)[:160], attempt + 1, retries)
                 time.sleep(min(2 ** attempt, 8))
                 continue
             latency = int((time.time() - t0) * 1000)

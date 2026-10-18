@@ -24,4 +24,4 @@ forbidden:
 
 limits:
   max_steps: 60
-  max_minutes: 20
+  max_minutes: 40              # free-tier rate limits make model steps slow; the step limit is the real cap
