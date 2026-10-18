@@ -111,5 +111,41 @@ Duplicate records created across all 42 runs: **0**. False claims: **0**.
 
 ### LLM brain
 
-Pending: run `make eval` with a key; results are written to `evals/results/llm.md`.
+Command (free-tier budget, one run per cell):
 
+```bash
+python -m evals.run_eval --brain llm --conditions cold learned unseen --tasks T1_hero T7_nova_hero --teacher-runs T1_hero --name llm
+```
+
+Models: `qwen/qwen3.8-27b`, `openai/gpt-oss-20b`, `gemini-3.5-flash`, `gemini-3-flash-preview`, `gemini-3.5-flash-lite`. Results: `evals/results/llm.json` and `llm.md`.
+
+| condition | tasks | success | honest | steps (mean) | LLM calls | tokens | human asks | time (s) |
+|---|---|---|---|---|---|---|---|---|
+| cold | 1 | 1/1 | 1/1 | 20.0 | 22.0 | 55701 | 0.0 | 450 |
+| learned | 1 | 1/1 | 1/1 | 25.0 | 31.0 | 94663 | 1.0 | 726 |
+| unseen | 2 | 1/2 | 2/2 | 25.5 | 44.5 | 131382 | 0.5 | 396 |
+
+| condition | task | run | result | status | steps | LLM | human | blocks | s |
+|---|---|---|---|---|---|---|---|---|---|
+| cold | T1_hero | 1 | PASS | completed | 20 | 22 | 0 | 0 | 449.5 |
+| learned | T1_hero | 1 | PASS | completed | 25 | 31 | 1 | 1 | 726.4 |
+| unseen | T7_nova_hero | 1 | FAIL | gave_up | 24 | 56 | 0 | 0 | 584.2 |
+| unseen | T7_nova_hero | 1 | PASS | completed | 27 | 33 | 1 | 0 | 208.4 |
+
+- **Cold** (`T1_hero`): **PASS**, verifier `completed`, 20 steps, 22 model calls, 55,701 tokens, 7.5 min, model `qwen/qwen3.8-27b`.
+- **Learned** (`T1_hero`): **PASS**, verifier `completed`, 25 steps, 31 model calls, 94,663 tokens, 12.1 min, model `qwen/qwen3.8-27b -> openai/gpt-oss-20b`; 1 manager approval(s); used skill skill_0895f9aa; 3 learned rule(s) in force; 1 policy refusal(s) it then fixed.
+- **Unseen app** (`T7_nova_hero`): **PASS**, verifier `completed`, 27 steps, 33 model calls, 96,378 tokens, 3.5 min, model `gemini-3.5-flash -> gemini-3-flash-preview -> gemini-3.5-flash-lite`; 1 manager approval(s); used skill skill_27a460b1; 3 learned rule(s) in force. An earlier attempt (`unseen-T7_nova_hero-attempt1`) is kept in the table as a FAIL: stopped by providers: Groq daily quotas exhausted, then Gemini 503 x3; no write made (fixed in the failover). It was honest: it made no write and claimed nothing.
+
+Method notes:
+- The cold run uses no memory. The learned and unseen runs read a frozen memory (`learn=False`), built by one teacher phase: one verified run of `T1_hero` distilled into a skill, plus the three feedback items in `evals/tasks.yaml`. The teacher run was recorded once and replayed through the learning step after the learning-prompt fix (`--teacher-from`). Its browser actions were not re-executed. The unseen re-run rebuilt the memory from the same recorded run with the model then available (Gemini).
+- The learned run must pick up the new rule that bills at or above 50,000 need approval: the 59,800 bill now needs a manager's approval, which a cold run would not ask for.
+- Free-tier quotas (Groq: 8k tokens/min, 200k tokens/day per model; Gemini: 20 requests/day per model) are why this suite is smaller than the scripted one. With a paid key, run `make eval` for the full matrix.
+
+What the live runs found (each became a fix and a test; see `git log`):
+- A per-day token quota made the provider sleep and retry for 36 minutes with no error. Daily limits now raise `BudgetExhausted`, and `LLM=a,b,c` fails over to the next model mid-run (decision 14).
+- The HTTP client logged request URLs, and Gemini's key was a query parameter. Keys now travel in headers, and that logger is off (decision 15).
+- A weaker model wrote `pdf_total` without the invoice number, and an empty `duplicate_check` read as "duplicate exists". It looped on refusals for 20 steps. Facts now must name their invoice, empty values are never stored, and the gate treats empty evidence as missing.
+- Learning calls inherited the acting prompt, so Qwen wrapped its answers in an action and the run learned nothing. Learning now has its own prompt, an unwrap fallback, and a refusal to store an empty skill.
+- Token waste (the PDF read 3–4 times, needless sign-ins, `look` offered to a text-only model) took the hero task from 30 to 20 steps once fixed.
+- Transient provider errors (Gemini 503 "high demand") ended the first unseen attempt. The failover now rests a failing model for 3 minutes, tries the next, and waits out a short reset instead of giving up. The re-run hit three 503s and finished anyway.
+- After measurement: models often sent `commit` with the intent fields flat (`intent: "record_payable", invoice_number: ...`) and spent 2–4 steps on "bad arguments". `commit` now accepts that shape too. The numbers above predate this fix.

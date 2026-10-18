@@ -99,3 +99,13 @@ def test_empty_values_are_never_recorded():
     rt = make_runtime()
     res = rt.t_note_fact(4, key="duplicate_check:NW-1043-R", value="")
     assert "empty value" in res.text and rt.run.fact("duplicate_check:NW-1043-R") is None
+
+
+def test_commit_accepts_a_flat_intent_and_still_applies_every_check():
+    rt = make_runtime()
+    seen = {}
+    rt._cross_check_form = lambda intent: seen.update(intent) or "stop here"   # the form check is the first gate
+    res = rt.t_commit(20, id=5, intent="record_payable", system="nova", invoice_number="NW-1043-R", amount_paise="5980000")
+    assert "stop here" in res.text
+    assert seen["type"] == "record_payable" and seen["invoice_number"] == "NW-1043-R" and seen["amount_paise"] == 5980000
+    assert "unknown arguments" in rt.t_commit(21, id=5, intent="create_bill", colour="red").text

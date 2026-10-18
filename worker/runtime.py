@@ -249,7 +249,18 @@ class Runtime:
         return ToolResult(f"human answered: {answer.text}")
 
     # ---- the governed write
-    def t_commit(self, step, id=None, intent=None):
+    INTENT_FIELDS = ("type", "system", "vendor_name", "vendor_gstin", "invoice_number", "amount_paise", "due_date",
+                     "po_number", "approved_by")
+
+    def t_commit(self, step, id=None, intent=None, **flat):
+        # Models often send the intent flat: {"intent": "record_payable", "invoice_number": ...}. Same meaning, same checks.
+        if isinstance(intent, str) and intent.strip():
+            intent = {"type": intent.strip(), **{k: v for k, v in flat.items() if k in self.INTENT_FIELDS}}
+        elif intent is None and flat.get("type"):
+            intent = {k: v for k, v in flat.items() if k in self.INTENT_FIELDS}
+        unknown = sorted(k for k in flat if k not in self.INTENT_FIELDS)
+        if unknown:
+            return ToolResult(f"commit got unknown arguments {unknown}; expected id and intent {{{', '.join(self.INTENT_FIELDS)}}}")
         if not isinstance(intent, dict):
             return ToolResult("commit needs an 'intent' object describing the write (type, system, invoice_number, amount_paise, ...)")
         intent = dict(intent)

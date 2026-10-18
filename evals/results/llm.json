@@ -1,7 +1,7 @@
 {
  "brain": "llm",
- "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b -> gemini-3.5-flash",
- "when": "2026-10-18 10:40:20",
+ "model": "gemini-3.5-flash -> gemini-3-flash-preview -> gemini-3.5-flash-lite",
+ "when": "2026-10-18 10:46:15",
  "runs": 1,
  "results": [
   {
@@ -228,8 +228,76 @@
      "detail": "expected 1, found 0"
     }
    ],
+   "run_id": "unseen-T7_nova_hero-attempt1",
+   "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b -> gemini-3.5-flash",
+   "note": "stopped by providers: Groq daily quotas exhausted, then Gemini 503 x3; no write made (fixed in the failover)"
+  },
+  {
+   "condition": "unseen",
+   "task": "T7_nova_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 27,
+   "browser_actions": 29,
+   "llm_calls": 33,
+   "tokens": 96378,
+   "cost_usd": 0.03843,
+   "seconds": 208.4,
+   "human": 1,
+   "policy_blocks": 0,
+   "approvals": 1,
+   "skills_used": [
+    "skill_27a460b1"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 3
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
    "run_id": "unseen-T7_nova_hero-1",
-   "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b -> gemini-3.5-flash"
+   "model": "gemini-3.5-flash -> gemini-3-flash-preview -> gemini-3.5-flash-lite"
   }
  ]
 }

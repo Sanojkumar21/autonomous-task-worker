@@ -1,0 +1,136 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Replay learned-T1_hero-1</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:24px auto;color:#1d2330}
+.step{border:1px solid #e3e6ec;border-radius:8px;padding:12px 16px;margin:14px 0} img{max-width:100%;border:1px solid #ddd;margin-top:8px}
+.muted{color:#777;font-size:12px;font-weight:400} .thought{color:#444} .result{color:#0b5} pre{background:#f6f7f9;padding:8px;overflow:auto}
+.policy{padding:6px 10px;border-radius:4px;font-size:13px} .policy.ok{background:#e6f6ea} .policy.warn{background:#fff6e0}
+.status{padding:10px 14px;border-radius:6px;background:#eef1f6}</style></head><body>
+<h1>Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done</h1>
+<div class="status"><b>Status: completed</b> · verifier: completed — all 1 assertion(s) hold; no undeclared writes<br>
+Bill NW-1043-R posted successfully</div>
+<h2>Verification</h2><ul><li>✅ row exists with the expected values</li></ul>
+<h2>Steps</h2><section class="step"><h3>Step 1 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/portal/login?next=/portal/invoices&amp;reason=signed_out</span></h3>
+        <p class="thought">Starting with M1: Navigate to the Supplier Portal to find the latest Northwind Supplies invoice.</p>
+        <pre>{&quot;url&quot;: &quot;/portal/invoices&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/portal/login?next=/portal/invoices&amp;reason=signed_out (HTTP 200)</p><img src="screens/001.png" loading="lazy"></section><section class="step"><h3>Step 2 · <code>fill_form</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices</span></h3>
+        <p class="thought">I need to sign in to the Supplier Portal first. I&#x27;ll use fill_form to enter credentials and submit.</p>
+        <pre>{&quot;fields&quot;: {&quot;1&quot;: &quot;ops.agent&quot;, &quot;2&quot;: &quot;acme-ops-2026&quot;}, &quot;submit&quot;: &quot;3&quot;}</pre>
+        <p class="result">→ Username: typed &quot;ops.agent&quot;; Password: typed &quot;acme-ops-2026&quot;; clicked &quot;Sign in&quot;</p><img src="screens/002.png" loading="lazy"></section><section class="step"><h3>Step 3 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">The latest Northwind Supplies invoice is NW-1043-R (2026-10-09, open). I need to view it and read the PDF to extract total, due date, PO, and GSTIN.</p>
+        <pre>{&quot;id&quot;: 6}</pre>
+        <p class="result">→ clicked &quot;View&quot;</p><img src="screens/003.png" loading="lazy"></section><section class="step"><h3>Step 4 · <code>read_pdf</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">I found the latest Northwind Supplies invoice NW-1043-R (revised, supersedes NW-1043). I need to read the PDF to extract the total, due date, PO number, and confirm the GSTIN.</p>
+        <pre>{&quot;url&quot;: &quot;/portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ PDF text:
+Northwind Supplies
+GSTIN 07AAACN1234F1Z5  |  accounts@northwind.example
+TAX INVOICE  (REVISED)
+Invoice number:
+NW-1043-R
+Invoice date:
+2026-10-09
+Due date:
+2026-11-08
+Purchase order:
+PO-7734
+Bill to:
+Acme Robotics Pvt Ltd, New Delhi
+This invoice supersedes NW-1043.
+Item
+Qty
+Unit price
+Amount
+Linear actuator LA-220
+8
+Rs 7,475.00
+Rs 59,800.00
+Total due (INR):
+Rs 59,800.00</p><img src="screens/004.png" loading="lazy"></section><section class="step"><h3>Step 5 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/portal/invoices/3</span></h3>
+        <p class="thought">I&#x27;ve read the PDF for NW-1043-R. Now I need to record all the facts from this PDF in one note_fact call: total in paise (5980000), due date, PO number, vendor GSTIN, and note it&#x27;s a revised invoice superseding NW-1043.</p>
+        <pre>{&quot;invoice&quot;: &quot;NW-1043-R&quot;, &quot;facts&quot;: {&quot;pdf_total&quot;: &quot;5980000&quot;, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po&quot;: &quot;PO-7734&quot;, &quot;vendor_gstin&quot;: &quot;07AAACN1234F1Z5&quot;}, &quot;source&quot;: &quot;PDF /portal/invoices/3/pdf&quot;}</pre>
+        <p class="result">→ noted pdf_total:NW-1043-R = &#x27;5980000&#x27;; due_date:NW-1043-R = &#x27;2026-11-08&#x27;; po:NW-1043-R = &#x27;PO-7734&#x27;; vendor_gstin:NW-1043-R = &#x27;07AAACN1234F1Z5&#x27; (source: PDF /portal/invoices/3/pdf)</p><img src="screens/005.png" loading="lazy"></section><section class="step"><h3>Step 6 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/mail/login?next=/mail/inbox&amp;reason=signed_out</span></h3>
+        <p class="thought">M1 is done with all facts recorded. Moving to M2: check the ops mailbox for any revision/correction notices related to NW-1043-R.</p>
+        <pre>{&quot;url&quot;: &quot;/mail/inbox&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/mail/login?next=/mail/inbox&amp;reason=signed_out (HTTP 200)</p><img src="screens/006.png" loading="lazy"></section><section class="step"><h3>Step 7 · <code>fill_form</code>
+        <span class="muted">http://127.0.0.1:8000/mail/inbox</span></h3>
+        <p class="thought">Session expired on mail. Need to sign in again with the credentials.</p>
+        <pre>{&quot;fields&quot;: {&quot;1&quot;: &quot;ops.agent&quot;, &quot;2&quot;: &quot;acme-ops-2026&quot;}, &quot;submit&quot;: &quot;3&quot;}</pre>
+        <p class="result">→ Username: typed &quot;ops.agent&quot;; Password: typed &quot;acme-ops-2026&quot;; clicked &quot;Sign in&quot;</p><img src="screens/007.png" loading="lazy"></section><section class="step"><h3>Step 8 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/mail/1</span></h3>
+        <p class="thought">I see an email from accounts@northwind.example about &#x27;Revised invoice for PO-7734&#x27;. I need to open it to check for any revision notices related to NW-1043-R.</p>
+        <pre>{&quot;id&quot;: 5}</pre>
+        <p class="result">→ clicked &quot;Revised invoice for PO-7734&quot;</p><img src="screens/008.png" loading="lazy"></section><section class="step"><h3>Step 9 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/mail/1</span></h3>
+        <p class="thought">The email confirms NW-1043-R is the revised invoice that supersedes NW-1043. I need to record the mail_check fact for NW-1043-R, then proceed to Ledger.</p>
+        <pre>{&quot;invoice&quot;: &quot;NW-1043-R&quot;, &quot;key&quot;: &quot;mail_check&quot;, &quot;value&quot;: &quot;confirmed: email from accounts@northwind.example 2026-10-09 confirms NW-1043-R supersedes NW-1043 (pricing correction on LA-220 actuators)&quot;, &quot;source&quot;: &quot;mail/1&quot;}</pre>
+        <p class="result">→ noted mail_check:NW-1043-R = &#x27;confirmed: email from accounts@northwind.example 2026-10-09 confirms NW-1043-R supersedes NW-1043 (pricing correction on LA-220 actuators)&#x27; (source: mail/1)</p><img src="screens/009.png" loading="lazy"></section><section class="step"><h3>Step 10 · <code>navigate</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/login?next=/ledger/&amp;reason=signed_out</span></h3>
+        <p class="thought">Mail check is complete. Now I need to navigate to the Ledger ERP to verify the vendor by GSTIN and check for duplicates before entering the bill.</p>
+        <pre>{&quot;url&quot;: &quot;/ledger/&quot;}</pre>
+        <p class="result">→ opened http://127.0.0.1:8000/ledger/login?next=/ledger/&amp;reason=signed_out (HTTP 200)</p><img src="screens/010.png" loading="lazy"></section><section class="step"><h3>Step 11 · <code>fill_form</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/</span></h3>
+        <p class="thought">The Ledger session expired. I need to sign in again with the credentials.</p>
+        <pre>{&quot;fields&quot;: {&quot;1&quot;: &quot;ops.agent&quot;, &quot;2&quot;: &quot;acme-ops-2026&quot;}, &quot;submit&quot;: &quot;3&quot;}</pre>
+        <p class="result">→ Username: typed &quot;ops.agent&quot;; Password: typed &quot;acme-ops-2026&quot;; clicked &quot;Sign in&quot;</p><img src="screens/011.png" loading="lazy"></section><section class="step"><h3>Step 12 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">I&#x27;m on the Ledger home page. I need to verify the vendor by GSTIN first (M3). Let me navigate to the Vendors section to confirm the correct vendor record.</p>
+        <pre>{&quot;id&quot;: 3}</pre>
+        <p class="result">→ clicked &quot;Vendors&quot;</p><img src="screens/012.png" loading="lazy"></section><section class="step"><h3>Step 13 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/vendors</span></h3>
+        <p class="thought">I can see the vendor &#x27;Northwind Supplies&#x27; with GSTIN 07AAACN1234F1Z5 (ID 11) is active and matches the PDF. The stale &#x27;Northwind Supplies Ltd&#x27; (ID 12) has a different GSTIN. M3 is confirmed. Now I need to check for duplicates by searching for NW-1043-R in the Bills section.</p>
+        <pre>{&quot;invoice&quot;: &quot;NW-1043-R&quot;, &quot;key&quot;: &quot;vendor_verified&quot;, &quot;value&quot;: &quot;Northwind Supplies (ID 11, GSTIN 07AAACN1234F1Z5) confirmed active in Ledger vendor master&quot;, &quot;source&quot;: &quot;ledger/vendors page&quot;}</pre>
+        <p class="result">→ noted vendor_verified = &#x27;Northwind Supplies (ID 11, GSTIN 07AAACN1234F1Z5) confirmed active in Ledger vendor master&#x27; (source: ledger/vendors page)</p><img src="screens/013.png" loading="lazy"></section><section class="step"><h3>Step 14 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills</span></h3>
+        <p class="thought">Vendor verified. Now I need to check for duplicates by searching for NW-1043-R in the Bills section before creating a new bill.</p>
+        <pre>{&quot;id&quot;: 1}</pre>
+        <p class="result">→ clicked &quot;Bills&quot;</p><img src="screens/014.png" loading="lazy"></section><section class="step"><h3>Step 15 · <code>type</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills</span></h3>
+        <p class="thought">I need to check for duplicates by searching for invoice number NW-1043-R in the Ledger bills. I&#x27;ll type it in the search box and search.</p>
+        <pre>{&quot;id&quot;: 5, &quot;text&quot;: &quot;NW-1043-R&quot;}</pre>
+        <p class="result">→ typed &quot;NW-1043-R&quot;</p><img src="screens/015.png" loading="lazy"></section><section class="step"><h3>Step 16 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=NW-1043-R</span></h3>
+        <p class="thought">I&#x27;ve typed the invoice number NW-1043-R in the search box. Now I need to click the Search button to check for duplicates.</p>
+        <pre>{&quot;id&quot;: 6}</pre>
+        <p class="result">→ clicked &quot;Search&quot;</p><img src="screens/016.png" loading="lazy"></section><section class="step"><h3>Step 17 · <code>note_fact</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills?q=NW-1043-R</span></h3>
+        <p class="thought">The search for NW-1043-R in Ledger bills returned no results, confirming no duplicate exists. I need to record this as a fact before proceeding to create the bill.</p>
+        <pre>{&quot;invoice&quot;: &quot;NW-1043-R&quot;, &quot;key&quot;: &quot;duplicate_check&quot;, &quot;value&quot;: &quot;none&quot;, &quot;source&quot;: &quot;ledger/bills?q=NW-1043-R&quot;}</pre>
+        <p class="result">→ noted duplicate_check:NW-1043-R = &#x27;none&#x27; (source: ledger/bills?q=NW-1043-R)</p><img src="screens/017.png" loading="lazy"></section><section class="step"><h3>Step 18 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Duplicate check confirmed no existing bill for NW-1043-R. Now I need to create a new bill in Ledger. Let me navigate to the New bill page.</p>
+        <pre>{&quot;id&quot;: 2}</pre>
+        <p class="result">→ clicked &quot;New bill&quot;</p><img src="screens/018.png" loading="lazy"></section><section class="step"><h3>Step 19 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Fill the new bill form with the extracted details and submit.</p>
+        <pre>{&quot;id&quot;: 12, &quot;intent&quot;: &quot;create_bill&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;&quot;}</pre>
+        <p class="result">→ bad arguments for commit: Runtime.t_commit() got an unexpected keyword argument &#x27;system&#x27;. Expected: {&#x27;id&#x27;: &#x27;element id of the submit button&#x27;, &#x27;intent&#x27;: &#x27;declared write: {type, system, vendor_name, vendor_gstin, invoice_number, amount_paise, due_date, po_number, approved_by}&#x27;}</p><img src="screens/019.png" loading="lazy"></section><section class="step"><h3>Step 20 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Submit the new bill with all required fields</p>
+        <pre>{&quot;id&quot;: 12, &quot;intent&quot;: {&quot;type&quot;: &quot;create_bill&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;priyaa.manager&quot;}}</pre>
+        <p class="result">→ commit refused: the form does not contain invoice number &#x27;NW-1043-R&#x27;</p><div class="policy warn">policy: the form does not contain invoice number &#x27;NW-1043-R&#x27;</div><img src="screens/020.png" loading="lazy"></section><section class="step"><h3>Step 21 · <code>fill_form</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Fill the new bill form with the extracted details and set approval manager.</p>
+        <pre>{&quot;fields&quot;: {&quot;5&quot;: &quot;Northwind Supplies&quot;, &quot;6&quot;: &quot;NW-1043-R&quot;, &quot;7&quot;: &quot;59800.00&quot;, &quot;8&quot;: &quot;2026-11-08&quot;, &quot;9&quot;: &quot;PO-7734&quot;, &quot;10&quot;: &quot;priya.manager&quot;, &quot;11&quot;: &quot;&quot;}, &quot;submit&quot;: 12}</pre>
+        <p class="result">→ Vendor: selected &quot;Northwind Supplies&quot;; Invoice number: typed &quot;NW-1043-R&quot;; Amount (INR): typed &quot;59800.00&quot;; Due date: typed &quot;2026-11-08&quot;; PO number: typed &quot;PO-7734&quot;; Approved by (manager username, for bills needing approval): typed &quot;priya.manager&quot;; Memo: typed &quot;&quot;; not clicking &quot;Save bill&quot;: a write must go through commit with a declared intent</p><img src="screens/021.png" loading="lazy"></section><section class="step"><h3>Step 22 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/new</span></h3>
+        <p class="thought">Commit the new bill with the recorded details</p>
+        <pre>{&quot;id&quot;: 12, &quot;intent&quot;: {&quot;type&quot;: &quot;create_bill&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;priya.manager&quot;}}</pre>
+        <p class="result">→ approval GRANTED by priya.manager — fill the approval field with &#x27;priya.manager&#x27; and commit again.</p><div class="policy warn">policy: amount 59,800.00 is at or above the approval threshold 50,000.00 (rule_3c046e4b); a manager must approve first</div><img src="screens/022.png" loading="lazy"></section><section class="step"><h3>Step 23 · <code>commit</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills/4?flash=saved</span></h3>
+        <p class="thought">Commit the new bill with all required fields and approval</p>
+        <pre>{&quot;id&quot;: 12, &quot;intent&quot;: {&quot;type&quot;: &quot;create_bill&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;, &quot;invoice_number&quot;: &quot;NW-1043-R&quot;, &quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;approved_by&quot;: &quot;priya.manager&quot;}}</pre>
+        <p class="result">→ clicked &quot;Save bill&quot;; submitted. Now verify on the page that the record exists with the right values.</p><div class="policy ok">policy: approved by priya.manager (approval 22)</div><img src="screens/023.png" loading="lazy"></section><section class="step"><h3>Step 24 · <code>click</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills</span></h3>
+        <p class="thought">Navigate to the Bills list to confirm the posted bill appears</p>
+        <pre>{&quot;id&quot;: &quot;1&quot;}</pre>
+        <p class="result">→ clicked &quot;Bills&quot;</p><img src="screens/024.png" loading="lazy"></section><section class="step"><h3>Step 25 · <code>done</code>
+        <span class="muted">http://127.0.0.1:8000/ledger/bills</span></h3>
+        <p class="thought">Bill NW-1043-R is present and verified as posted</p>
+        <pre>{&quot;summary&quot;: &quot;Bill NW-1043-R posted successfully&quot;, &quot;assertions&quot;: [{&quot;kind&quot;: &quot;exists&quot;, &quot;system&quot;: &quot;ledger&quot;, &quot;entity&quot;: &quot;bill&quot;, &quot;match&quot;: {&quot;invoice_number&quot;: &quot;NW-1043-R&quot;}, &quot;expect&quot;: {&quot;amount_paise&quot;: 5980000, &quot;due_date&quot;: &quot;2026-11-08&quot;, &quot;po_number&quot;: &quot;PO-7734&quot;, &quot;status&quot;: &quot;posted&quot;, &quot;vendor_name&quot;: &quot;Northwind Supplies&quot;}}]}</pre>
+        <p class="result">→ assertions recorded; verification will decide the status</p><img src="screens/025.png" loading="lazy"></section>
+</body></html>
