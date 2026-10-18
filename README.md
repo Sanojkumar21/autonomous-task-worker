@@ -4,7 +4,9 @@ Give it a request in plain English: *"Find the latest invoice from Northwind Sup
 
 Submission for the CentrAlign AI **AI Engineering Intern** challenge ("Autonomous AI Task Worker").
 
-> **Demo:** `docs/demo-hero.gif` (the hero task, step by step) and `runs/<run>/replay.html` for any run. A narrated video link belongs here.
+> **Demo video:** _link added after recording_ · **GIFs:** [hero task](docs/demo-hero.gif), [under chaos](docs/demo-chaos.gif) · **Step-by-step replays with screenshots:** [docs/example-runs](docs/example-runs/) (open any `replay.html`)
+
+![The hero task, end to end](docs/demo-hero.gif)
 
 ## What makes this one different
 

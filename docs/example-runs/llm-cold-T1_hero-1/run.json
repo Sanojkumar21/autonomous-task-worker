@@ -60,7 +60,7 @@
    },
    "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/001.png",
+   "screenshot": "screens/001.png",
    "llm_calls": 1,
    "ts": 1792297785.0831974,
    "duration_ms": 539
@@ -81,7 +81,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/002.png",
+   "screenshot": "screens/002.png",
    "llm_calls": 1,
    "ts": 1792297834.7178638,
    "duration_ms": 49633
@@ -98,7 +98,7 @@
    },
    "result": "clicked \"View\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/003.png",
+   "screenshot": "screens/003.png",
    "llm_calls": 1,
    "ts": 1792297835.5590022,
    "duration_ms": 840
@@ -115,7 +115,7 @@
    },
    "result": "PDF text:\nNorthwind Supplies\nGSTIN 07AAACN1234F1Z5  |  accounts@northwind.example\nTAX INVOICE  (REVISED)\nInvoice number:\nNW-1043-R\nInvoice date:\n2026-10-09\nDue date:\n2026-11-08\nPurchase order:\nPO-7734\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nThis invoice supersedes NW-1043.\nItem\nQty\nUnit price\nAmount\nLinear actuator LA-220\n8\nRs 7,475.00\nRs 59,800.00\nTotal due (INR):\nRs 59,800.00",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/004.png",
+   "screenshot": "screens/004.png",
    "llm_calls": 1,
    "ts": 1792297836.2584052,
    "duration_ms": 698
@@ -139,7 +139,7 @@
    },
    "result": "noted pdf_total:NW-1043-R = '5980000'; due_date:NW-1043-R = '2026-11-08'; po:NW-1043-R = 'PO-7734'; vendor_gstin:NW-1043-R = '07AAACN1234F1Z5' (source: PDF /portal/invoices/3/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/005.png",
+   "screenshot": "screens/005.png",
    "llm_calls": 1,
    "ts": 1792297890.4558492,
    "duration_ms": 54197
@@ -156,7 +156,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/006.png",
+   "screenshot": "screens/006.png",
    "llm_calls": 1,
    "ts": 1792297891.315884,
    "duration_ms": 859
@@ -177,7 +177,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/007.png",
+   "screenshot": "screens/007.png",
    "llm_calls": 1,
    "ts": 1792297932.772238,
    "duration_ms": 41455
@@ -194,7 +194,7 @@
    },
    "result": "clicked \"Bills\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/008.png",
+   "screenshot": "screens/008.png",
    "llm_calls": 1,
    "ts": 1792297933.5521698,
    "duration_ms": 779
@@ -212,7 +212,7 @@
    },
    "result": "typed \"NW-1043-R\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/009.png",
+   "screenshot": "screens/009.png",
    "llm_calls": 1,
    "ts": 1792297978.2428606,
    "duration_ms": 44690
@@ -229,7 +229,7 @@
    },
    "result": "clicked \"Search\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/010.png",
+   "screenshot": "screens/010.png",
    "llm_calls": 1,
    "ts": 1792297979.007453,
    "duration_ms": 764
@@ -250,7 +250,7 @@
    },
    "result": "noted duplicate_check:NW-1043-R = 'none' (source: Ledger ERP search for NW-1043-R returned no results)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/011.png",
+   "screenshot": "screens/011.png",
    "llm_calls": 1,
    "ts": 1792298024.874231,
    "duration_ms": 45866
@@ -267,7 +267,7 @@
    },
    "result": "clicked \"New bill\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/012.png",
+   "screenshot": "screens/012.png",
    "llm_calls": 1,
    "ts": 1792298025.7164097,
    "duration_ms": 841
@@ -285,7 +285,7 @@
    },
    "result": "selected \"Northwind Supplies\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/013.png",
+   "screenshot": "screens/013.png",
    "llm_calls": 1,
    "ts": 1792298030.2743838,
    "duration_ms": 4557
@@ -303,7 +303,7 @@
    },
    "result": "typed \"NW-1043-R\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/014.png",
+   "screenshot": "screens/014.png",
    "llm_calls": 1,
    "ts": 1792298089.8522625,
    "duration_ms": 59577
@@ -321,7 +321,7 @@
    },
    "result": "typed \"59800.00\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/015.png",
+   "screenshot": "screens/015.png",
    "llm_calls": 1,
    "ts": 1792298090.5555441,
    "duration_ms": 702
@@ -339,7 +339,7 @@
    },
    "result": "typed \"2026-11-08\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/016.png",
+   "screenshot": "screens/016.png",
    "llm_calls": 1,
    "ts": 1792298131.0212245,
    "duration_ms": 40465
@@ -357,7 +357,7 @@
    },
    "result": "typed \"PO-7734\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/017.png",
+   "screenshot": "screens/017.png",
    "llm_calls": 1,
    "ts": 1792298132.0111015,
    "duration_ms": 989
@@ -390,7 +390,7 @@
     ],
     "rule_ids": []
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/018.png",
+   "screenshot": "screens/018.png",
    "llm_calls": 1,
    "ts": 1792298178.3917542,
    "duration_ms": 46380
@@ -413,7 +413,7 @@
    },
    "result": "noted readback:NW-1043-R = 'Bill #4 posted in Ledger ERP: vendor Northwind Supplies (GSTIN 07AAACN1234F1Z5), invoice NW-1043-R, amount 59,800.00, due date 2026-11-08, PO-7734, status posted'; readback:NW-1043-R = 'Bill #4 posted in Ledger ERP: vendor Northwind Supplies (GSTIN 07AAACN1234F1Z5), invoice NW-1043-R, amount 59,800.00, due date 2026-11-08, PO-7734, status posted' (source: Ledger ERP bill #4 page)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/019.png",
+   "screenshot": "screens/019.png",
    "llm_calls": 1,
    "ts": 1792298179.736546,
    "duration_ms": 1344
@@ -447,7 +447,7 @@
    },
    "result": "assertions recorded; verification will decide the status",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/cold-T1_hero-1/screens/020.png",
+   "screenshot": "screens/020.png",
    "llm_calls": 1,
    "ts": 1792298224.4647086,
    "duration_ms": 44727

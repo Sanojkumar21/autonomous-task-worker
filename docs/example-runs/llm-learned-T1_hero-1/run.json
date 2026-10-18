@@ -74,7 +74,7 @@
    },
    "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/001.png",
+   "screenshot": "screens/001.png",
    "llm_calls": 1,
    "ts": 1792298965.0953836,
    "duration_ms": 52979
@@ -95,7 +95,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/002.png",
+   "screenshot": "screens/002.png",
    "llm_calls": 1,
    "ts": 1792298966.3047874,
    "duration_ms": 1208
@@ -112,7 +112,7 @@
    },
    "result": "clicked \"View\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/003.png",
+   "screenshot": "screens/003.png",
    "llm_calls": 1,
    "ts": 1792299011.325355,
    "duration_ms": 45020
@@ -129,7 +129,7 @@
    },
    "result": "PDF text:\nNorthwind Supplies\nGSTIN 07AAACN1234F1Z5  |  accounts@northwind.example\nTAX INVOICE  (REVISED)\nInvoice number:\nNW-1043-R\nInvoice date:\n2026-10-09\nDue date:\n2026-11-08\nPurchase order:\nPO-7734\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nThis invoice supersedes NW-1043.\nItem\nQty\nUnit price\nAmount\nLinear actuator LA-220\n8\nRs 7,475.00\nRs 59,800.00\nTotal due (INR):\nRs 59,800.00",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/004.png",
+   "screenshot": "screens/004.png",
    "llm_calls": 1,
    "ts": 1792299012.0942044,
    "duration_ms": 768
@@ -153,7 +153,7 @@
    },
    "result": "noted pdf_total:NW-1043-R = '5980000'; due_date:NW-1043-R = '2026-11-08'; po:NW-1043-R = 'PO-7734'; vendor_gstin:NW-1043-R = '07AAACN1234F1Z5' (source: PDF /portal/invoices/3/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/005.png",
+   "screenshot": "screens/005.png",
    "llm_calls": 1,
    "ts": 1792299063.002126,
    "duration_ms": 50907
@@ -170,7 +170,7 @@
    },
    "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/006.png",
+   "screenshot": "screens/006.png",
    "llm_calls": 1,
    "ts": 1792299064.0748773,
    "duration_ms": 1072
@@ -191,7 +191,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/007.png",
+   "screenshot": "screens/007.png",
    "llm_calls": 1,
    "ts": 1792299120.8640795,
    "duration_ms": 56788
@@ -208,7 +208,7 @@
    },
    "result": "clicked \"Revised invoice for PO-7734\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/008.png",
+   "screenshot": "screens/008.png",
    "llm_calls": 1,
    "ts": 1792299121.9060802,
    "duration_ms": 1041
@@ -228,7 +228,7 @@
    },
    "result": "noted mail_check:NW-1043-R = 'confirmed: email from accounts@northwind.example 2026-10-09 confirms NW-1043-R supersedes NW-1043 (pricing correction on LA-220 actuators)' (source: mail/1)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/009.png",
+   "screenshot": "screens/009.png",
    "llm_calls": 1,
    "ts": 1792299178.0815303,
    "duration_ms": 56175
@@ -245,7 +245,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/010.png",
+   "screenshot": "screens/010.png",
    "llm_calls": 1,
    "ts": 1792299178.8060246,
    "duration_ms": 724
@@ -266,7 +266,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/011.png",
+   "screenshot": "screens/011.png",
    "llm_calls": 1,
    "ts": 1792299236.5674026,
    "duration_ms": 57761
@@ -283,7 +283,7 @@
    },
    "result": "clicked \"Vendors\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/012.png",
+   "screenshot": "screens/012.png",
    "llm_calls": 1,
    "ts": 1792299237.5178628,
    "duration_ms": 950
@@ -303,7 +303,7 @@
    },
    "result": "noted vendor_verified = 'Northwind Supplies (ID 11, GSTIN 07AAACN1234F1Z5) confirmed active in Ledger vendor master' (source: ledger/vendors page)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/013.png",
+   "screenshot": "screens/013.png",
    "llm_calls": 1,
    "ts": 1792299290.1425917,
    "duration_ms": 52624
@@ -320,7 +320,7 @@
    },
    "result": "clicked \"Bills\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/014.png",
+   "screenshot": "screens/014.png",
    "llm_calls": 1,
    "ts": 1792299293.7304587,
    "duration_ms": 3587
@@ -338,7 +338,7 @@
    },
    "result": "typed \"NW-1043-R\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/015.png",
+   "screenshot": "screens/015.png",
    "llm_calls": 1,
    "ts": 1792299352.7464585,
    "duration_ms": 59015
@@ -355,7 +355,7 @@
    },
    "result": "clicked \"Search\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/016.png",
+   "screenshot": "screens/016.png",
    "llm_calls": 1,
    "ts": 1792299353.6200697,
    "duration_ms": 873
@@ -375,7 +375,7 @@
    },
    "result": "noted duplicate_check:NW-1043-R = 'none' (source: ledger/bills?q=NW-1043-R)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/017.png",
+   "screenshot": "screens/017.png",
    "llm_calls": 1,
    "ts": 1792299412.9499266,
    "duration_ms": 59329
@@ -392,7 +392,7 @@
    },
    "result": "clicked \"New bill\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/018.png",
+   "screenshot": "screens/018.png",
    "llm_calls": 1,
    "ts": 1792299413.7823143,
    "duration_ms": 832
@@ -417,7 +417,7 @@
    },
    "result": "bad arguments for commit: Runtime.t_commit() got an unexpected keyword argument 'system'. Expected: {'id': 'element id of the submit button', 'intent': 'declared write: {type, system, vendor_name, vendor_gstin, invoice_number, amount_paise, due_date, po_number, approved_by}'}",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/019.png",
+   "screenshot": "screens/019.png",
    "llm_calls": 1,
    "ts": 1792299466.834434,
    "duration_ms": 53051
@@ -453,7 +453,7 @@
      "runtime.form_matches_intent"
     ]
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/020.png",
+   "screenshot": "screens/020.png",
    "llm_calls": 1,
    "ts": 1792299467.7850952,
    "duration_ms": 950
@@ -479,7 +479,7 @@
    },
    "result": "Vendor: selected \"Northwind Supplies\"; Invoice number: typed \"NW-1043-R\"; Amount (INR): typed \"59800.00\"; Due date: typed \"2026-11-08\"; PO number: typed \"PO-7734\"; Approved by (manager username, for bills needing approval): typed \"priya.manager\"; Memo: typed \"\"; not clicking \"Save bill\": a write must go through commit with a declared intent",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/021.png",
+   "screenshot": "screens/021.png",
    "llm_calls": 1,
    "ts": 1792299521.2065074,
    "duration_ms": 53421
@@ -515,7 +515,7 @@
      "approval_threshold:rule_3c046e4b"
     ]
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/022.png",
+   "screenshot": "screens/022.png",
    "llm_calls": 1,
    "ts": 1792299522.363106,
    "duration_ms": 1155
@@ -551,7 +551,7 @@
      "approval_threshold:rule_3c046e4b"
     ]
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/023.png",
+   "screenshot": "screens/023.png",
    "llm_calls": 1,
    "ts": 1792299577.8305788,
    "duration_ms": 55466
@@ -568,7 +568,7 @@
    },
    "result": "clicked \"Bills\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/024.png",
+   "screenshot": "screens/024.png",
    "llm_calls": 1,
    "ts": 1792299579.1856842,
    "duration_ms": 1354
@@ -602,7 +602,7 @@
    },
    "result": "assertions recorded; verification will decide the status",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/learned-T1_hero-1/screens/025.png",
+   "screenshot": "screens/025.png",
    "llm_calls": 1,
    "ts": 1792299635.9380245,
    "duration_ms": 56751

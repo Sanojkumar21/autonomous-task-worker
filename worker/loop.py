@@ -25,6 +25,14 @@ ROOT = Path(__file__).resolve().parent.parent
 BROWSER_TOOLS = {"navigate", "click", "type", "select", "check", "back", "commit", "fill_form"}
 
 
+def _relative(path: str, run_dir: Path) -> str:
+    """Screenshots are stored relative to the run folder, so a run can be moved or published as it is."""
+    try:
+        return str(Path(path).relative_to(run_dir)) if path else ""
+    except ValueError:
+        return path
+
+
 class Worker:
     def __init__(self, brain: Brain, context: CompanyContext, memory: MemoryStore, human: Human | None = None,
                  headless: bool = True, runs_dir: Path | None = None, learn: bool = True, verbose: bool = False):
@@ -111,7 +119,7 @@ class Worker:
                 if action.tool in BROWSER_TOOLS or action.tool == "back":
                     obs = rt.observe()
                 step = Step(index=i, url=obs.url, thought=thought, action=action, result=result.text, policy=result.policy,
-                            screenshot=browser.screenshot(f"{i:03d}"), llm_calls=self.brain.usage()["llm_calls"] - calls_before,
+                            screenshot=_relative(browser.screenshot(f"{i:03d}"), run_dir), llm_calls=self.brain.usage()["llm_calls"] - calls_before,
                             duration_ms=int((time.time() - t0) * 1000))
                 run.steps.append(step)
                 with (run_dir / "trajectory.jsonl").open("a") as fh:

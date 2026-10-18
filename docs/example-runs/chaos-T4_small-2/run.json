@@ -67,7 +67,7 @@
    },
    "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices%3Fvendor%3DOrbit%2520Office%2520Supplies%26status%3Dopen&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/001.png",
+   "screenshot": "screens/001.png",
    "llm_calls": 0,
    "ts": 1792267952.1943018,
    "duration_ms": 55
@@ -85,7 +85,7 @@
    },
    "result": "typed \"ops.agent\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/002.png",
+   "screenshot": "screens/002.png",
    "llm_calls": 0,
    "ts": 1792267952.2664719,
    "duration_ms": 72
@@ -103,7 +103,7 @@
    },
    "result": "typed \"acme-ops-2026\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/003.png",
+   "screenshot": "screens/003.png",
    "llm_calls": 0,
    "ts": 1792267952.3183558,
    "duration_ms": 51
@@ -120,7 +120,7 @@
    },
    "result": "clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/004.png",
+   "screenshot": "screens/004.png",
    "llm_calls": 0,
    "ts": 1792267952.4631593,
    "duration_ms": 144
@@ -137,7 +137,7 @@
    },
    "result": "opened http://127.0.0.1:8000/portal/login (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/005.png",
+   "screenshot": "screens/005.png",
    "llm_calls": 0,
    "ts": 1792267952.5164323,
    "duration_ms": 53
@@ -155,7 +155,7 @@
    },
    "result": "typed \"ops.agent\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/006.png",
+   "screenshot": "screens/006.png",
    "llm_calls": 0,
    "ts": 1792267952.5838428,
    "duration_ms": 67
@@ -173,7 +173,7 @@
    },
    "result": "typed \"acme-ops-2026\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/007.png",
+   "screenshot": "screens/007.png",
    "llm_calls": 0,
    "ts": 1792267952.6533124,
    "duration_ms": 69
@@ -190,7 +190,7 @@
    },
    "result": "clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/008.png",
+   "screenshot": "screens/008.png",
    "llm_calls": 0,
    "ts": 1792267952.8222692,
    "duration_ms": 168
@@ -209,7 +209,7 @@
    },
    "result": "noted invoice_number = 'OR-5521' (source: http://127.0.0.1:8000/portal/invoices)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/009.png",
+   "screenshot": "screens/009.png",
    "llm_calls": 0,
    "ts": 1792267952.8738146,
    "duration_ms": 51
@@ -226,7 +226,7 @@
    },
    "result": "clicked \"View\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/010.png",
+   "screenshot": "screens/010.png",
    "llm_calls": 0,
    "ts": 1792267953.0140672,
    "duration_ms": 140
@@ -243,7 +243,7 @@
    },
    "result": "PDF text:\nOrbit Office Supplies\nGSTIN 06AAACO3456P1Z1  |  ar@orbit.example\nTAX INVOICE\nInvoice number:\nOR-5521\nInvoice date:\n2026-10-07\nDue date:\n2026-10-21\nPurchase order:\nPO-7741\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nItem\nQty\nUnit price\nAmount\nOffice chairs\n4\nRs 1,600.00\nRs 6,400.00\nTotal due (INR):\nRs 6,400.00",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/011.png",
+   "screenshot": "screens/011.png",
    "llm_calls": 0,
    "ts": 1792267953.0681672,
    "duration_ms": 54
@@ -262,7 +262,7 @@
    },
    "result": "noted pdf_total:OR-5521 = '640000' (source: /portal/invoices/6/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/012.png",
+   "screenshot": "screens/012.png",
    "llm_calls": 0,
    "ts": 1792267953.0944583,
    "duration_ms": 26
@@ -281,7 +281,7 @@
    },
    "result": "noted due_date:OR-5521 = '2026-10-21' (source: /portal/invoices/6/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/013.png",
+   "screenshot": "screens/013.png",
    "llm_calls": 0,
    "ts": 1792267953.126085,
    "duration_ms": 31
@@ -300,7 +300,7 @@
    },
    "result": "noted po:OR-5521 = 'PO-7741' (source: /portal/invoices/6/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/014.png",
+   "screenshot": "screens/014.png",
    "llm_calls": 0,
    "ts": 1792267953.166626,
    "duration_ms": 40
@@ -319,7 +319,7 @@
    },
    "result": "noted vendor_gstin:OR-5521 = '06AAACO3456P1Z1' (source: /portal/invoices/6/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/015.png",
+   "screenshot": "screens/015.png",
    "llm_calls": 0,
    "ts": 1792267953.1956995,
    "duration_ms": 29
@@ -336,7 +336,7 @@
    },
    "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox%3Fq%3DOrbit&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/016.png",
+   "screenshot": "screens/016.png",
    "llm_calls": 0,
    "ts": 1792267953.2482648,
    "duration_ms": 52
@@ -354,7 +354,7 @@
    },
    "result": "typed \"ops.agent\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/017.png",
+   "screenshot": "screens/017.png",
    "llm_calls": 0,
    "ts": 1792267953.318343,
    "duration_ms": 70
@@ -372,7 +372,7 @@
    },
    "result": "typed \"acme-ops-2026\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/018.png",
+   "screenshot": "screens/018.png",
    "llm_calls": 0,
    "ts": 1792267953.3663633,
    "duration_ms": 47
@@ -389,7 +389,7 @@
    },
    "result": "clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/019.png",
+   "screenshot": "screens/019.png",
    "llm_calls": 0,
    "ts": 1792267953.4913335,
    "duration_ms": 124
@@ -408,7 +408,7 @@
    },
    "result": "noted mail_check:OR-5521 = 'no relevant mail' (source: http://127.0.0.1:8000/mail/inbox?q=Orbit)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/020.png",
+   "screenshot": "screens/020.png",
    "llm_calls": 0,
    "ts": 1792267953.5265846,
    "duration_ms": 35
@@ -425,7 +425,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/vendors&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/021.png",
+   "screenshot": "screens/021.png",
    "llm_calls": 0,
    "ts": 1792267953.5780816,
    "duration_ms": 51
@@ -443,7 +443,7 @@
    },
    "result": "typed \"ops.agent\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/022.png",
+   "screenshot": "screens/022.png",
    "llm_calls": 0,
    "ts": 1792267953.6271577,
    "duration_ms": 49
@@ -461,7 +461,7 @@
    },
    "result": "typed \"acme-ops-2026\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/023.png",
+   "screenshot": "screens/023.png",
    "llm_calls": 0,
    "ts": 1792267953.6798668,
    "duration_ms": 52
@@ -478,7 +478,7 @@
    },
    "result": "clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/024.png",
+   "screenshot": "screens/024.png",
    "llm_calls": 0,
    "ts": 1792267953.7992256,
    "duration_ms": 119
@@ -497,7 +497,7 @@
    },
    "result": "noted vendor_name:OR-5521 = 'Orbit Office Supplies' (source: http://127.0.0.1:8000/ledger/vendors)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/025.png",
+   "screenshot": "screens/025.png",
    "llm_calls": 0,
    "ts": 1792267953.830473,
    "duration_ms": 31
@@ -514,7 +514,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/026.png",
+   "screenshot": "screens/026.png",
    "llm_calls": 0,
    "ts": 1792267953.8764825,
    "duration_ms": 45
@@ -533,7 +533,7 @@
    },
    "result": "noted duplicate_check:OR-5521 = 'none' (source: http://127.0.0.1:8000/ledger/bills?q=OR-5521)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/027.png",
+   "screenshot": "screens/027.png",
    "llm_calls": 0,
    "ts": 1792267953.9103732,
    "duration_ms": 33
@@ -550,7 +550,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/login?next=/ledger/bills/new&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/028.png",
+   "screenshot": "screens/028.png",
    "llm_calls": 0,
    "ts": 1792267953.959709,
    "duration_ms": 49
@@ -568,7 +568,7 @@
    },
    "result": "typed \"ops.agent\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/029.png",
+   "screenshot": "screens/029.png",
    "llm_calls": 0,
    "ts": 1792267954.0163527,
    "duration_ms": 56
@@ -586,7 +586,7 @@
    },
    "result": "typed \"acme-ops-2026\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/030.png",
+   "screenshot": "screens/030.png",
    "llm_calls": 0,
    "ts": 1792267954.0649745,
    "duration_ms": 48
@@ -603,7 +603,7 @@
    },
    "result": "clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/031.png",
+   "screenshot": "screens/031.png",
    "llm_calls": 0,
    "ts": 1792267954.2120345,
    "duration_ms": 146
@@ -621,7 +621,7 @@
    },
    "result": "selected \"Orbit Office Supplies\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/032.png",
+   "screenshot": "screens/032.png",
    "llm_calls": 0,
    "ts": 1792267954.2887068,
    "duration_ms": 76
@@ -639,7 +639,7 @@
    },
    "result": "typed \"OR-5521\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/033.png",
+   "screenshot": "screens/033.png",
    "llm_calls": 0,
    "ts": 1792267954.3354282,
    "duration_ms": 46
@@ -657,7 +657,7 @@
    },
    "result": "typed \"6400.00\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/034.png",
+   "screenshot": "screens/034.png",
    "llm_calls": 0,
    "ts": 1792267954.3883069,
    "duration_ms": 52
@@ -675,7 +675,7 @@
    },
    "result": "typed \"2026-10-21\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/035.png",
+   "screenshot": "screens/035.png",
    "llm_calls": 0,
    "ts": 1792267954.434981,
    "duration_ms": 46
@@ -693,7 +693,7 @@
    },
    "result": "typed \"PO-7741\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/036.png",
+   "screenshot": "screens/036.png",
    "llm_calls": 0,
    "ts": 1792267954.4843638,
    "duration_ms": 49
@@ -728,7 +728,7 @@
     ],
     "rule_ids": []
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/037.png",
+   "screenshot": "screens/037.png",
    "llm_calls": 0,
    "ts": 1792267954.6390831,
    "duration_ms": 154
@@ -745,7 +745,7 @@
    },
    "result": "opened http://127.0.0.1:8000/ledger/bills?q=OR-5521 (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/038.png",
+   "screenshot": "screens/038.png",
    "llm_calls": 0,
    "ts": 1792267954.700524,
    "duration_ms": 61
@@ -779,7 +779,7 @@
    },
    "result": "assertions recorded; verification will decide the status",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/scripted/chaos-T4_small-2/screens/039.png",
+   "screenshot": "screens/039.png",
    "llm_calls": 0,
    "ts": 1792267954.7332687,
    "duration_ms": 32

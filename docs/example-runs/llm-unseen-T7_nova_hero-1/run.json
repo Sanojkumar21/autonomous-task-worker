@@ -57,7 +57,7 @@
    },
    "result": "opened http://127.0.0.1:8000/portal/login?next=/portal/invoices&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/001.png",
+   "screenshot": "screens/001.png",
    "llm_calls": 1,
    "ts": 1792300396.0835564,
    "duration_ms": 4231
@@ -84,7 +84,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/002.png",
+   "screenshot": "screens/002.png",
    "llm_calls": 1,
    "ts": 1792300401.4149935,
    "duration_ms": 5330
@@ -101,7 +101,7 @@
    },
    "result": "clicked \"View\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/003.png",
+   "screenshot": "screens/003.png",
    "llm_calls": 1,
    "ts": 1792300406.0358276,
    "duration_ms": 4620
@@ -118,7 +118,7 @@
    },
    "result": "PDF text:\nNorthwind Supplies\nGSTIN 07AAACN1234F1Z5  |  accounts@northwind.example\nTAX INVOICE  (REVISED)\nInvoice number:\nNW-1043-R\nInvoice date:\n2026-10-09\nDue date:\n2026-11-08\nPurchase order:\nPO-7734\nBill to:\nAcme Robotics Pvt Ltd, New Delhi\nThis invoice supersedes NW-1043.\nItem\nQty\nUnit price\nAmount\nLinear actuator LA-220\n8\nRs 7,475.00\nRs 59,800.00\nTotal due (INR):\nRs 59,800.00",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/004.png",
+   "screenshot": "screens/004.png",
    "llm_calls": 1,
    "ts": 1792300415.2859242,
    "duration_ms": 9249
@@ -142,7 +142,7 @@
    },
    "result": "noted pdf_total:NW-1043-R = '5980000'; due_date:NW-1043-R = '2026-11-08'; po:NW-1043-R = 'PO-7734'; vendor_gstin:NW-1043-R = '07AAACN1234F1Z5' (source: http://127.0.0.1:8000/portal/invoices/3/pdf)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/005.png",
+   "screenshot": "screens/005.png",
    "llm_calls": 1,
    "ts": 1792300463.2564728,
    "duration_ms": 47970
@@ -159,7 +159,7 @@
    },
    "result": "opened http://127.0.0.1:8000/mail/login?next=/mail/inbox&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/006.png",
+   "screenshot": "screens/006.png",
    "llm_calls": 1,
    "ts": 1792300483.1883688,
    "duration_ms": 19931
@@ -186,7 +186,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/007.png",
+   "screenshot": "screens/007.png",
    "llm_calls": 1,
    "ts": 1792300485.3107555,
    "duration_ms": 2122
@@ -203,7 +203,7 @@
    },
    "result": "clicked \"Revised invoice for PO-7734\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/008.png",
+   "screenshot": "screens/008.png",
    "llm_calls": 1,
    "ts": 1792300486.6623268,
    "duration_ms": 1351
@@ -224,7 +224,7 @@
    },
    "result": "noted mail_check:NW-1043-R = 'checked, revised NW-1043-R confirmed' (source: http://127.0.0.1:8000/mail/1)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/009.png",
+   "screenshot": "screens/009.png",
    "llm_calls": 1,
    "ts": 1792300488.4865189,
    "duration_ms": 1823
@@ -241,7 +241,7 @@
    },
    "result": "opened http://127.0.0.1:8000/nova/login?next=/nova/&reason=signed_out (HTTP 200)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/010.png",
+   "screenshot": "screens/010.png",
    "llm_calls": 1,
    "ts": 1792300490.2545881,
    "duration_ms": 1767
@@ -268,7 +268,7 @@
    },
    "result": "Username: typed \"ops.agent\"; Password: typed \"acme-ops-2026\"; clicked \"Sign in\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/011.png",
+   "screenshot": "screens/011.png",
    "llm_calls": 1,
    "ts": 1792300491.9306278,
    "duration_ms": 1675
@@ -285,7 +285,7 @@
    },
    "result": "clicked \"Payables\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/012.png",
+   "screenshot": "screens/012.png",
    "llm_calls": 1,
    "ts": 1792300493.8755784,
    "duration_ms": 1944
@@ -303,7 +303,7 @@
    },
    "result": "typed \"NW-1043-R\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/013.png",
+   "screenshot": "screens/013.png",
    "llm_calls": 1,
    "ts": 1792300495.440215,
    "duration_ms": 1564
@@ -320,7 +320,7 @@
    },
    "result": "clicked \"Find\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/014.png",
+   "screenshot": "screens/014.png",
    "llm_calls": 1,
    "ts": 1792300497.0686758,
    "duration_ms": 1628
@@ -340,7 +340,7 @@
    },
    "result": "noted duplicate_check:NW-1043-R = 'none' (source: http://127.0.0.1:8000/nova/payables?search=NW-1043-R)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/015.png",
+   "screenshot": "screens/015.png",
    "llm_calls": 1,
    "ts": 1792300498.4853578,
    "duration_ms": 1416
@@ -357,7 +357,7 @@
    },
    "result": "clicked \"Record payable\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/016.png",
+   "screenshot": "screens/016.png",
    "llm_calls": 1,
    "ts": 1792300500.3200405,
    "duration_ms": 1834
@@ -374,7 +374,7 @@
    },
    "result": "clicked \"25\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/017.png",
+   "screenshot": "screens/017.png",
    "llm_calls": 1,
    "ts": 1792300505.902881,
    "duration_ms": 5582
@@ -391,7 +391,7 @@
    },
    "result": "clicked \"Continue\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/018.png",
+   "screenshot": "screens/018.png",
    "llm_calls": 1,
    "ts": 1792300507.4725633,
    "duration_ms": 1569
@@ -415,7 +415,7 @@
    },
    "result": "Supplier reference (their invoice number): typed \"NW-1043-R\"; Total payable (INR): typed \"59800.00\"; Pay by (dd/mm/yyyy): typed \"08/11/2026\"; Order ref: typed \"PO-7734\"; Authorised by (manager, if the amount needs authorisation): typed \"priya.manager\"; clicked \"Review\"",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/019.png",
+   "screenshot": "screens/019.png",
    "llm_calls": 1,
    "ts": 1792300509.6522748,
    "duration_ms": 2179
@@ -440,7 +440,7 @@
    },
    "result": "bad arguments for commit: Runtime.t_commit() got an unexpected keyword argument 'system'. Expected: {'id': 'element id of the submit button', 'intent': 'declared write: {type, system, vendor_name, vendor_gstin, invoice_number, amount_paise, due_date, po_number, approved_by}'}",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/020.png",
+   "screenshot": "screens/020.png",
    "llm_calls": 1,
    "ts": 1792300562.285241,
    "duration_ms": 52632
@@ -464,7 +464,7 @@
    },
    "result": "bad arguments for commit: Runtime.t_commit() got an unexpected keyword argument 'vendor_name'. Expected: {'id': 'element id of the submit button', 'intent': 'declared write: {type, system, vendor_name, vendor_gstin, invoice_number, amount_paise, due_date, po_number, approved_by}'}",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/021.png",
+   "screenshot": "screens/021.png",
    "llm_calls": 1,
    "ts": 1792300564.004076,
    "duration_ms": 1718
@@ -482,7 +482,7 @@
    },
    "result": "commit needs an 'intent' object describing the write (type, system, invoice_number, amount_paise, ...)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/022.png",
+   "screenshot": "screens/022.png",
    "llm_calls": 1,
    "ts": 1792300565.7872884,
    "duration_ms": 1782
@@ -507,7 +507,7 @@
    },
    "result": "bad arguments for commit: Runtime.t_commit() got an unexpected keyword argument 'system'. Expected: {'id': 'element id of the submit button', 'intent': 'declared write: {type, system, vendor_name, vendor_gstin, invoice_number, amount_paise, due_date, po_number, approved_by}'}",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/023.png",
+   "screenshot": "screens/023.png",
    "llm_calls": 1,
    "ts": 1792300567.469164,
    "duration_ms": 1681
@@ -543,7 +543,7 @@
      "approval_threshold:rule_c0285bba"
     ]
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/024.png",
+   "screenshot": "screens/024.png",
    "llm_calls": 1,
    "ts": 1792300569.2202914,
    "duration_ms": 1750
@@ -579,7 +579,7 @@
      "approval_threshold:rule_c0285bba"
     ]
    },
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/025.png",
+   "screenshot": "screens/025.png",
    "llm_calls": 1,
    "ts": 1792300571.2152038,
    "duration_ms": 1994
@@ -594,7 +594,7 @@
    },
    "result": "done needs at least one assertion describing what must now be true in a system of record (or kind='absent'/'count' for tasks that must not write)",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/026.png",
+   "screenshot": "screens/026.png",
    "llm_calls": 1,
    "ts": 1792300573.1941044,
    "duration_ms": 1978
@@ -628,7 +628,7 @@
    },
    "result": "assertions recorded; verification will decide the status",
    "policy": null,
-   "screenshot": "/home/sanoj/centralign-worker/runs/eval/llm/unseen-T7_nova_hero-1/screens/027.png",
+   "screenshot": "screens/027.png",
    "llm_calls": 1,
    "ts": 1792300574.967568,
    "duration_ms": 1773
