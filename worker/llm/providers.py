@@ -22,12 +22,31 @@ class GeminiLLM(LLM):
     name = "gemini"
     supports_vision = True
 
-    def __init__(self, model="gemini-2.5-flash", api_key=None, **kw):
+    PREFERRED = ("gemini-3-flash", "gemini-3.5-flash", "gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite", "gemini-2.0-flash")
+
+    def __init__(self, model="auto", api_key=None, **kw):
         super().__init__(model, **kw)
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
         if not self.api_key:
             raise LLMError("GEMINI_API_KEY is not set")
         self.base = os.environ.get("GEMINI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta")
+        if model in ("", "auto"):
+            self.model = self.pick_model()
+
+    def pick_model(self) -> str:
+        """Free-tier model availability changes; ask the API which Flash models this key can use."""
+        try:
+            r = httpx.get(f"{self.base}/models", params={"key": self.api_key, "pageSize": 200}, timeout=30)
+            names = [m["name"].split("/", 1)[1] for m in r.json().get("models", [])
+                     if "generateContent" in m.get("supportedGenerationMethods", [])]
+        except (httpx.HTTPError, ValueError, KeyError):
+            return "gemini-2.5-flash"
+        for pref in self.PREFERRED:
+            for n in names:
+                if n == pref or n.startswith(pref + "-"):
+                    return n
+        flash = [n for n in names if "flash" in n and "image" not in n and "tts" not in n and "live" not in n]
+        return flash[0] if flash else "gemini-2.5-flash"
 
     def _call(self, system, messages, want_json, images):
         contents = []
@@ -132,11 +151,11 @@ class AnthropicLLM(LLM):
 def make_llm(spec: str | None = None, **kw) -> LLM:
     """Build an LLM from a spec like 'gemini:gemini-2.5-flash', 'groq:openai/gpt-oss-120b',
     'openai_compat:<model>', 'anthropic:claude-haiku-5-5'. Defaults from LLM env var."""
-    spec = spec or os.environ.get("LLM") or "gemini:gemini-2.5-flash"
+    spec = spec or os.environ.get("LLM") or "gemini:auto"
     provider, _, model = spec.partition(":")
     provider = provider.lower()
     if provider == "gemini":
-        return GeminiLLM(model or "gemini-2.5-flash", **kw)
+        return GeminiLLM(model or "auto", **kw)
     if provider in ("groq", "openai_compat", "openai", "openrouter", "ollama"):
         base = {"groq": "https://api.groq.com/openai/v1", "openai": "https://api.openai.com/v1",
                 "openrouter": "https://openrouter.ai/api/v1", "ollama": "http://localhost:11434/v1"}.get(provider)
