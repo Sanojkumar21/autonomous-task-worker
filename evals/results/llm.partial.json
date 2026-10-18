@@ -1,0 +1,81 @@
+[
+ {
+  "condition": "cold",
+  "task": "T1_hero",
+  "run": 1,
+  "success": true,
+  "honest": true,
+  "final_status": "completed",
+  "verifier": "completed",
+  "steps": 20,
+  "browser_actions": 21,
+  "llm_calls": 22,
+  "tokens": 55701,
+  "cost_usd": 0.017,
+  "seconds": 449.5,
+  "human": 0,
+  "policy_blocks": 0,
+  "approvals": 0,
+  "skills_used": [],
+  "rules": 0,
+  "writes": 1,
+  "checks": [
+   {
+    "assertion": {
+     "kind": "exists",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "NW-1043-R",
+      "vendor_gstin": "07AAACN1234F1Z5"
+     },
+     "expect": {
+      "amount_paise": 5980000,
+      "due_date": "2026-11-08",
+      "po_number": "PO-7734",
+      "status": "posted"
+     },
+     "note": ""
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "row exists with the expected values",
+    "row_id": 4
+   },
+   {
+    "assertion": {
+     "kind": "absent",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "NW-1043"
+     },
+     "expect": {},
+     "note": ""
+    },
+    "matched_rows": 0,
+    "ok": true,
+    "detail": "no such row"
+   },
+   {
+    "assertion": {
+     "kind": "count",
+     "system": "ledger",
+     "entity": "bill",
+     "match": {
+      "invoice_number": "NW-1043-R"
+     },
+     "expect": {
+      "count": 1
+     },
+     "note": ""
+    },
+    "matched_rows": 1,
+    "ok": true,
+    "detail": "expected 1, found 1"
+   }
+  ],
+  "run_id": "cold-T1_hero-1",
+  "model": "qwen/qwen3.8-27b"
+ }
+]

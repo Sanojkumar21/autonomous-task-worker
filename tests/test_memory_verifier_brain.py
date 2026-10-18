@@ -97,3 +97,11 @@ def test_scripted_brain_rules():
     assert rules[0].structured["approval_threshold_paise"] == 5000000
     rules = brain.extract_rules("Don't use 'Northwind Supplies Ltd' in Ledger; use 'Northwind Supplies' (GSTIN 07AAACN1234F1Z5).", "x", None, CompanyContext())
     assert rules[0].structured == {"avoid_vendor": "Northwind Supplies Ltd", "use_instead": "Northwind Supplies"}
+
+
+def test_learning_answers_are_found_even_when_wrapped_in_an_action():
+    from worker.brains.llm_brain import _unwrap
+    wrapped = {"thought": "t", "action": {"tool": "done", "args": {"summary": "s", "rules": [{"kind": "policy", "text": "x"}]}}}
+    assert _unwrap(wrapped, ("rules",))["rules"][0]["kind"] == "policy"
+    flat = {"workflow": ["a"], "procedure": []}
+    assert _unwrap(flat, ("workflow", "procedure")) is flat

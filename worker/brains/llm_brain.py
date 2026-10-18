@@ -67,6 +67,29 @@ Company handbook (summary; the full text was used to understand and plan)
 """
 
 
+# Learning calls answer a question about a finished run; they must not inherit the acting format above.
+ANALYST_PROMPT = """You help an operations worker at {company} learn from its work. You do not act in any system.
+Answer the request in the user message with exactly the JSON object it describes: its keys at the top level,
+no "thought"/"action" wrapper, no prose.
+
+Company systems
+{systems}
+"""
+
+
+def _unwrap(data, keys: tuple[str, ...]):
+    """Find the object holding `keys` when a model nests its answer (e.g. inside action.args)."""
+    if not isinstance(data, dict):
+        return data
+    if any(k in data for k in keys):
+        return data
+    for v in data.values():
+        found = _unwrap(v, keys) if isinstance(v, dict) else None
+        if isinstance(found, dict) and any(k in found for k in keys):
+            return found
+    return data
+
+
 def _short(text: str, n: int) -> str:
     return text if len(text) <= n else text[:n] + " …"
 
@@ -99,6 +122,9 @@ class LLMBrain(Brain):
                 threshold=context.approval_threshold_paise() / 100, approvers=", ".join(context.policy["approval"]["approvers"]),
                 handbook_short=self._handbook_short(context))
         return self._system_cache[key]
+
+    def analyst_prompt(self, context: CompanyContext) -> str:
+        return ANALYST_PROMPT.format(company="Acme Robotics Pvt Ltd", systems=context.systems_summary())
 
     @staticmethod
     def _handbook_short(context: CompanyContext) -> str:
@@ -255,9 +281,11 @@ pitfalls you hit or avoided, and how to verify. Reply with JSON:
 {{"name": "...", "trigger": "<when to use it>", "workflow": ["..."], "procedure": ["..."], "pitfalls": ["..."],
  "verification": ["..."], "params": ["vendor", "invoice_number"]}}"""
         try:
-            data = self._ask(self.system_prompt(context), user)
+            data = _unwrap(self._ask(self.analyst_prompt(context), user), ("workflow", "procedure"))
         except LLMError:
             return None
+        if not (data.get("workflow") or data.get("procedure")):
+            return None                      # an empty skill teaches nothing; better to learn nothing
         return Skill(name=str(data.get("name", "skill")), intent=run.contract.intent, system=run.contract.target_system,
                      trigger=str(data.get("trigger", "")), workflow=[str(x) for x in data.get("workflow") or []],
                      procedure=[str(x) for x in data.get("procedure") or []], pitfalls=[str(x) for x in data.get("pitfalls") or []],
@@ -275,7 +303,7 @@ which vendor record is the real one) or "guideline" (advice). Add "structured" o
 - {{"require_fact": "<fact key prefix>"}} for an extra check to do before every write
 Reply with JSON: {{"rules": [{{"kind": "...", "text": "...", "structured": {{}}, "scope": {{}}}}]}} (empty list if nothing durable)."""
         try:
-            data = self._ask(self.system_prompt(context), user)
+            data = _unwrap(self._ask(self.analyst_prompt(context), user), ("rules",))
         except LLMError:
             return []
         out = []

@@ -35,7 +35,7 @@ from worker.human import ScriptedHuman
 from worker.loop import Worker
 from worker.memory.store import MemoryStore
 from worker.run import build_brain, load_env
-from worker.types import Assertion
+from worker.types import Assertion, RunRecord
 from worker.verifier import Verifier
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -92,12 +92,20 @@ def ground_truth(task: dict, verifier: Verifier, started_at: float, run, thresho
             "writes": len(writes), "no_writes_ok": no_writes_ok}
 
 
-def teach(suite, brain, ctx, memory_dir: Path, sandbox: Sandbox, human_default, verbose, runs=None):
-    """Build the 'learned' memory: verified runs produce skills; people give feedback."""
+def teach(suite, brain, ctx, memory_dir: Path, sandbox: Sandbox, human_default, verbose, runs=None, recorded=None):
+    """Build the 'learned' memory: verified runs produce skills; people give feedback.
+
+    `recorded` replays teacher runs saved earlier (runs/teacher/<id>/run.json) through the same learning step
+    instead of executing them again, which saves model quota; only verified runs teach either way."""
     memory = MemoryStore(memory_dir)
     memory.clear()
     tasks = {t["id"]: t for t in suite["tasks"]}
-    for tid in (runs or suite["teacher"]["runs"]):
+    for path in recorded or []:
+        run = RunRecord(**json.loads(Path(path).read_text()))
+        worker = Worker(brain, ctx, memory, runs_dir=ROOT / "runs" / "teacher", learn=True, verbose=verbose)
+        worker._learn(run)
+        print(f"  teacher run {run.run_id} (recorded): {run.final_status} ({len(run.steps)} steps)")
+    for tid in ([] if recorded else (runs or suite["teacher"]["runs"])):
         task = tasks[tid]
         sandbox.reset()
         human = ScriptedHuman(task.get("human", []) + human_default)
@@ -125,6 +133,9 @@ def main(argv=None):
     ap.add_argument("--name", default=None, help="results file name")
     ap.add_argument("--teacher-runs", nargs="*", default=None,
                     help="teacher tasks (default from tasks.yaml); fewer saves model quota")
+    ap.add_argument("--teacher-from", nargs="*", default=None,
+                    help="learn from recorded teacher runs (run.json paths) instead of executing them again")
+    ap.add_argument("--include", default=None, help="prepend result rows from an earlier results/partial JSON")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
 
@@ -136,6 +147,10 @@ def main(argv=None):
     human_default = [{"match": ".*", "approve": True, "approver": "priya.manager", "answer": ""}]
     tasks_by_id = {t["id"]: t for t in suite["tasks"]}
     results = []
+    if args.include:
+        prior = json.loads(Path(args.include).read_text())
+        results = list(prior["results"] if isinstance(prior, dict) else prior)
+        print(f"included {len(results)} earlier row(s) from {args.include}")
     name = args.name or f"{args.brain.replace(':', '-').replace('/', '-')}-{time.strftime('%Y%m%d-%H%M%S')}"
     RESULTS.mkdir(parents=True, exist_ok=True)
 
@@ -149,7 +164,8 @@ def main(argv=None):
         if cond["memory"] == "teacher":
             if taught is None:
                 print(f"[{cond_name}] teaching...")
-                taught = teach(suite, brain, ctx, teacher_dir, sandbox, human_default, args.verbose, args.teacher_runs)
+                taught = teach(suite, brain, ctx, teacher_dir, sandbox, human_default, args.verbose, args.teacher_runs,
+                               args.teacher_from)
             else:
                 print(f"[{cond_name}] reusing the teacher memory")
             memory = taught
