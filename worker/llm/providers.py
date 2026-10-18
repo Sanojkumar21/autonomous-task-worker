@@ -289,17 +289,22 @@ class AnthropicLLM(LLM):
 
 
 class FailoverLLM(LLM):
-    """Several models in preference order. A model whose budget is exhausted is parked until its
-    quota resets and the next one takes over mid-run; usage is summed across them. The run report
-    shows every model that worked on it ("a -> b"), never silently a different one."""
+    """Several models in preference order. A model whose budget is exhausted is parked until its quota
+    resets; a model that keeps failing (overloaded, 5xx) is rested for a few minutes. The next available
+    model takes over mid-run. When every model is parked but one comes back within `max_wait_s`, the
+    run waits for it instead of giving up. Usage is summed across models, and the report names every
+    model that worked on the run ("a -> b"), so a failover is never a silent change of model."""
     name = "failover"
+    REST_S = 180.0                                  # a failing (not exhausted) model sits out this long
 
-    def __init__(self, members: list[LLM]):
+    def __init__(self, members: list[LLM], max_wait_s: float | None = None):
         super().__init__(members[0].model)
         self.members = members
         self.index = 0
         self.parked: dict[int, float] = {}          # member index -> time it is worth trying again
         self.switches: list[str] = []
+        self.max_wait_s = float(os.environ.get("LLM_MAX_WAIT_S", 900) if max_wait_s is None else max_wait_s)
+        self.waited_s = 0.0
 
     @property
     def current(self) -> LLM:
@@ -309,46 +314,57 @@ class FailoverLLM(LLM):
     def supports_vision(self):
         return self.current.supports_vision
 
-    def _advance(self):
+    def _advance(self) -> bool:
+        """Point at the first available model. False when every model is parked."""
         now = time.time()
         for i in range(len(self.members)):
-            if i not in self.parked or self.parked[i] <= now:
+            if self.parked.get(i, 0) <= now:
+                self.parked.pop(i, None)
                 if i != self.index:
                     self.switches.append(f"{self.members[self.index].model} -> {self.members[i].model}")
                     log.warning("llm failover: %s", self.switches[-1])
                 self.index = i
-                return
-        soonest = min(self.parked.values()) - now
-        raise LLMError(f"every model's budget is exhausted ({', '.join(m.model for m in self.members)}); "
-                       f"the first resets in {max(soonest, 0) / 60:.0f} min")
+                return True
+        return False
+
+    def _wait_for_one(self):
+        wait = min(self.parked.values()) - time.time() + 1
+        if wait > self.max_wait_s:
+            raise LLMError(f"every model is unavailable ({', '.join(m.model for m in self.members)}); "
+                           f"the first comes back in {wait / 60:.0f} min")
+        log.warning("llm: every model is parked; waiting %.0fs for the first to come back", wait)
+        time.sleep(max(wait, 0))
+        self.waited_s += max(wait, 0)
 
     def complete(self, system, messages, want_json=True, images=None, retries=3):
-        self._advance()
-        for _ in range(len(self.members)):
+        last = None
+        for _ in range(len(self.members) * 4):
+            if not self._advance():
+                self._wait_for_one()
+                continue
             try:
                 res = self.current.complete(system, messages, want_json, images, retries)
             except BudgetExhausted as e:
                 self.parked[self.index] = time.time() + max(e.retry_after, 60.0)
                 log.warning("llm %s parked: %s", self.current.model, str(e)[:160])
-                self._advance()
+                last = e
+                continue
+            except LLMError as e:                   # overloaded or broken right now: rest it, try another
+                self.parked[self.index] = time.time() + self.REST_S
+                log.warning("llm %s resting %.0fs: %s", self.current.model, self.REST_S, str(e)[:160])
+                last = e
                 continue
             self.calls = sum(m.calls for m in self.members)
             self.input_tokens = sum(m.input_tokens for m in self.members)
             self.output_tokens = sum(m.output_tokens for m in self.members)
             self.cost_usd = sum(m.cost_usd for m in self.members)
             return res
-        raise LLMError("every model failed")
+        raise LLMError(f"every model failed: {last}")
 
     @property
     def model(self) -> str:                         # the models that actually worked, in order
-        used = [self.members[0].model]
-        for s in self.switches:
-            used.append(s.split(" -> ")[1])
-        out = []
-        for m in used:
-            if m not in out:
-                out.append(m)
-        return " -> ".join(out)
+        used = [self.members[0].model] + [s.split(" -> ")[1] for s in self.switches]
+        return " -> ".join(dict.fromkeys(used))
 
     @model.setter
     def model(self, value):

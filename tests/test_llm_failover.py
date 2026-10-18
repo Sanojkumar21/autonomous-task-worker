@@ -32,9 +32,37 @@ def test_failover_switches_and_reports_both_models(monkeypatch):
 
 def test_all_exhausted_fails_fast(monkeypatch):
     monkeypatch.setattr(time, "sleep", no_sleep)
-    llm = FailoverLLM([Fake("a", fail=True), Fake("b", fail=True)])
-    with pytest.raises(LLMError, match="every model's budget"):
+    llm = FailoverLLM([Fake("a", fail=True), Fake("b", fail=True)])     # resets in 45 min: beyond the wait budget
+    with pytest.raises(LLMError, match="every model is unavailable"):
         llm.complete("s", [{"role": "user", "content": "u"}])
+
+
+class Flaky(Fake):
+    def __init__(self, model, failures):
+        super().__init__(model)
+        self.failures = failures
+
+    def _call(self, system, messages, want_json, images):
+        if self.failures:
+            self.failures -= 1
+            raise LLMError(f"{self.model} 503: overloaded")
+        return '{"ok": true}', 10, 2, {}
+
+
+def test_overloaded_model_rests_and_the_next_one_answers(monkeypatch):
+    monkeypatch.setattr(time, "sleep", lambda s: None)
+    llm = FailoverLLM([Flaky("a", failures=99), Fake("b")])
+    assert llm.complete("s", [{"role": "user", "content": "u"}]).json == {"ok": True}
+    assert llm.model == "a -> b" and 0 in llm.parked
+
+
+def test_waits_for_a_short_reset_instead_of_giving_up(monkeypatch):
+    slept, clock = [], [1_000_000.0]
+    monkeypatch.setattr(time, "time", lambda: clock[0])
+    monkeypatch.setattr(time, "sleep", lambda s: (slept.append(s), clock.__setitem__(0, clock[0] + s)))
+    llm = FailoverLLM([Flaky("a", failures=3)], max_wait_s=600)     # 3 failures = one rested attempt
+    assert llm.complete("s", [{"role": "user", "content": "u"}]).json == {"ok": True}
+    assert any(170 < s <= 182 for s in slept)                        # waited out the 180 s rest
 
 
 def test_budget_exhausted_is_not_retried(monkeypatch):

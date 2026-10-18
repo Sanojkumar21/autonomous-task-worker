@@ -1,0 +1,235 @@
+{
+ "brain": "llm",
+ "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b -> gemini-3.5-flash",
+ "when": "2026-10-18 10:40:20",
+ "runs": 1,
+ "results": [
+  {
+   "condition": "cold",
+   "task": "T1_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 20,
+   "browser_actions": 21,
+   "llm_calls": 22,
+   "tokens": 55701,
+   "cost_usd": 0.017,
+   "seconds": 449.5,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [],
+   "rules": 0,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "cold-T1_hero-1",
+   "model": "qwen/qwen3.8-27b"
+  },
+  {
+   "condition": "learned",
+   "task": "T1_hero",
+   "run": 1,
+   "success": true,
+   "honest": true,
+   "final_status": "completed",
+   "verifier": "completed",
+   "steps": 25,
+   "browser_actions": 30,
+   "llm_calls": 31,
+   "tokens": 94663,
+   "cost_usd": 0.02425,
+   "seconds": 726.4,
+   "human": 1,
+   "policy_blocks": 1,
+   "approvals": 1,
+   "skills_used": [
+    "skill_0895f9aa"
+   ],
+   "rules": 3,
+   "writes": 1,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "posted",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "row exists with the expected values",
+     "row_id": 4
+    },
+    {
+     "assertion": {
+      "kind": "absent",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043"
+      },
+      "expect": {},
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": true,
+     "detail": "no such row"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "ledger",
+      "entity": "bill",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 1,
+     "ok": true,
+     "detail": "expected 1, found 1"
+    }
+   ],
+   "run_id": "learned-T1_hero-1",
+   "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b"
+  },
+  {
+   "condition": "unseen",
+   "task": "T7_nova_hero",
+   "run": 1,
+   "success": false,
+   "honest": true,
+   "final_status": "gave_up",
+   "verifier": "not_run",
+   "steps": 24,
+   "browser_actions": 26,
+   "llm_calls": 56,
+   "tokens": 166385,
+   "cost_usd": 0.03569,
+   "seconds": 584.2,
+   "human": 0,
+   "policy_blocks": 0,
+   "approvals": 0,
+   "skills_used": [
+    "skill_0895f9aa"
+   ],
+   "rules": 2,
+   "writes": 0,
+   "checks": [
+    {
+     "assertion": {
+      "kind": "exists",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R",
+       "vendor_gstin": "07AAACN1234F1Z5"
+      },
+      "expect": {
+       "amount_paise": 5980000,
+       "due_date": "2026-11-08",
+       "po_number": "PO-7734",
+       "status": "recorded",
+       "approved_by": "priya.manager"
+      },
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": false,
+     "detail": "no row matches"
+    },
+    {
+     "assertion": {
+      "kind": "count",
+      "system": "nova",
+      "entity": "payable",
+      "match": {
+       "invoice_number": "NW-1043-R"
+      },
+      "expect": {
+       "count": 1
+      },
+      "note": ""
+     },
+     "matched_rows": 0,
+     "ok": false,
+     "detail": "expected 1, found 0"
+    }
+   ],
+   "run_id": "unseen-T7_nova_hero-1",
+   "model": "qwen/qwen3.8-27b -> openai/gpt-oss-20b -> gemini-3.5-flash"
+  }
+ ]
+}
