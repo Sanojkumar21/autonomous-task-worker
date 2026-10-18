@@ -25,6 +25,10 @@ The brain never sets the status, never bypasses the gate, and never reads the da
 
 The page is rendered as text: URL, headings, paragraphs, table rows (`| a | b |`), alerts, and every interactive element as `[id] role "name" = value`. Ids are assigned fresh on every observation, so the brain acts on *what it sees now*, which is why renamed labels (chaos `ui_drift`) and expired sessions do not break it. A vision model can additionally be handed a screenshot (`look`).
 
+## What the brain sees each step
+
+Besides the page, every decision prompt carries the run's working memory: the facts recorded so far (with their source), the documents already read (a PDF is downloaded once and its text stays in view, so it is never re-read), the systems with a live session (so the worker does not sign in again), approvals and answers from people, the last few results, and hints from the loop's detectors (repeated calls, alternating between two pages, expired sessions, server errors). A text-only model is not offered `look`.
+
 ## Writes: declare, check, then click
 
 A write is never a bare click. The brain calls `commit(button, intent)` with a declared intent: type, system, vendor, invoice number, amount in paise, due date, PO. The runtime then:
@@ -51,10 +55,14 @@ Memory is read-only during evaluation runs (frozen code, frozen memory), so meas
 
 NovaBooks is a second ERP with different words (payable/supplier/reference/total/pay by), a three-step wizard, `dd/mm/yyyy` dates and its own login. The worker's code is frozen before it meets it. What carries over is the handbook, the learned rules and facts (they are about the company, not the app), and the workflow half of a skill learned on Ledger.
 
+## Model budget
+
+Free tiers meter tokens per minute and per day. The provider layer paces itself on the per-minute headers and learns a requests-per-minute quota from the first refusal. A per-day refusal raises `BudgetExhausted` at once instead of sleeping. `LLM=a,b,c` builds a failover: an exhausted model is parked until its reset, an overloaded one rests for three minutes, and the next model continues the same run. When every model is parked but one returns soon, the run waits. Each run records every model that worked on it. Keys travel in headers, never in URLs.
+
 ## Chaos
 
 The sandbox can inject: `http_503` before a request, `commit_then_502` (the write commits, the response is 502), `session_expiry_every` N authenticated requests, `ui_drift` (labels renamed), `slow_ms`. Faults are seeded, so runs are repeatable.
 
 ## What is deliberately not here
 
-No agent framework: the loop is ~150 lines and every decision point is visible. No tool-specific selectors. No database access for the worker. No model in the gate or the verifier.
+No agent framework: the loop is about 200 lines (`worker/loop.py`) and every decision point is visible. No tool-specific selectors. No database access for the worker. No model in the gate or the verifier.

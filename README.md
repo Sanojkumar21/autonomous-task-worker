@@ -4,7 +4,11 @@ Give it a request in plain English: *"Find the latest invoice from Northwind Sup
 
 Submission for the CentrAlign AI **AI Engineering Intern** challenge ("Autonomous AI Task Worker").
 
-> **Demo video:** _link added after recording_ · **GIFs:** [hero task](docs/demo-hero.gif), [under chaos](docs/demo-chaos.gif) · **Step-by-step replays with screenshots:** [docs/example-runs](docs/example-runs/) (open any `replay.html`)
+> **Demo video:** _link added after recording_ · **GIFs:** [hero task](docs/demo-hero.gif), [under chaos](docs/demo-chaos.gif)
+>
+> **Step-by-step replays** (every action, the model's reasoning, a screenshot per step):
+> LLM brain: [cold](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/llm-cold-T1_hero-1/replay.html) · [after learning](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/llm-learned-T1_hero-1/replay.html) · [unseen app](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/llm-unseen-T7_nova_hero-1/replay.html) ·
+> scripted brain: [hero](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/cold-T1_hero-1/replay.html) · [duplicate refused](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/cold-T3_duplicate-1/replay.html) · [under chaos](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/chaos-T4_small-2/replay.html) · [unseen app](https://sanojkumar21.github.io/autonomous-task-worker/docs/example-runs/unseen-T7_nova_hero-1/replay.html)
 
 ![The hero task, end to end](docs/demo-hero.gif)
 
@@ -19,9 +23,9 @@ Most agent prototypes do the same loop. This one adds three things the brief ask
 ## Quick start
 
 ```bash
-make setup            # venv, dependencies, Chromium, seed data
+make setup            # venv, dependencies, Chromium, seed data, and .env from .env.example
 make serve            # the simulated company at http://127.0.0.1:8000
-cp .env.example .env  # add GEMINI_API_KEY (free) or a Groq / OpenAI-compatible / Anthropic key
+# edit .env: add GEMINI_API_KEY (free) or a Groq / OpenAI-compatible / Anthropic key
 
 make run TASK="Find the latest invoice from Northwind Supplies, extract the amount and due date, enter it into Ledger, and tell me once it is done"
 make run-scripted TASK="Record the latest invoice from Meridian Metals in NovaBooks"   # no model needed
@@ -29,7 +33,7 @@ make run-scripted TASK="Record the latest invoice from Meridian Metals in NovaBo
 
 Every run writes `runs/<id>/report.md` (facts with provenance, policy decisions, approvals, verifier table), `run.json` and `replay.html` with a screenshot per step.
 
-Teach it:
+Teach it (after `source .venv/bin/activate`):
 
 ```bash
 python -m worker feedback "From now on bills over 50,000 need my approval before posting." --who priya.manager
@@ -148,7 +152,7 @@ Reproduce: `make eval` with any key in `.env`. Per-run evidence for the three pa
 | **FastAPI, Jinja2, SQLite** | the simulated company and its admin API |
 | **pypdf, reportlab** | reading / generating invoice PDFs |
 | **Pydantic** | every run artefact is typed data |
-| **LLM providers** (plain HTTPS, no SDKs): Gemini (free tier), any OpenAI-compatible endpoint (Groq, OpenRouter, Ollama, OpenAI), Anthropic | the brain; pick with `LLM=provider:model` in `.env` |
+| **LLM providers** (plain HTTPS, no SDKs): Gemini (free tier), any OpenAI-compatible endpoint (Groq, OpenRouter, Ollama, OpenAI), Anthropic | the brain; pick with `LLM=provider:model` in `.env`, or list several (`LLM=a,b,c`) to fail over when a quota runs out or a provider is overloaded |
 | **No agent framework** | the loop is in `worker/loop.py`; every decision point is visible |
 | **AI coding assistance** | Claude Code was used while building, reviewing and documenting; every component is tested and I can explain, debug and modify each one |
 
@@ -165,7 +169,7 @@ Reproduce: `make eval` with any key in `.env`. Per-run evidence for the three pa
 - Browser and files only: no desktop/OS control (the brief allows restricting scope); vision is optional (`look`) and off by default to keep free models usable.
 - The LLM brain's results depend on the model; the scripted brain measures the runtime, not autonomy.
 - Learning is verified-run-only and single-company; there is no cross-company transfer or forgetting policy yet.
-- The fault model covers the common failures (5xx, expired sessions, renamed labels, commit-then-error), not every real-world one (rate limits, CAPTCHAs, partial page loads).
+- The fault model covers the common failures (5xx, expired sessions, renamed labels, commit-then-error), not every real-world one (app-side rate limits, CAPTCHAs, partial page loads). Model-side quotas and outages are handled by the provider failover.
 - The mailbox check is heuristic (search by vendor); a long inbox would need a better reading strategy.
 - No resume of an interrupted run yet (every run writes its state, but the loop restarts from the request).
 
@@ -185,8 +189,8 @@ Reproduce: `make eval` with any key in `.env`. Per-run evidence for the three pa
 | Source code | this repository |
 | Setup and run instructions | **Quick start** above; `Makefile` targets |
 | Architecture | **Architecture** above; `docs/DESIGN.md` |
-| Design decisions | `docs/DECISIONS.md` (14 decisions, each with the alternative and the reason) |
-| Demo | `docs/demo-hero.gif`, `docs/demo-chaos.gif`, `docs/example-runs/*/replay.html`; video link at the top |
+| Design decisions | `docs/DECISIONS.md` (15 decisions, each with the alternative and the reason) |
+| Demo | GIFs and live replay links at the top (`docs/example-runs/*/replay.html`); video link at the top |
 | Known limitations | **Known limitations** above |
 | What I would build next | **What I would build next** above |
 | Assumptions | **Assumptions** above |
@@ -201,7 +205,7 @@ company_context/    what the worker is given: systems, handbook, policy
 worker/             the worker: browser, runtime, policy, verifier, loop, memory, brains, demonstrate, CLI
 evals/              tasks, conditions, harness, results
 tests/              unit + end-to-end tests (make test, make test-e2e)
-docs/               DESIGN, DECISIONS, EVALUATION, demo GIF
-runs/               one directory per run: run.json, report.md, replay.html, screens/
-memory/             what the worker has learned (skills.json, rules.json)
+docs/               DESIGN, DECISIONS, EVALUATION, demo GIFs, example-runs/ (committed runs with replays)
+runs/               created locally, one directory per run: run.json, report.md, replay.html, screens/ (git-ignored)
+memory/             what the worker has learned locally (skills.json, rules.json; git-ignored)
 ```
