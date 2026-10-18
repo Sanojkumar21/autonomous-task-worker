@@ -70,11 +70,17 @@ class PolicyGate:
     # ---- the decision
     def evaluate(self, intent: dict, run: RunRecord) -> PolicyDecision:
         reasons, rule_ids = [], []
-        itype = intent.get("type", "other_write")
+        itype = (intent.get("type") or "").strip()
         if itype in self.policy.get("forbidden", []) or itype in ("delete", "external_email", "admin_api"):
             return PolicyDecision(allowed=False, reasons=[f"'{itype}' is forbidden by company policy"], rule_ids=["policy.forbidden"])
         if itype not in WRITE_INTENTS:
-            return PolicyDecision(allowed=True, reasons=["not a governed write"])
+            # Everything that reaches the gate is a write (commit = a submit button). A missing or unknown
+            # type never relaxes the checks: infer the strictest fitting kind.
+            if intent.get("invoice_number") or intent.get("amount_paise") is not None:
+                itype = "record_payable" if intent.get("system") == "nova" else "create_bill"
+            else:
+                itype = "update_record"
+            intent["type"] = itype
 
         inv = (intent.get("invoice_number") or "").strip()
         amount = intent.get("amount_paise")

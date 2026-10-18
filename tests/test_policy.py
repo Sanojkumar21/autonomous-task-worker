@@ -80,3 +80,12 @@ def test_forbidden_and_non_governed():
     gate = PolicyGate(load_policy())
     assert not gate.evaluate({"type": "delete"}, make_run()).allowed
     assert gate.evaluate({"type": "read"}, make_run()).allowed
+
+
+def test_missing_type_is_still_governed():
+    gate = PolicyGate(load_policy())
+    intent = {k: v for k, v in INTENT.items() if k != "type"}
+    d = gate.evaluate(intent, make_run())
+    assert not d.allowed and any("pdf_total" in r for r in d.reasons)
+    run = make_run([("duplicate_check:NW-1043-R", "none"), ("pdf_total:NW-1043-R", "5980000")])
+    assert gate.evaluate(dict(intent), run).allowed

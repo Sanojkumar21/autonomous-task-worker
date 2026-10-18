@@ -45,6 +45,9 @@ How you work
   due_date:<inv>, po:<inv>, vendor_gstin:<inv>, duplicate_check:<inv> ("none" or "exists: ..."), and any mail_check:<inv>.
 - Keep going until the task is done or you must stop. Prefer navigate with a path over clicking through menus when
   you know the path. Do not repeat an action that did not change anything.
+- Be economical: read a PDF once and record every fact you need from it in the following steps (do not read it again);
+  use `look` only when the text view is not enough; the intent of `commit` must include "type"
+  (create_bill | record_payable | post_bill) and the system.
 
 Tools (reply with exactly one per step): {tools}
 Use fill_form to enter several fields at once (and to sign in: fields + submit). Use commit, never fill_form's submit, for buttons that save or record.
