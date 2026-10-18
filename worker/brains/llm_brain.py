@@ -120,7 +120,7 @@ Full company handbook:
 {memory.describe() or 'No learned rules yet.'}
 
 Work out what this request means before touching anything. Reply with JSON:
-{{"intent": "<snake_case verb phrase, e.g. record_supplier_invoice>",
+{{"intent": "<one of: record_supplier_invoice, update_bill, mark_bill_paid, find_information, reply_to_mail, other>",
  "summary": "<what you will do, one or two sentences>",
  "target_system": "<ledger|nova|portal|mail>",
  "params": {{"vendor": "...", "which": "latest|<invoice number>|unspecified", ...}},

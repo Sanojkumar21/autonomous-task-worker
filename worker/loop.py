@@ -144,8 +144,9 @@ class Worker:
     def _detect(self, run: RunRecord, obs, last_result: str) -> list[str]:
         hints = []
         steps = run.steps
-        if len(steps) >= 3 and len({s.action.signature() for s in steps[-3:]}) == 1:
-            hints.append("You repeated the same action three times. Change approach: observe the page, use a different element or path, or ask for help.")
+        if len(steps) >= 2 and len({s.action.signature() for s in steps[-2:]}) == 1:
+            hints.append(f"You just repeated the exact same call and it returned: '{steps[-1].result[:160]}'. Do not send it again: "
+                         "fix the arguments to match the tool's expected shape, use a different element or path, or ask for help.")
         if obs.is_login_page:
             hints.append("The page is a sign-in form: your session expired. Sign in again with the credentials from the company context, then continue where you left off.")
         if obs.http_error and obs.http_error >= 500:

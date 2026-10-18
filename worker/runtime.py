@@ -99,7 +99,16 @@ class Runtime:
     def t_navigate(self, step, url=""):
         return ToolResult(self.browser.navigate(self._abs(str(url))))
 
+    PDF_LINK = __import__("re").compile(r"(\.pdf|/pdf)(\?|$)", __import__("re").I)
+
     def t_click(self, step, id=None):
+        obs = self.last_observation
+        if obs:
+            el = next((e for e in obs.elements if e.id == int(id)), None)
+            if el is not None and el.role == "link" and self.PDF_LINK.search(el.href or ""):
+                res = self.t_read_pdf(step, url=el.href)
+                res.text = f'"{el.name}" is a PDF download; read it instead of opening it. ' + res.text
+                return res
         return ToolResult(self.browser.click(int(id)))
 
     def t_type(self, step, id=None, text=""):
@@ -117,38 +126,56 @@ class Runtime:
     SAFE_SUBMIT_WORDS = ("sign in", "log in", "search", "filter", "find", "continue", "review", "next", "back")
 
     def t_fill_form(self, step, fields=None, submit=None):
-        """Fill several fields in one step. Submitting is allowed only for non-write buttons."""
+        """Fill several fields in one step. Submitting is allowed only for non-write buttons.
+
+        Accepts `fields` as a list of {id, value} objects, or as a mapping of
+        element id (or element name) to value: models write it both ways.
+        """
         obs = self.last_observation or self.observe()
         by_id = {e.id: e for e in obs.elements}
+        by_name = {e.name.lower(): e for e in obs.elements if e.name}
+        pairs = []
+        if isinstance(fields, dict):
+            pairs = list(fields.items())
+        elif isinstance(fields, list):
+            for f in fields:
+                if isinstance(f, dict):
+                    pairs.append((f.get("id", f.get("name")), f.get("value", f.get("text", ""))))
+                elif isinstance(f, (list, tuple)) and len(f) == 2:
+                    pairs.append((f[0], f[1]))
+        if not pairs:
+            return ToolResult("fill_form needs fields: a list of {id, value} or a mapping {id: value}")
         done = []
-        for f in fields or []:
-            if not isinstance(f, dict) or "id" not in f:
-                return ToolResult("fill_form fields must be objects with id and value")
-            try:
-                eid = int(f["id"])
-            except (TypeError, ValueError):
-                return ToolResult(f"bad element id {f.get('id')!r}")
-            el = by_id.get(eid)
-            value = f.get("value", f.get("text", ""))
+        for key, value in pairs:
+            el = None
+            if str(key).strip().isdigit():
+                el = by_id.get(int(str(key).strip()))
             if el is None:
-                return ToolResult(f"no element with id {eid} (observe again; ids change after each action)")
+                k = str(key).strip().lower()
+                el = by_name.get(k) or next((e for n, e in by_name.items() if k and k in n), None)
+            if el is None:
+                return ToolResult("; ".join(done) + f"; no element matching {key!r} (use ids from the current observation)")
             if el.role == "select":
-                res = self.browser.select(eid, str(value))
+                res = self.browser.select(el.id, str(value))
             elif el.role in ("checkbox", "radio"):
-                res = self.browser.check(eid) if value not in (False, "false", "no", 0) else "left unchecked"
+                res = self.browser.check(el.id) if value not in (False, "false", "no", 0) else "left unchecked"
             else:
-                res = self.browser.type(eid, str(value))
-            done.append(f'{el.name}: {res}')
+                res = self.browser.type(el.id, str(value))
+            done.append(f"{el.name}: {res}")
             if "failed" in res or "no option" in res:
                 return ToolResult("; ".join(done))
-        if submit is not None:
-            el = by_id.get(int(submit))
+        if submit is not None and str(submit).strip() != "":
+            try:
+                sid = int(str(submit).strip())
+                el = by_id.get(sid)
+            except ValueError:
+                el = by_name.get(str(submit).lower())
             if el is None:
-                return ToolResult("; ".join(done) + f"; no element with id {submit}")
+                return ToolResult("; ".join(done) + f"; no element matching submit={submit!r}")
             if not (obs.is_login_page or any(w in el.name.lower() for w in self.SAFE_SUBMIT_WORDS)):
                 return ToolResult("; ".join(done) + f'; not clicking "{el.name}": a write must go through commit with a declared intent')
-            done.append(self.browser.click(int(submit)))
-        return ToolResult("; ".join(done) or "nothing to fill")
+            done.append(self.browser.click(el.id))
+        return ToolResult("; ".join(done))
 
     def t_read_pdf(self, step, url=""):
         text = self.browser.fetch_pdf_text(self._abs(str(url)))

@@ -24,7 +24,7 @@ class Element(BaseModel):
 
     def line(self) -> str:
         parts = [f"[{self.id}] {self.role} \"{self.name}\""]
-        if self.role in ("textbox", "select", "textarea") or self.value:
+        if self.role in ("textbox", "select", "textarea", "password") or self.value:
             parts.append(f'= "{self.value}"')
         if self.options:
             parts.append("options: " + ", ".join(f'"{o}"' for o in self.options[:12]))

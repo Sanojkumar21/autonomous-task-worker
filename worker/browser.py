@@ -50,7 +50,8 @@ OBSERVE_JS = r"""
     n += 1; el.setAttribute('data-wk', String(n));
     const role = roleOf(el);
     const item = { id: n, role, name: nameOf(el), value: '', href: '', options: [], checked: null, disabled: !!el.disabled };
-    if (role === 'textbox' || role === 'textarea' || role === 'password') item.value = (el.value || '').slice(0, 200);
+    if (role === 'textbox' || role === 'textarea') item.value = (el.value || '').slice(0, 200);
+    if (role === 'password') item.value = el.value ? '•'.repeat(Math.min(el.value.length, 8)) : '';
     if (role === 'select') { item.value = el.options[el.selectedIndex] ? el.options[el.selectedIndex].text.trim() : ''; item.options = Array.from(el.options).map(o => o.text.trim()); }
     if (role === 'checkbox' || role === 'radio') item.checked = !!el.checked;
     if (role === 'link') { const h = el.getAttribute('href') || ''; item.href = h.startsWith('http') ? new URL(h).pathname + new URL(h).search : h; }
