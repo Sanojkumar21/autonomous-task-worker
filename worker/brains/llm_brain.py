@@ -47,6 +47,7 @@ How you work
   you know the path. Do not repeat an action that did not change anything.
 
 Tools (reply with exactly one per step): {tools}
+Use fill_form to enter several fields at once (and to sign in: fields + submit). Use commit, never fill_form's submit, for buttons that save or record.
 
 Reply with JSON only:
 {{"thought": "<one or two sentences>", "milestone": "<id of the milestone you are working on>",
@@ -60,8 +61,8 @@ Company policy (enforced in code)
 - Every create/record needs these facts first: duplicate_check and pdf_total for the invoice. The amount must equal the PDF total.
 - Never delete, never email outside the company, never call admin APIs.
 
-Company handbook
-{handbook}
+Company handbook (summary; the full text was used to understand and plan the task)
+{handbook_short}
 """
 
 
@@ -72,7 +73,7 @@ def _short(text: str, n: int) -> str:
 class LLMBrain(Brain):
     name = "llm"
 
-    def __init__(self, llm: LLM, history_steps: int = 8):
+    def __init__(self, llm: LLM, history_steps: int = 5):
         self.llm = llm
         self.model = llm.model
         self.history_steps = history_steps
@@ -91,8 +92,17 @@ class LLMBrain(Brain):
             self._system_cache[key] = SYSTEM_PROMPT.format(
                 company="Acme Robotics Pvt Ltd", tools=tools, systems=context.systems_summary(),
                 threshold=context.approval_threshold_paise() / 100, approvers=", ".join(context.policy["approval"]["approvers"]),
-                handbook=context.handbook)
+                handbook_short=self._handbook_short(context))
         return self._system_cache[key]
+
+    @staticmethod
+    def _handbook_short(context: CompanyContext) -> str:
+        """Keep the numbered SOP lines and the system notes; drop the rest to save tokens per step."""
+        keep = []
+        for line in context.handbook.splitlines():
+            if re.match(r"^\s*\d+\.\s", line) or line.startswith("- **"):
+                keep.append(re.sub(r"\*\*", "", line).strip())
+        return "\n".join(keep)
 
     def _ask(self, system: str, user: str, images=None) -> dict:
         res = self.llm.complete(system, [{"role": "user", "content": user}], want_json=True, images=images)
@@ -103,6 +113,9 @@ class LLMBrain(Brain):
     # ---- understand
     def understand(self, request: str, context: CompanyContext, memory: MemoryStore) -> Contract:
         user = f"""Request from the ops team: "{request}"
+
+Full company handbook:
+{context.handbook}
 
 {memory.describe() or 'No learned rules yet.'}
 
@@ -159,8 +172,10 @@ Mark the ones that change a system of record with "writes": true. Reply with JSO
                                for m in run.milestones)
         facts = "\n".join(f"- {f.key} = {f.value} (from {f.source})" for f in run.facts[-30:]) or "- none yet"
         history = []
-        for r in state.last_results[-self.history_steps:]:
-            limit = 3000 if "PDF text" in r else 600
+        recent = state.last_results[-self.history_steps:]
+        for i, r in enumerate(recent):
+            is_last = i == len(recent) - 1
+            limit = (2500 if is_last else 160) if "PDF text" in r else (400 if is_last else 200)
             history.append(_short(r, limit))
         clar = "\n".join(f"- Q: {c.question} A: {c.answer}" for c in run.clarifications if c.answer)
         appr = "\n".join(f"- {('granted by ' + a.approver) if a.granted else 'DENIED'}: {json.dumps(a.intent)[:160]}" for a in run.approvals)

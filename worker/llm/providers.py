@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import os
+import time
 
 import httpx
 
@@ -81,8 +82,39 @@ class GeminiLLM(LLM):
         return text, usage.get("promptTokenCount", 0), usage.get("candidatesTokenCount", 0), {"finish": data["candidates"][0].get("finishReason")}
 
 
+def _seconds(text: str) -> float:
+    """Parse '20.745s', '1m26.4s', '585ms', '7' into seconds."""
+    text = (text or "").strip()
+    if not text:
+        return 0.0
+    if text.replace(".", "", 1).isdigit():
+        return float(text)
+    total, num = 0.0, ""
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if ch.isdigit() or ch == ".":
+            num += ch
+            i += 1
+            continue
+        unit = ch
+        if text[i:i + 2] == "ms":
+            unit, i = "ms", i + 2
+        else:
+            i += 1
+        value = float(num or 0)
+        total += value * {"h": 3600, "m": 60, "s": 1, "ms": 0.001}.get(unit, 0)
+        num = ""
+    return total
+
+
 class OpenAICompatLLM(LLM):
-    """Groq, OpenRouter, Ollama, OpenAI: anything speaking /v1/chat/completions."""
+    """Groq, OpenRouter, Ollama, OpenAI: anything speaking /v1/chat/completions.
+
+    Free tiers meter tokens per minute. The client reads the rate-limit headers
+    and waits for the reset instead of failing, so a run slows down rather than
+    dying when the quota is tight.
+    """
     name = "openai_compat"
     supports_vision = False
 
@@ -90,18 +122,56 @@ class OpenAICompatLLM(LLM):
         super().__init__(model, **kw)
         self.base_url = (base_url or os.environ.get("OPENAI_COMPAT_BASE_URL") or "https://api.groq.com/openai/v1").rstrip("/")
         self.api_key = api_key or os.environ.get("OPENAI_COMPAT_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY") or "none"
+        self.remaining_tokens = None
+        self.tokens_reset_at = 0.0
+        self.waited_s = 0.0
+
+    def _pace(self, estimated_tokens: int):
+        """If the minute's token budget is nearly used, sleep until it resets."""
+        if self.remaining_tokens is not None and self.remaining_tokens < estimated_tokens:
+            wait = max(0.0, self.tokens_reset_at - time.time()) + 0.5
+            if wait > 0:
+                time.sleep(min(wait, 90))
+                self.waited_s += min(wait, 90)
+                self.remaining_tokens = None
+
+    def _note_headers(self, headers):
+        try:
+            if "x-ratelimit-remaining-tokens" in headers:
+                self.remaining_tokens = int(float(headers["x-ratelimit-remaining-tokens"]))
+            if "x-ratelimit-reset-tokens" in headers:
+                self.tokens_reset_at = time.time() + _seconds(headers["x-ratelimit-reset-tokens"])
+        except ValueError:
+            pass
 
     def _call(self, system, messages, want_json, images):
         body = {"model": self.model, "temperature": self.temperature, "max_tokens": self.max_tokens,
                 "messages": [{"role": "system", "content": system}, *messages]}
         if want_json:
             body["response_format"] = {"type": "json_object"}
-        try:
-            r = httpx.post(f"{self.base_url}/chat/completions", json=body, timeout=self.timeout,
-                           headers={"Authorization": f"Bearer {self.api_key}"})
-        except httpx.HTTPError as e:
-            raise LLMError(f"request failed: {e}") from None
-        if r.status_code in (429, 500, 502, 503):
+        estimated = (len(system) + sum(len(m["content"]) for m in messages)) // 3 + self.max_tokens // 4
+        for attempt in range(8):
+            self._pace(estimated)
+            try:
+                r = httpx.post(f"{self.base_url}/chat/completions", json=body, timeout=self.timeout,
+                               headers={"Authorization": f"Bearer {self.api_key}"})
+            except httpx.HTTPError as e:
+                raise LLMError(f"request failed: {e}") from None
+            self._note_headers(r.headers)
+            if r.status_code == 429:
+                wait = _seconds(r.headers.get("retry-after", "")) or max(1.0, self.tokens_reset_at - time.time()) or 5.0
+                wait = min(max(wait, 1.0), 90.0)
+                time.sleep(wait)
+                self.waited_s += wait
+                self.remaining_tokens = None
+                continue
+            if r.status_code in (500, 502, 503):
+                time.sleep(min(2 ** attempt, 20))
+                continue
+            break
+        if r.status_code == 429:
+            raise LLMError(f"{self.base_url} 429 after waiting: {r.text[:200]}")
+        if r.status_code in (500, 502, 503):
             raise LLMError(f"{self.base_url} {r.status_code}: {r.text[:200]}")
         if r.status_code != 200:
             raise LLMError(f"{self.base_url} {r.status_code}: {r.text[:300]}")

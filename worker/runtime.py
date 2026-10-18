@@ -31,6 +31,8 @@ TOOLS = {
     "type": {"id": "element id", "text": "text to enter (replaces the field's value)"},
     "select": {"id": "element id of a select", "option": "visible option text"},
     "check": {"id": "element id of a checkbox/radio"},
+    "fill_form": {"fields": "list of {id, value}: textboxes get the text, selects the option text, checkboxes/radios true",
+                  "submit": "optional id of a non-write button to click afterwards (sign in, search, filter, continue, review)"},
     "back": {},
     "read_pdf": {"url": "URL or path of a PDF link on the current site"},
     "note_fact": {"key": "e.g. invoice_number, pdf_total:<invoice>, duplicate_check:<invoice>", "value": "the value",
@@ -111,6 +113,42 @@ class Runtime:
 
     def t_back(self, step):
         return ToolResult(self.browser.go_back())
+
+    SAFE_SUBMIT_WORDS = ("sign in", "log in", "search", "filter", "find", "continue", "review", "next", "back")
+
+    def t_fill_form(self, step, fields=None, submit=None):
+        """Fill several fields in one step. Submitting is allowed only for non-write buttons."""
+        obs = self.last_observation or self.observe()
+        by_id = {e.id: e for e in obs.elements}
+        done = []
+        for f in fields or []:
+            if not isinstance(f, dict) or "id" not in f:
+                return ToolResult("fill_form fields must be objects with id and value")
+            try:
+                eid = int(f["id"])
+            except (TypeError, ValueError):
+                return ToolResult(f"bad element id {f.get('id')!r}")
+            el = by_id.get(eid)
+            value = f.get("value", f.get("text", ""))
+            if el is None:
+                return ToolResult(f"no element with id {eid} (observe again; ids change after each action)")
+            if el.role == "select":
+                res = self.browser.select(eid, str(value))
+            elif el.role in ("checkbox", "radio"):
+                res = self.browser.check(eid) if value not in (False, "false", "no", 0) else "left unchecked"
+            else:
+                res = self.browser.type(eid, str(value))
+            done.append(f'{el.name}: {res}')
+            if "failed" in res or "no option" in res:
+                return ToolResult("; ".join(done))
+        if submit is not None:
+            el = by_id.get(int(submit))
+            if el is None:
+                return ToolResult("; ".join(done) + f"; no element with id {submit}")
+            if not (obs.is_login_page or any(w in el.name.lower() for w in self.SAFE_SUBMIT_WORDS)):
+                return ToolResult("; ".join(done) + f'; not clicking "{el.name}": a write must go through commit with a declared intent')
+            done.append(self.browser.click(int(submit)))
+        return ToolResult("; ".join(done) or "nothing to fill")
 
     def t_read_pdf(self, step, url=""):
         text = self.browser.fetch_pdf_text(self._abs(str(url)))

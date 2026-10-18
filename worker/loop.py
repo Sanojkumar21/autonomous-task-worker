@@ -22,7 +22,7 @@ from worker.types import Action, Clarification, RunRecord, Step
 from worker.verifier import Verifier
 
 ROOT = Path(__file__).resolve().parent.parent
-BROWSER_TOOLS = {"navigate", "click", "type", "select", "check", "back", "commit"}
+BROWSER_TOOLS = {"navigate", "click", "type", "select", "check", "back", "commit", "fill_form"}
 
 
 class Worker:
